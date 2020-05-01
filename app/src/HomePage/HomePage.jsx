@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { userActions } from '../_actions/user';
 
+import styles from './HomePage.module.scss';
+
 function HomePage() {
   const users = useSelector(state => state.users);
   const user = useSelector(state => state.authentication.user);
@@ -18,7 +20,7 @@ function HomePage() {
   }
 
   return (
-    <div className="col-lg-8 offset-lg-2">
+    <div className={styles.view}>
       <h1>Hi {user.firstName}!</h1>
       <p>You're logged in with React Hooks!!</p>
       <h3>All registered users:</h3>

@@ -9,6 +9,8 @@ import { HomePage } from '../HomePage/HomePage';
 import { LoginPage } from '../LoginPage/LoginPage';
 import { RegisterPage } from '../RegisterPage/RegisterPage';
 
+import styles from './App.scss';
+
 function App() {
   const alert = useSelector(state => state.alert);
   const dispatch = useDispatch();
@@ -21,7 +23,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="jumbotron">
+    <div className={styles.view}>
       <div className="container">
         <div className="col-md-8 offset-md-2">
           {alert.message &&
