@@ -3,19 +3,21 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: 'development',
   resolve: {
-    extensions: ['.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ejs']
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.jsx?$/,
         loader: 'babel-loader'
       }
     ]
   },
-  plugins: [new HtmlWebpackPlugin({
-    template: './src/index.html'
-  })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    })
+  ],
   devServer: {
     historyApiFallback: true
   },
