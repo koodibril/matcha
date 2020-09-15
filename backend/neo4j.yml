@@ -3,7 +3,7 @@ services:
   matcha-neo4j:
     image: neo4j
     volumes:
-      - ~/volumes/neo4j/data:/data
+      - ./data:/data
     ports:
       - 7474:7474
       - 7687:7687
