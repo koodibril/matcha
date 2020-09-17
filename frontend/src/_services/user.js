@@ -1,5 +1,6 @@
 // import config from 'config';
 import { authHeader } from '../_helpers/auth-header';
+import { wait } from '@testing-library/dom';
 
 export const userService = {
   login,
@@ -23,7 +24,6 @@ function login(username, password) {
     .then(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem('user', JSON.stringify(user));
-
       return user;
     });
 }
@@ -82,6 +82,7 @@ function _delete(id) {
 }
 
 function handleResponse(response) {
+  console.log(response);
   return response.text().then(text => {
     const data = text && JSON.parse(text);
     console.log(data);

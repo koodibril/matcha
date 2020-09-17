@@ -9,7 +9,8 @@ function RegisterPage() {
     firstName: '',
     lastName: '',
     username: '',
-    password: ''
+    password: '',
+    email: ''
   });
   const [submitted, setSubmitted] = useState(false);
   const registering = useSelector(state => state.registration.registering);
@@ -57,6 +58,13 @@ function RegisterPage() {
           <input type="text" name="username" value={user.username} onChange={handleChange} className={'form-control' + (submitted && !user.username ? ' is-invalid' : '')} />
           {submitted && !user.username &&
             <div className="invalid-feedback">Username is required</div>
+          }
+        </div>
+        <div className="form-group">
+          <label>Email</label>
+          <input type="text" name="email" value={user.email} onChange={handleChange} className={'form-control' + (submitted && !user.email ? ' is-invalid' : '')} />
+          {submitted && !user.email &&
+            <div className="invalid-feedback">Email is required</div>
           }
         </div>
         <div className="form-group">
