@@ -6,6 +6,9 @@
   "author": "edjubert <edouard@kontestapp.com>",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "install": "yarn workspace api install && yarn workspace app install"
+  },
   "workspaces": {
     "packages": [
       "api",
