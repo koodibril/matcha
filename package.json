@@ -1,0 +1,15 @@
+{
+  "name": "matcha",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:edjubert/matcha.git",
+  "author": "edjubert <edouard@kontestapp.com>",
+  "private": true,
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "api",
+      "app"
+    ]
+  }
+}
