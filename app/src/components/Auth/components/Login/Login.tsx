@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Form, Input, Button, Checkbox, Row } from 'antd';
+import { Form, Input, Button, Spin, Row } from 'antd';
 import { push as pushState } from 'connected-react-router';
 
 import { useTranslation } from 'react-i18next';
@@ -11,11 +11,16 @@ import { LoginData } from './Login.d';
 import { login } from '../../../../ducks/authentication/actions/authentication';
 
 const Login: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
 
   const goToSignup = () => dispatch(pushState('/auth/signup'));
-  const handleLogin = ({ username, password }: LoginData) => dispatch(login(username, password));
+  const handleLogin = ({ username, password }: LoginData) => {
+    setLoading(true);
+    dispatch(login(username, password))
+  };
 
   return (
     <Row justify="center" align="middle">
@@ -32,6 +37,7 @@ const Login: React.FC = () => {
           }]}>
           <Input />
         </Form.Item>
+
         <Form.Item
           label={t('password')}
           name="password"
@@ -41,15 +47,19 @@ const Login: React.FC = () => {
           }]}>
           <Input.Password />
         </Form.Item>
+
         <Form.Item>
           <Button type="text" onClick={goToSignup}>
             {t('go_to_signup')}
           </Button>
         </Form.Item>
+
         <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {t('login')}
-          </Button>
+          <Spin spinning={loading}>
+            <Button type="primary" htmlType="submit">
+              {t('login')}
+            </Button>
+          </Spin>
         </Form.Item>
       </Form>
     </Row>

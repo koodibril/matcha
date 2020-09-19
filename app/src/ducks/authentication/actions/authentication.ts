@@ -1,4 +1,5 @@
 import mergeRight from 'ramda/src/mergeRight';
+import { SignupData } from '../../../components/Auth/components/Signup/Signup.d';
 
 const API_URL = 'http://localhost:3000';
 const LOGIN_ENDPOINT = '/api/auth/login';
@@ -23,7 +24,7 @@ interface User {
 };
 
 const setUser = (user: User) => {
-  console.log({ user });
+  console.log('Set User', { user });
   // localStorage.setItem('user', JSON.stringify(user));
   // return user;
   return { type: 'SUCCESS', payload: user };
@@ -33,15 +34,16 @@ export const login = (username: string, password: string) => (dispatch: any, get
   const body = stringifyBody({ username, password });
   const options = postHeader(body);
 
-  console.log('salut', options)
-  return fetch(`http://localhost:3000/api/auth/login`, options)
+  return fetch(`${API_URL}${LOGIN_ENDPOINT}`, options)
     .then(handleResponse)
     .then(setUser)
 };
 
 export const logout = () => localStorage.removeItem('user');
-export const signup = (email: string, username: string, password: string) => (dispatch: any, getState: any) => {
-  const body = stringifyBody({ email, username, password });
+
+
+export const signup = ({ email, username, firstname, lastname, password }: SignupData) => (dispatch: any, getState: any) => {
+  const body = stringifyBody({ email, username, firstname, lastname, password });
   const options = postHeader(body);
 
   return fetch(`${API_URL}${SIGNUP_ENDPOINT}`, options)
