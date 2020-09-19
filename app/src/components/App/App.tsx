@@ -20,7 +20,12 @@ const { Content } = Layout;
 
 const App: React.FC = () => (
   <Layout>
-    <Content style={{ minHeight: '500px', padding: '0 50px' }}>
+    <Content style={{
+      minHeight: '500px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignContent: 'center',
+    }}>
       <Routes />
     </Content>
   </Layout>

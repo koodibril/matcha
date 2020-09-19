@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore } from 'redux';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
+import thunk from 'redux-thunk'
 
 import reducer from '../ducks/reducer';
 
@@ -12,7 +13,8 @@ const configure = () => createStore(
   reducer(history),
   composeEnhancers(
     applyMiddleware(
-      routerMiddleware(history)
+      routerMiddleware(history),
+      thunk
     )
   )
 );
