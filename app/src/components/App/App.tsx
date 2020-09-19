@@ -1,6 +1,8 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import { Layout } from 'antd';
+
 import HomeComponent from '../Home/Home';
 import AuthComponent from '../Auth/Auth';
 
@@ -12,12 +14,16 @@ const Routes: React.FC = () => (
       <Route path="/auth" component={AuthComponent} />
     </Switch>
   </>
-)
+);
+
+const { Content } = Layout;
 
 const App: React.FC = () => (
-  <div>
-    <Routes />
-  </div>
+  <Layout>
+    <Content style={{ minHeight: '500px', padding: '0 50px' }}>
+      <Routes />
+    </Content>
+  </Layout>
 )
 
 export default App;

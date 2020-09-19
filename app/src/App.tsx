@@ -3,12 +3,12 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 
 import configure from './store/configure';
-import state from './state/initialState';
 import i18n from './utils/i18n/i18n';
 
 import Routes from './App.route';
+import './App.css';
 
-export const store = configure(state);
+export const store = configure();
 
 const App: React.FC = () => (
   <I18nextProvider i18n={i18n}>
