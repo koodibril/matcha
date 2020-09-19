@@ -13,7 +13,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "connected-react-router": "^6.8.0",
-    "history": "^5.0.0",
+    "history": "^4.10.1",
     "i18next": "^19.7.0",
     "i18next-browser-languagedetector": "^6.0.1",
     "react": "^16.13.1",
