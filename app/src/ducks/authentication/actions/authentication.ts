@@ -1,7 +1,11 @@
 import mergeRight from 'ramda/src/mergeRight';
+
 import { SignupData } from '../../../components/Auth/components/Signup/Signup.d';
 
-const API_URL = 'http://localhost:3000';
+const PORT = 3000;
+const ADDRESS = 'localhost';
+const PROTOCOL = 'http';
+const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 const LOGIN_ENDPOINT = '/api/auth/login';
 const SIGNUP_ENDPOINT = '/api/auth/signup';
 
