@@ -2,17 +2,13 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
 
-interface UserState {
-  user: {
-    token: string | null
-  }
-}
+import { AuthenticationState } from '../../ducks/authentication/types/AuthenticationState.d';
 
 const Home: React.FC = () => {
-  const user = useSelector((state: UserState) => state.user);
+  const { isAuthenticated } = useSelector((state: AuthenticationState) => state.authentication);
   const dispatch = useDispatch();
 
-  if (!user || !user.token) dispatch(pushState('/auth'));
+  if (!isAuthenticated) dispatch(pushState('/auth'));
 
   return <div>Home Component</div>
 };

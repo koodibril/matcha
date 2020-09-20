@@ -9,7 +9,6 @@ const authentication = (state = initialState, action: { type: string, payload: a
 
   switch (type) {
     case LOGIN_SUCCESS:
-      console.log('User logged successfully');
       return {
         isAuthenticated: true,
         user: payload

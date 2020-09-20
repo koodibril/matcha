@@ -23,30 +23,29 @@ interface User {
   token: string;
 };
 
-const setUser = (user: User) => {
+const setUser = (user: User) => (dispatch: any) => {
   console.log('Set User', { user });
-  // localStorage.setItem('user', JSON.stringify(user));
-  // return user;
-  return { type: 'SUCCESS', payload: user };
+  localStorage.setItem('user', JSON.stringify(user));
+  return dispatch({ type: 'LOGIN_SUCCESS', payload: user });
 }
 
-export const login = (username: string, password: string) => (dispatch: any, getState: any) => {
+export const login = (username: string, password: string) => (dispatch: any) => {
   const body = stringifyBody({ username, password });
   const options = postHeader(body);
 
   return fetch(`${API_URL}${LOGIN_ENDPOINT}`, options)
     .then(handleResponse)
-    .then(setUser)
+    .then(setUser(dispatch));
 };
 
 export const logout = () => localStorage.removeItem('user');
 
 
-export const signup = ({ email, username, firstname, lastname, password }: SignupData) => (dispatch: any, getState: any) => {
+export const signup = ({ email, username, firstname, lastname, password }: SignupData) => (dispatch: any) => {
   const body = stringifyBody({ email, username, firstname, lastname, password });
   const options = postHeader(body);
 
   return fetch(`${API_URL}${SIGNUP_ENDPOINT}`, options)
     .then(handleResponse)
-    .then(setUser);
+    .then(setUser(dispatch));
 }

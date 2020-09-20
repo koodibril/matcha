@@ -10,6 +10,7 @@ import { LoginData } from './Login.d';
 
 import { login } from '../../../../ducks/authentication/actions/authentication';
 
+
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
 
   const goToSignup = () => dispatch(pushState('/auth/signup'));
+
   const handleLogin = ({ username, password }: LoginData) => {
     setLoading(true);
     dispatch(login(username, password))
