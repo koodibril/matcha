@@ -6,10 +6,13 @@ import Routes from './App.route';
 
 import styles from './App.module.css';
 
-const { Content } = Layout;
+const { Content, Header } = Layout;
 
 const App: React.FC = () => (
   <Layout>
+    <Header>
+      salut
+    </Header>
     <Content className={styles.content}>
       <Routes />
     </Content>

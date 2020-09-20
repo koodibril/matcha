@@ -1,16 +1,16 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
 
-import { AuthenticationState } from '../../ducks/authentication/types/AuthenticationState.d';
-
 const Home: React.FC = () => {
-  const { isAuthenticated } = useSelector((state: AuthenticationState) => state.authentication);
+  const user = localStorage.getItem('user');
   const dispatch = useDispatch();
 
-  if (!isAuthenticated) dispatch(pushState('/auth'));
+  if (!user) dispatch(pushState('/auth'));
 
-  return <div>Home Component</div>
+  const logout = () => localStorage.removeItem('user');
+
+  return <div>Home Component<button onClick={logout}>logout</button></div>
 };
 
 export default Home;

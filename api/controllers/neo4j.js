@@ -1,82 +1,80 @@
 const neo4j = require('neo4j-driver')
+const jwt = require('jsonwebtoken');
 
 const driver = neo4j.driver('neo4j://0.0.0.0:7687', neo4j.auth.basic('neo4j', 'salut'), { disableLosslessIntegers: true })
 
-exports.register = (req, res, next) => {
-  async function register() {
-    const session = driver.session()
-    try {
-      console.log('checking username');
-      let result = await session.run("MATCH (a:User {Username: $username}) RETURN count(a)", { username: req.body.username });
-      let singleRecord = result.records[0]
-      let used = singleRecord.get(0)
-      if (used > 0) {
-        return res
-          .status(400)
-          .json({ message: "Username is already Used" });
-      }
-      console.log('checking email');
-      result = await session.run("MATCH (a:User {Email: $email}) RETURN count(a)", { email: req.body.email });
-      singleRecord = result.records[0]
-      used = singleRecord.get(0)
-      if (used > 0) {
-        return res
-          .status(400)
-          .json({ message: "Email is already Used" });
-      }
-      console.log('getting id');
-      result = await session.run("MATCH (a:User) RETURN count(a)", {});
-      singleRecord = result.records[0]
-      let id = singleRecord.get(0)
-      console.log('registering');
-      result = await session.run('CREATE (a:User {Id: $id, Username: $username, Firstname: $firstname, Lastname: $lastname, Password: $password, Email: $email, Token: $token }) RETURN a',
-        {
-          id: id,
-          username: req.body.username,
-          firstname: req.body.firstName,
-          lastname: req.body.lastName,
-          password: req.body.password,
-          email: 'lol',
-          token: 'fakeone'
-        }
-      )
+const JWT_SECRET_KEY = "xQd394j3@T*5AqHHlkWepspSb^3qszsSm1XdooIAEr^LFDkdm2hDmFn^t*c6Lr@D03Xcjm00K^^@i3qdx8pAUCYQ6uHaw^wF6rH";
+const jwtExpiresTime = 300;
+
+exports.register = async (req, res, next) => {
+  const session = driver.session()
+  const { username, firstname, lastname, email, password } = req.body;
+
+  try {
+    const userMatch = await (await session.run("MATCH (a:User {Username: $username}) RETURN count(a)", { username })).records[0];
+    const userExists = userMatch.get(0)
+    if (userExists > 0) {
       return res
-        .json({ message: "Succesfully registered !" });
-    } finally {
-      await session.close()
+        .status(400)
+        .json({ message: "Username is already Used" });
     }
+
+    const emailMatch = await (await session.run("MATCH (a:User {Email: $email}) RETURN count(a)", { email })).records[0];
+    const emailExists = emailMatch.get(0);
+    if (emailExists > 0) {
+      return res
+        .status(400)
+        .json({ message: "Email is already Used" });
+    }
+
+    const token = jwt.sign({ username }, JWT_SECRET_KEY, {
+      algorithm: 'HS512',
+      expiresIn: jwtExpiresTime
+    });
+
+    await session.run('CREATE (a:User {Username: $username, Firstname: $firstname, Lastname: $lastname, Password: $password, Email: $email, Token: $token }) RETURN a',
+      { username, firstname, lastname, password, email, token }
+    ).catch(e => res.status(500).json(e));
+
+    return res.status(200).json({ token, message: "success" });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json(e)
+  } finally {
+    await session.close()
   }
-  register();
 }
 
-exports.login = (req, res, next) => {
-  async function login() {
-    const session = driver.session();
-    try {
-      console.log('getting username')
-      let result = await session.run("MATCH (a:User {Username: $username}) RETURN count(a)", { username: req.body.username });
-      console.log({ result })
-      let singleRecord = result.records[0]
-      let used = singleRecord.get(0)
-      console.log({ singleRecord, used })
-      if (used === 0) {
-        return res
-          .status(404)
-          .json({ message: "Username don't exist" });
-      }
-      result = await session.run("MATCH (a:User {Username: $username}) RETURN a.Password", { username: req.body.username });
-      singleRecord = result.records[0]
-      password = singleRecord.get(0)
-      if (password !== req.body.password) {
-        return res
-          .status(400)
-          .json({ message: "Passwords don't match" });
-      }
+exports.login = async (req, res, next) => {
+  const session = driver.session();
+  const { username, password } = req.body;
+
+  try {
+    const userMatch = await (await session.run("MATCH (a:User {Username: $username}) RETURN count(a)", { username })).records[0];
+    const usedUsername = userMatch.get(0)
+
+    if (usedUsername === 0) {
       return res
-        .json({ message: "Succesfully logged in !" });
-    } finally {
-      await session.close()
+        .status(404)
+        .json({ message: "Username don't exist" });
     }
+    const passwordMatch = await (await session.run("MATCH (a:User {Username: $username}) RETURN a.Password", { username })).records[0];
+    if (password !== passwordMatch.get(0)) {
+      return res
+        .status(401)
+        .json({ message: "Passwords don't match" });
+    }
+
+    const token = jwt.sign({ username }, JWT_SECRET_KEY, {
+      algorithm: 'HS512',
+      expiresIn: jwtExpiresTime
+    });
+
+    return res.status(200).json({ token, message: "Succesfully logged in !" });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json(e);
+  } finally {
+    await session.close()
   }
-  login();
 }
