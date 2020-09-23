@@ -11,6 +11,8 @@ export default {
   "email_missing": "Please enter a valid email",
   "username_missing": "Please enter a valid username",
   "password_missing": "Please enter a valid password",
+  "password_too_short": "Your password must be at least 8 charachters long",
+  "password_contain": "Your password must contain at least one number",
   "firstname_missing": "Please enter a valid firstname",
   "lastname_missing": "Please enter a valid lastname"
 }

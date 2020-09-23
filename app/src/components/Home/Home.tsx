@@ -8,7 +8,10 @@ const Home: React.FC = () => {
 
   if (!user) dispatch(pushState('/auth'));
 
-  const logout = () => localStorage.removeItem('user');
+  const logout = () => {
+    localStorage.removeItem('user');
+    dispatch(pushState('/'));
+  }
 
   return <div>Home Component<button onClick={logout}>logout</button></div>
 };

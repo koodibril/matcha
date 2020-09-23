@@ -76,7 +76,13 @@ const Signup: React.FC = () => {
           name="password"
           rules={[{
             required: true,
-            message: t('password_missing'),
+            message: t('password_missing')
+          }, {
+            min: 8,
+            message: t('password_too_short')
+          }, {
+            pattern: new RegExp("^.*[0-9]$"), // LES REGEX ICI C'EST DE LA GROSSE MERDE (regexp prend pas le \d pour les chiffres, mais pour un char d...)
+            message: t('password_contain')
           }]}>
           <Input.Password />
         </Form.Item>

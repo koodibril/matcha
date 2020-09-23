@@ -1,7 +1,7 @@
 const neo4j = require('neo4j-driver')
 const jwt = require('jsonwebtoken');
 
-const driver = neo4j.driver('neo4j://0.0.0.0:7687', neo4j.auth.basic('neo4j', 'salut'), { disableLosslessIntegers: true })
+const driver = neo4j.driver('neo4j://192.168.99.100:7687', neo4j.auth.basic('neo4j', 'matcha'), { disableLosslessIntegers: true })
 
 const JWT_SECRET_KEY = "xQd394j3@T*5AqHHlkWepspSb^3qszsSm1XdooIAEr^LFDkdm2hDmFn^t*c6Lr@D03Xcjm00K^^@i3qdx8pAUCYQ6uHaw^wF6rH";
 const jwtExpiresTime = 300;
