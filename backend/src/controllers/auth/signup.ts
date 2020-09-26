@@ -1,10 +1,9 @@
 import { getSession } from '../../shared/neo4j/neo4j';
 import { getToken } from '../../shared/jwt/getToken';
-import { internalError, unauthorized } from '../../shared/utils';
+import { info, internalError, conflict } from '../../shared/utils';
 import { getUserMatchCount, getUserEmailCount, createUser } from '../../shared/neo4j/queries';
 
-export const signup = async (req: any, res: any, next: any) => {
-  console.log('salut')
+export const signup = async (req: any, res: any) => {
   const session = getSession();
   const {
     username,
@@ -17,22 +16,21 @@ export const signup = async (req: any, res: any, next: any) => {
   const userParams = { username, firstname, lastname, email, password, token };
 
   try {
-    console.log('1')
     const userMatch = await getUserMatchCount({ username }, session);
-    if (userMatch > 0) unauthorized(res, 'Username already in use');
+    if (userMatch > 0) return conflict(res, `Username (${username}) already in use`);
 
-    console.log('2')
     const emailMatch = await getUserEmailCount({ email }, session);
-    if (emailMatch > 0) unauthorized(res, 'Email already in use');
+    if (emailMatch > 0) return conflict(res, `Email (${email}) already in use`);
 
-    console.log('3')
     await createUser(userParams, session, internalError(res));
-    console.log('before returning')
-    await res.status(200).json({ token });
+
+    info(`New user account, welcome to ${username}`);
+    return res
+      .status(200)
+      .json({ token });
   } catch (e) {
-    console.log('4')
-    internalError(res)(e);
+    return internalError(res)(e);
   } finally {
-    // await session.close();
+    await session.close();
   }
 }

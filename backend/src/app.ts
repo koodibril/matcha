@@ -3,7 +3,6 @@ import userRoutes from './routes/user';
 
 const app = express();
 const allowCrossDomain = (req: any, res: any, next: any) => {
-  console.log('hey allow');
   res.header('Access-Control-Allow-Origin', "*")
   res.header('Access-Control-Allow-Headers', "*");
   next();
