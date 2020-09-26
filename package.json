@@ -12,7 +12,8 @@
   "workspaces": {
     "packages": [
       "api",
-      "app"
+      "app",
+      "backend"
     ]
   }
 }
