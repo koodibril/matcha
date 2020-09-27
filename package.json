@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:edjubert/matcha.git",
-  "author": "edjubert <edouard@kontestapp.com>",
+  "author": "edjubert <edjubert@student.42.fr>",
   "private": true,
   "license": "MIT",
   "scripts": {
