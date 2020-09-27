@@ -6,7 +6,6 @@ import configure from './store/configure';
 import i18n from './utils/i18n/i18n';
 
 import Routes from './App.route';
-import './App.css';
 
 export const store = configure();
 
