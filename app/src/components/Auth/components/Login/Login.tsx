@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { Form, Input, Button, Spin, Row } from 'antd';
 import { push as pushState } from 'connected-react-router';
 
 import { useTranslation } from 'react-i18next';
@@ -8,10 +7,17 @@ import { useDispatch } from 'react-redux';
 
 import { LoginData } from './Login.d';
 
+import Input from '../../../UI/Input/Input';
+import Column from '../../../UI/Column/Column';
+import Row from '../../../UI/Row/Row';
+import Form from '../../../UI/Form/Form';
+import Button from '../../../UI/Button/Button';
+import Page from '../../../UI/Page/Page';
+
 import { login } from '../../../../ducks/authentication/actions/authentication';
 
-
-const Login: React.FC = () => {
+/*
+const LoginAntd: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const { t } = useTranslation('authentication');
@@ -65,6 +71,21 @@ const Login: React.FC = () => {
         </Form.Item>
       </Form>
     </Row>
+  )
+}
+*/
+const Login: React.FC = () => {
+  return (
+    <Page>
+      <Form>
+        <Column>
+          <Input />
+          <Input />
+          <Button type="submit" label="click" onClick={console.log} />
+        </Column>
+      </Form>
+
+    </Page>
   )
 }
 

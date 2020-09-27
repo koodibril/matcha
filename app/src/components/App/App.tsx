@@ -1,22 +1,20 @@
 import React from 'react';
 
-import { Layout } from 'antd';
+import Page from '../UI/Page/Page';
+import Column from '../UI/Column/Column';
+import Row from '../UI/Row/Row';
 
 import Routes from './App.route';
 
 import styles from './App.module.css';
 
-const { Content, Header } = Layout;
 
 const App: React.FC = () => (
-  <Layout>
-    <Header>
-      salut
-    </Header>
-    <Content className={styles.content}>
+  <Page>
+    <Column>
       <Routes />
-    </Content>
-  </Layout>
+    </Column>
+  </Page>
 )
 
 export default App;
