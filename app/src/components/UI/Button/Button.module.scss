@@ -1,0 +1,10 @@
+.view {
+  .button {
+    border: none;
+    background-color: blue;
+
+    &:hover {
+      background-color: red;
+    }
+  }
+}
