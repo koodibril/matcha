@@ -5,7 +5,7 @@ import mergeRight from 'ramda/src/mergeRight';
 
 import { SignupData } from '../../../components/Auth/components/Signup/Signup.d';
 
-const PORT = 3000;
+const PORT = 3001;
 const ADDRESS = 'localhost';
 const PROTOCOL = 'http';
 const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
@@ -26,6 +26,12 @@ const handleResponse = (res: any) => {
   return res;
 }
 
+const handleError = (dispatch: any, error: any) => {
+  console.log(error);
+  dispatch({ type: 'ERROR'});
+  return error;
+}
+
 const setUser = (dispatch: any) => (res: any) => {
   const { token } = res.data;
   localStorage.setItem('user', token);
@@ -36,7 +42,8 @@ const setUser = (dispatch: any) => (res: any) => {
 export const login = (username: string, password: string) => (dispatch: any) => axios
   .post(`${API_URL}${LOGIN_ENDPOINT}`, { username, password })
   .then(handleResponse)
-  .then(setUser(dispatch));
+  .then(setUser(dispatch))
+  .catch(error => handleError(dispatch, error));
 
 export const logout = () => localStorage.removeItem('user');
 
@@ -44,4 +51,5 @@ export const logout = () => localStorage.removeItem('user');
 export const signup = ({ email, username, firstname, lastname, password }: SignupData) => (dispatch: any) => axios
   .post(`${API_URL}${SIGNUP_ENDPOINT}`, { email, username, firstname, lastname, password })
   .then(handleResponse)
-  .then(setUser(dispatch));
+  .then(setUser(dispatch))
+  .catch(error => handleError(dispatch, error));

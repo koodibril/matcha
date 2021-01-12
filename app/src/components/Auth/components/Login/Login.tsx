@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
-import { Form, Input, Button, Spin, Row } from 'antd';
+import { Form, Input, Button, Spin, Row, Alert } from 'antd';
 import { push as pushState } from 'connected-react-router';
 
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ import { login } from '../../../../ducks/authentication/actions/authentication';
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
@@ -21,15 +22,31 @@ const Login: React.FC = () => {
 
   const handleLogin = ({ username, password }: LoginData) => {
     setLoading(true);
-    dispatch(login(username, password))
+    const result = dispatch(login(username, password));
+    console.log(result);
+    setLoading(false); // To change when I would finally understand how to use this fucking dispatch with a promise..
+    setVisible(true);
+  };
+
+  const handleClose = () => {
+    setVisible(false);
   };
 
   return (
-    <Row justify="center" align="middle">
+    <Row justify="center" align="middle" >
       <Form
+        style={{ margin: '16px 0' }}
         name="login"
         onFinish={handleLogin}
         onFinishFailed={console.error}>
+          { visible ? (
+          <Alert 
+            style={{ margin: '16px 0' }} 
+            message='Wrong Username/Password' 
+            type="error" 
+            closable 
+            afterClose={handleClose}/>) : null
+          }
         <Form.Item
           label={t('username')}
           name="username"

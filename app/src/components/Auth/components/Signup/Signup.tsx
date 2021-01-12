@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { push as pushState } from 'connected-react-router';
 
-import { Row, Form, Button, Input } from 'antd';
+import { Row, Form, Button, Input, Alert } from 'antd';
 import { Spin } from 'antd';
 
 import { useDispatch } from 'react-redux';
@@ -14,6 +14,7 @@ import { signup } from '../../../../ducks/authentication/actions/authentication'
 
 const Signup: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
@@ -21,25 +22,31 @@ const Signup: React.FC = () => {
   const goToLogin = () => dispatch(pushState('/auth/login'))
   const handleSignup = (user: SignupData) => {
     setLoading(true);
-    dispatch(signup({ ...user }));
+    const result = dispatch(signup({ ...user }));
+    console.log(result);
+    setVisible(true); // To change when I would finally understand how to use this fucking dispatch with a promise..
+    setLoading(false);
+  };
+
+  const handleClose = () => {
+    setVisible(false);
   };
 
   return (
     <Row justify="center" align="middle">
       <Form
+        style={{ margin: '16px 0' }}
         name="signup"
         onFinish={handleSignup}
         onFinishFailed={console.error}>
-        <Form.Item
-          label={t('email')}
-          name="email"
-          rules={[{
-            required: true,
-            message: t('email_missing'),
-            type: 'email'
-          }]}>
-          <Input />
-        </Form.Item>
+        { visible ? (
+          <Alert 
+            style={{ margin: '16px 0' }} 
+            message='Wrong Username/Password'
+            type="error" 
+            closable 
+            afterClose={handleClose}/>) : null
+        }
 
         <Form.Item
           label={t('username')}
@@ -47,6 +54,17 @@ const Signup: React.FC = () => {
           rules={[{
             required: true,
             message: t('username_missing')
+          }]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label={t('email')}
+          name="email"
+          rules={[{
+            required: true,
+            message: t('email_missing'),
+            type: 'email'
           }]}>
           <Input />
         </Form.Item>
