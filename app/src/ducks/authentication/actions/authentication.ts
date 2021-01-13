@@ -21,35 +21,28 @@ const postHeader = (body: any) => mergeRight(body, {
 });
 const stringifyBody = (body: any): { body: string } => ({ body: JSON.stringify(body) });
 
-const handleResponse = (res: any) => {
-  console.log({ res });
-  return res;
-}
-
 const handleError = (dispatch: any, error: any) => {
-  console.log(error);
-  dispatch({ type: 'ERROR'});
-  return error;
+  const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString())
+  dispatch({ type: 'LOGIN_FAILURE' });
+  console.log('ici' + message);
+  dispatch({ type: 'SET_MESSAGE', payload: message});
+  return Promise.reject();
 }
 
-const setUser = (dispatch: any) => (res: any) => {
+const setUser = (dispatch: any, res: any) => {
   const { token } = res.data;
   localStorage.setItem('user', token);
   dispatch({ type: 'LOGIN_SUCCESS', payload: token });
   dispatch(pushState('/'));
+  return Promise.resolve();
 }
 
 export const login = (username: string, password: string) => (dispatch: any) => axios
   .post(`${API_URL}${LOGIN_ENDPOINT}`, { username, password })
-  .then(handleResponse)
-  .then(setUser(dispatch))
-  .catch(error => handleError(dispatch, error));
+  .then((res) => { setUser(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
 export const logout = () => localStorage.removeItem('user');
 
-
 export const signup = ({ email, username, firstname, lastname, password }: SignupData) => (dispatch: any) => axios
   .post(`${API_URL}${SIGNUP_ENDPOINT}`, { email, username, firstname, lastname, password })
-  .then(handleResponse)
-  .then(setUser(dispatch))
-  .catch(error => handleError(dispatch, error));
+  .then((res) => { setUser(dispatch, res) }, (error) => { handleError(dispatch, error) });

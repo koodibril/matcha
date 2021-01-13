@@ -5,7 +5,7 @@ import { push as pushState } from 'connected-react-router';
 import { Row, Form, Button, Input, Alert } from 'antd';
 import { Spin } from 'antd';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { SignupData } from './Signup.d';
@@ -18,13 +18,14 @@ const Signup: React.FC = () => {
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
+  const selectMessage = (state: any) => state.message;
+  const { message } = useSelector(selectMessage);
 
   const goToLogin = () => dispatch(pushState('/auth/login'))
   const handleSignup = (user: SignupData) => {
     setLoading(true);
-    const result = dispatch(signup({ ...user }));
-    console.log(result);
-    setVisible(true); // To change when I would finally understand how to use this fucking dispatch with a promise..
+    dispatch(signup({ ...user }));
+    setVisible(true);
     setLoading(false);
   };
 
@@ -42,7 +43,7 @@ const Signup: React.FC = () => {
         { visible ? (
           <Alert 
             style={{ margin: '16px 0' }} 
-            message='Wrong Username/Password'
+            message={ message }
             type="error" 
             closable 
             afterClose={handleClose}/>) : null

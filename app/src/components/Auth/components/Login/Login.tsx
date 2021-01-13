@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 import { Form, Input, Button, Spin, Row, Alert } from 'antd';
 import { push as pushState } from 'connected-react-router';
 
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { LoginData } from './Login.d';
 
@@ -15,6 +15,9 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
 
+  const selectMessage = (state: any) => state.message;
+  const { message } = useSelector(selectMessage);
+
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
 
@@ -22,9 +25,8 @@ const Login: React.FC = () => {
 
   const handleLogin = ({ username, password }: LoginData) => {
     setLoading(true);
-    const result = dispatch(login(username, password));
-    console.log(result);
-    setLoading(false); // To change when I would finally understand how to use this fucking dispatch with a promise..
+    dispatch(login(username, password));
+    setLoading(false);
     setVisible(true);
   };
 
@@ -42,7 +44,7 @@ const Login: React.FC = () => {
           { visible ? (
           <Alert 
             style={{ margin: '16px 0' }} 
-            message='Wrong Username/Password' 
+            message={message} 
             type="error" 
             closable 
             afterClose={handleClose}/>) : null

@@ -14,6 +14,7 @@ const authentication = (state = initialState, action: { type: string, payload: a
         user: payload
       }
     case LOGIN_FAILURE:
+      return {}
     case LOGOUT:
       return {};
     default:
