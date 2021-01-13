@@ -40,14 +40,8 @@ const Signup: React.FC = () => {
         name="signup"
         onFinish={handleSignup}
         onFinishFailed={console.error}>
-        { visible ? (
-          <Alert 
-            style={{ margin: '16px 0' }} 
-            message={ message }
-            type="error" 
-            closable 
-            afterClose={handleClose}/>) : null
-        }
+        
+        { visible ? (<Alert style={{ margin: '16px 0' }} message={ message } type="error" closable afterClose={handleClose}/>) : null }
 
         <Form.Item
           label={t('username')}

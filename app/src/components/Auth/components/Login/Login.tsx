@@ -35,20 +35,15 @@ const Login: React.FC = () => {
   };
 
   return (
-    <Row justify="center" align="middle" >
+    <Row justify="center" align="middle">
       <Form
         style={{ margin: '16px 0' }}
         name="login"
         onFinish={handleLogin}
         onFinishFailed={console.error}>
-          { visible ? (
-          <Alert 
-            style={{ margin: '16px 0' }} 
-            message={message} 
-            type="error" 
-            closable 
-            afterClose={handleClose}/>) : null
-          }
+
+        { visible ? (<Alert style={{ margin: '16px 0' }} message={message} type="error" closable afterClose={handleClose}/>) : null }
+        
         <Form.Item
           label={t('username')}
           name="username"
