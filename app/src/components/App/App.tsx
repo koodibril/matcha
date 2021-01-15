@@ -4,6 +4,8 @@ import { Layout } from 'antd';
 
 import Routes from './App.route';
 
+import MainMenu from '../Menu/Menu';
+
 import styles from './App.module.css';
 
 const { Content, Header } = Layout;
@@ -13,6 +15,7 @@ const App: React.FC = () => (
     <Header>
       salut
     </Header>
+    <MainMenu />
     <Content className={styles.content}>
       <Routes />
     </Content>
