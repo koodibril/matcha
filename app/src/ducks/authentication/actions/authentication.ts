@@ -24,7 +24,6 @@ const stringifyBody = (body: any): { body: string } => ({ body: JSON.stringify(b
 const handleError = (dispatch: any, error: any) => {
   const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString())
   dispatch({ type: 'LOGIN_FAILURE' });
-  console.log('ici' + message);
   dispatch({ type: 'SET_MESSAGE', payload: message});
   return Promise.reject();
 }
