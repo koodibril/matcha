@@ -21,17 +21,21 @@ const Login: React.FC = () => {
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
 
+  if (message && visible === false) setVisible(true);
+
   const goToSignup = () => dispatch(pushState('/auth/signup'));
 
   const handleLogin = ({ username, password }: LoginData) => {
     setLoading(true);
     dispatch(login(username, password));
     setLoading(false);
-    setVisible(true);
+    console.log(message);
+    console.log(visible);
   };
 
   const handleClose = () => {
     setVisible(false);
+    dispatch({ type: 'CLEAR_MESSAGE'});
   };
 
   return (
