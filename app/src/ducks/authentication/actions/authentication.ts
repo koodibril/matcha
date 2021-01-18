@@ -1,8 +1,6 @@
 import { push as pushState } from 'connected-react-router';
 import axios from 'axios';
 
-import mergeRight from 'ramda/src/mergeRight';
-
 import { SignupData } from '../../../components/Auth/components/Signup/Signup.d';
 
 const PORT = 3001;
@@ -11,15 +9,6 @@ const PROTOCOL = 'http';
 const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 const LOGIN_ENDPOINT = '/api/auth/login';
 const SIGNUP_ENDPOINT = '/api/auth/signup';
-
-const postHeader = (body: any) => mergeRight(body, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
-  },
-});
-const stringifyBody = (body: any): { body: string } => ({ body: JSON.stringify(body) });
 
 const handleError = (dispatch: any, error: any) => {
   const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString())
