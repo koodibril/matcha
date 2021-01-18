@@ -10,10 +10,14 @@ export const login = async (req: any, res: any) => {
   const bcrypt = require('bcrypt');
   const username = req.body.username;
   let hashpass = '';
-  bcrypt.hash(req.body.password, 10, function(err: any, hash: string) {
+  await bcrypt.hash(req.body.password, 10, function(err: any, hash: string) {
     if (!err) hashpass = hash;
+    console.log(hashpass);
+    console.log(hash);
   });
   const password = hashpass;
+  console.log(hashpass);
+  console.log(req.body.password);
 
 
   try {

@@ -2,10 +2,10 @@ import { getSession } from '../../shared/neo4j/neo4j';
 import { getToken } from '../../shared/jwt/getToken';
 import { info, internalError, conflict } from '../../shared/utils';
 import { getUserMatchCount, getUserEmailCount, createUser } from '../../shared/neo4j/queries';
+import { hashPassword } from '../hashPassword';
 
 export const signup = async (req: any, res: any) => {
   const session = getSession();
-  const bcrypt = require('bcrypt');
   const {
     username,
     firstname,
@@ -14,12 +14,10 @@ export const signup = async (req: any, res: any) => {
     password
   } = req.body;
   const token = getToken({ username });
-  let hashpass = '';
-  bcrypt.hash(password, 10, function(err: any, hash: string) {
-    if (!err) hashpass = hash;
-  });
   const userParams = { username, firstname, lastname, email, password, token };
-  userParams.password = hashpass;
+  userParams.password = await hashPassword(password);
+  console.log('after params' + userParams.password);
+  console.log('after params' + password);
 
   try {
     const userMatch = await getUserMatchCount({ username }, session);
