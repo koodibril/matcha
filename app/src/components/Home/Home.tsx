@@ -13,7 +13,10 @@ const Home: React.FC = () => {
     dispatch(pushState('/'));
   }
 
-  return <div>Home Component<button onClick={logout}>logout</button></div>
+  return (
+  <div>Home Component
+    <button onClick={logout}>logout</button>
+  </div>);
 };
 
 export default Home;

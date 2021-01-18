@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { Form, Input, Button, Spin, Row } from 'antd';
+import { Form, Input, Button, Spin, Row, Alert } from 'antd';
 import { push as pushState } from 'connected-react-router';
 
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { LoginData } from './Login.d';
 
@@ -13,23 +13,41 @@ import { login } from '../../../../ducks/authentication/actions/authentication';
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const selectMessage = (state: any) => state.message;
+  const { message } = useSelector(selectMessage);
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
+
+  if (message && visible === false) setVisible(true);
 
   const goToSignup = () => dispatch(pushState('/auth/signup'));
 
   const handleLogin = ({ username, password }: LoginData) => {
     setLoading(true);
-    dispatch(login(username, password))
+    dispatch(login(username, password));
+    setLoading(false);
+    console.log(message);
+    console.log(visible);
+  };
+
+  const handleClose = () => {
+    setVisible(false);
+    dispatch({ type: 'CLEAR_MESSAGE'});
   };
 
   return (
     <Row justify="center" align="middle">
       <Form
+        style={{ margin: '16px 0' }}
         name="login"
         onFinish={handleLogin}
         onFinishFailed={console.error}>
+
+        { visible ? (<Alert style={{ margin: '16px 0' }} message={message} type="error" closable afterClose={handleClose}/>) : null }
+        
         <Form.Item
           label={t('username')}
           name="username"
