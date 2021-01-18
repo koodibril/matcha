@@ -16,8 +16,6 @@ export const signup = async (req: any, res: any) => {
   const token = getToken({ username });
   const userParams = { username, firstname, lastname, email, password, token };
   userParams.password = await hashPassword(password);
-  console.log('after params' + userParams.password);
-  console.log('after params' + password);
 
   try {
     const userMatch = await getUserMatchCount({ username }, session);
