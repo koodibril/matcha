@@ -7,7 +7,14 @@ import { getUserPassword } from '../../shared/neo4j/queries';
 
 export const login = async (req: any, res: any) => {
   const session = getSession();
-  const { username, password } = req.body;
+  const bcrypt = require('bcrypt');
+  const username = req.body.username;
+  let hashpass = '';
+  bcrypt.hash(req.body.password, 10, function(err: any, hash: string) {
+    if (!err) hashpass = hash;
+  });
+  const password = hashpass;
+
 
   try {
     const matchingPassword = await getUserPassword({ username, password }, session);

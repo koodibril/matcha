@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 
 import { UserInformationData } from './UserInformation.d';
 
+import { getProfileInfo } from '../../../../ducks/profile/actions/profile';
+
 
 const UserInformation: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -22,9 +24,7 @@ const UserInformation: React.FC = () => {
 
   const handleSignup = (user: UserInformationData) => {
     setLoading(true);
-    /*
-    dispatch(signup({ ...user }));
-    */
+    dispatch(getProfileInfo('asd'));
     setVisible(true);
     setLoading(false);
   };

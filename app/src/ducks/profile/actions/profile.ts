@@ -1,8 +1,6 @@
 import { push as pushState } from 'connected-react-router';
 import axios from 'axios';
 
-import mergeRight from 'ramda/src/mergeRight';
-
 import { setUser } from '../../authentication/actions/authentication';
 import { UserInformationData } from '../../../components/Profile/components/UserInformation/UserInformation.d';
 
@@ -10,16 +8,8 @@ const PORT = 3001;
 const ADDRESS = 'localhost';
 const PROTOCOL = 'http';
 const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
-const PROFILE_ENDPOINT = '/api/profile';
+const PROFILE_ENDPOINT = '/api/auth/profile';
 
-const postHeader = (body: any) => mergeRight(body, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
-  },
-});
-const stringifyBody = (body: any): { body: string } => ({ body: JSON.stringify(body) });
 
 const handleError = (dispatch: any, error: any) => {
   const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString())
@@ -29,10 +19,8 @@ const handleError = (dispatch: any, error: any) => {
 }
 
 const setProfileInfo = (dispatch: any, res: any) => {
-  const { token } = res.data;
-  localStorage.setItem('user', token);
-  dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: token });
-  dispatch(pushState('/'));
+  console.log(res.data);
+  dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: res.data });
   return Promise.resolve();
 }
 

@@ -5,6 +5,7 @@ import { getUserMatchCount, getUserEmailCount, createUser } from '../../shared/n
 
 export const signup = async (req: any, res: any) => {
   const session = getSession();
+  const bcrypt = require('bcrypt');
   const {
     username,
     firstname,
@@ -13,7 +14,12 @@ export const signup = async (req: any, res: any) => {
     password
   } = req.body;
   const token = getToken({ username });
+  let hashpass = '';
+  bcrypt.hash(password, 10, function(err: any, hash: string) {
+    if (!err) hashpass = hash;
+  });
   const userParams = { username, firstname, lastname, email, password, token };
+  userParams.password = hashpass;
 
   try {
     const userMatch = await getUserMatchCount({ username }, session);

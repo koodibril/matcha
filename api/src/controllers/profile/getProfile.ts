@@ -1,24 +1,21 @@
 import { getSession } from '../../shared/neo4j/neo4j'
-import { getToken } from '../../shared/jwt/getToken';
-import { info, internalError, conflict } from '../../shared/utils';
-import { getUserPassword } from '../../shared/neo4j/queries';
+import { info, internalError } from '../../shared/utils';
+import { getUserInfo } from '../../shared/neo4j/queries';
 
 
 
 export const getProfileInfo = async (req: any, res: any) => {
   const session = getSession();
-  const { username, password } = req.body;
+  const username = 'asd';
 
   try {
-    const matchingPassword = await getUserPassword({ username, password }, session);
-    if (password !== matchingPassword) return conflict(res, `Credentials for (${username}) are incorrect`);
-
-    const token = getToken({ username });
+    const userInfo = await getUserInfo({ username }, session);
+    console.log(userInfo);
 
     info(`User '${username}' logged in`);
     return res
       .status(200)
-      .json({ token });
+      .json({ userInfo });
   } catch (e) {
     return internalError(res)(e);
   } finally {
