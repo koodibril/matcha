@@ -6,7 +6,7 @@ import { getUserInfo } from '../../shared/neo4j/queries';
 
 export const getProfileInfo = async (req: any, res: any) => {
   const session = getSession();
-  const token = req.body.username;
+  const token = req.body.token;
 
   try {
     const userInfo = await getUserInfo({ token }, session);

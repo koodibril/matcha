@@ -18,8 +18,7 @@ const Signup: React.FC = () => {
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
-  const selectMessage = (state: any) => state.message;
-  const { message } = useSelector(selectMessage);
+  const { message } = useSelector((state: any) => state.counter);
 
   const goToLogin = () => dispatch(pushState('/auth/login'))
   const handleSignup = (user: SignupData) => {

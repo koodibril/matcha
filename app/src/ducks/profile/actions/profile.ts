@@ -1,4 +1,3 @@
-import { push as pushState } from 'connected-react-router';
 import axios from 'axios';
 
 import { setUser } from '../../authentication/actions/authentication';
@@ -8,7 +7,8 @@ const PORT = 3001;
 const ADDRESS = 'localhost';
 const PROTOCOL = 'http';
 const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
-const PROFILE_ENDPOINT = '/api/auth/profile';
+const PROFILE_INFO_ENDPOINT = '/api/auth/profile/info';
+const PROFILE_UPDATE_ENDPOINT = '/api/auth/profile/update';
 
 
 const handleError = (dispatch: any, error: any) => {
@@ -19,15 +19,22 @@ const handleError = (dispatch: any, error: any) => {
 }
 
 const setProfileInfo = (dispatch: any, res: any) => {
-  console.log(res.data);
-  dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: res.data });
+  const {
+    Email,
+    Firstname,
+    Lastname,
+    Username,
+    Password
+  } = res.data.userInfo.properties;
+  const info = { Email, Firstname, Lastname, Username, Password}
+  dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: info });
   return Promise.resolve();
 }
 
-export const getProfileInfo = (username: string) => (dispatch: any) => axios
-  .post(`${API_URL}${PROFILE_ENDPOINT}`, { username })
+export const getProfileInfo = (token: string) => (dispatch: any) => axios
+  .post(`${API_URL}${PROFILE_INFO_ENDPOINT}`, { token })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const updateProfileInfo = ({ email, username, firstname, lastname, password }: UserInformationData) => (dispatch: any) => axios
-  .post(`${API_URL}${PROFILE_ENDPOINT}`, { email, username, firstname, lastname, password })
+export const updateProfileInfo = ({ Email, Username, Firstname, Lastname, Password }: UserInformationData) => (dispatch: any) => axios
+  .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, { Email, Username, Firstname, Lastname, Password })
   .then((res) => { setUser(dispatch, res) }, (error) => { handleError(dispatch, error) });

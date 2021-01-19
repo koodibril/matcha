@@ -15,8 +15,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const selectMessage = (state: any) => state.message;
-  const { message } = useSelector(selectMessage);
+  const { message } = useSelector((state: any) => state.counter);
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();

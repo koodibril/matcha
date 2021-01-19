@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Row, Form, Button, Input, Alert } from 'antd';
 import { Spin } from 'antd';
@@ -18,12 +18,13 @@ const UserInformation: React.FC = () => {
 
   const { t } = useTranslation('profile');
   const dispatch = useDispatch();
-  const selectMessage = (state: any) => state.message;
-  const { message } = useSelector(selectMessage);
+  const message= useSelector((state: any) => state.message);
 
-  const test = (user: any) => {
-    dispatch(getProfileInfo(user));
-  }
+  const info = useSelector((state: any) => state.profile);
+
+  useEffect(() => {
+    if (user) dispatch(getProfileInfo(user));
+  }, []);
 
   const handleSignup = (user: UserInformationData) => {
     setLoading(true);
@@ -48,25 +49,25 @@ const UserInformation: React.FC = () => {
         <Form.Item
           label={t('username')}
           name="username">
-          <Input />
+          { info.payload ? (<Input defaultValue={info.payload.Username}/>) : null }
         </Form.Item>
 
         <Form.Item
           label={t('email')}
           name="email">
-          <Input />
+          { info.payload ? (<Input defaultValue={info.payload.Email}/>) : null }
         </Form.Item>
 
         <Form.Item
           label={t('firstname')}
           name="firstname">
-          <Input />
+          { info.payload ? (<Input defaultValue={info.payload.Firstname}/>) : null }
         </Form.Item>
 
         <Form.Item
           label={t('lastname')}
           name="lastname">
-          <Input />
+          { info.payload ? (<Input defaultValue={info.payload.Lastname}/>) : null }
         </Form.Item>
 
         <Button type="primary" htmlType="submit">
@@ -75,7 +76,7 @@ const UserInformation: React.FC = () => {
 
         <Form.Item>
           <Spin spinning={loading} >
-            <Button onClick={() => test(user)} type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit">
               {t('change information')}
             </Button>
           </Spin>

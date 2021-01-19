@@ -1,17 +1,17 @@
-const LOADING_PROFILE_SUCCESS = 'LOGIN_SUCCESS';
-const LOADING_PROFILE_FAILURE = 'LOGIN_FAILURE';
+import { UserInformationData } from '../../components/Profile/components/UserInformation/UserInformation.d';
+
+const LOADING_PROFILE_SUCCESS = 'LOADING_PROFILE_SUCCESS';
+const LOADING_PROFILE_FAILURE = 'LOADING_PROFILE_FAILURE';
 
 const initialState = {};
 
-const profile = (state = initialState, action: { type: string, infopayload: any, imagepayload: any }) => {
-  const { type, infopayload, imagepayload } = action;
+
+const profile = (state = initialState, action: { type: string, payload: any}) => {
+  const { type, payload} = action;
 
   switch (type) {
     case LOADING_PROFILE_SUCCESS:
-      return {
-        profileInfo: infopayload,
-        profileImage: imagepayload
-      }
+      return { payload }
     case LOADING_PROFILE_FAILURE:
       return {}
     default:
