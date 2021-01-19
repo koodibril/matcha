@@ -14,7 +14,7 @@ const generateParams = (params: (string)[]) => params.map(p => `${toUpper(p)}: $
 const generateQuery: any = (action: string, model: string, params: (string)[], getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`} { ${generateParams(params)} }) RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
 const queryMatchingUser = generateQuery('match', 'user', ['username'], true);
 const queryMatchingEmail = generateQuery('match', 'user', ['email'], true);
-const queryMatchingPassword = `${generateQuery('match', 'user', ['username', 'password'], false)}.Password`;
+const queryMatchingPassword = `${generateQuery('match', 'user', ['username'], false)}.Password`;
 const queryCreateUser = generateQuery('create', 'user', ['username', 'firstname', 'lastname', 'password', 'email', 'token'], false);
 const queryGetUserInfo = generateQuery('match', 'user', ['username'], false);
 

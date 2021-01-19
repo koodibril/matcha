@@ -2,18 +2,21 @@ import { getSession } from '../../shared/neo4j/neo4j'
 import { getToken } from '../../shared/jwt/getToken';
 import { info, internalError, conflict } from '../../shared/utils';
 import { getUserPassword } from '../../shared/neo4j/queries';
-import { hashPassword } from '../hashPassword';
+import { checkPassword } from './checkPassword';
 
 
 
 export const login = async (req: any, res: any) => {
   const session = getSession();
-  const username = req.body.username;
-  let password = await hashPassword(req.body.password);
+  const {
+    username,
+    password
+  } = req.body;
 
   try {
-    const matchingPassword = await getUserPassword({ username, password }, session);
-    if (password !== matchingPassword) return conflict(res, `Credentials for (${username}) are incorrect`);
+    const matchingPassword = await getUserPassword({ username }, session);
+    const passwordMatch = await checkPassword(password, matchingPassword);
+    if (!passwordMatch) return conflict(res, `Credentials for (${username}) are incorrect`);
 
     const token = getToken({ username });
 

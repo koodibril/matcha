@@ -2,7 +2,7 @@ import { getSession } from '../../shared/neo4j/neo4j';
 import { getToken } from '../../shared/jwt/getToken';
 import { info, internalError, conflict } from '../../shared/utils';
 import { getUserMatchCount, getUserEmailCount, createUser } from '../../shared/neo4j/queries';
-import { hashPassword } from '../hashPassword';
+import { hashPassword } from './hashPassword';
 
 export const signup = async (req: any, res: any) => {
   const session = getSession();
