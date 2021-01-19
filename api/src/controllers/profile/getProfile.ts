@@ -6,13 +6,12 @@ import { getUserInfo } from '../../shared/neo4j/queries';
 
 export const getProfileInfo = async (req: any, res: any) => {
   const session = getSession();
-  const username = 'asd';
+  const token = req.body.username;
 
   try {
-    const userInfo = await getUserInfo({ username }, session);
-    console.log(userInfo);
+    const userInfo = await getUserInfo({ token }, session);
 
-    info(`User '${username}' logged in`);
+    info(`informations collected`);
     return res
       .status(200)
       .json({ userInfo });

@@ -1,7 +1,7 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { getToken } from '../../shared/jwt/getToken';
 import { info, internalError, conflict } from '../../shared/utils';
-import { getUserPassword } from '../../shared/neo4j/queries';
+import { getUserPassword, updateToken } from '../../shared/neo4j/queries';
 import { checkPassword } from './checkPassword';
 
 
@@ -19,6 +19,8 @@ export const login = async (req: any, res: any) => {
     if (!passwordMatch) return conflict(res, `Credentials for (${username}) are incorrect`);
 
     const token = getToken({ username });
+    const updated = await updateToken({ username, token }, session);
+    if (!updated || token !== updated) return conflict(res, `Error when generating token for (${username})`);
 
     info(`User '${username}' logged in`);
     return res

@@ -25,7 +25,7 @@ const setProfileInfo = (dispatch: any, res: any) => {
 }
 
 export const getProfileInfo = (username: string) => (dispatch: any) => axios
-  .get(`${API_URL}${PROFILE_ENDPOINT}`)
+  .post(`${API_URL}${PROFILE_ENDPOINT}`, { username })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
 export const updateProfileInfo = ({ email, username, firstname, lastname, password }: UserInformationData) => (dispatch: any) => axios

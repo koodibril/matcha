@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { push as pushState } from 'connected-react-router';
-
 import { Row, Form, Button, Input, Alert } from 'antd';
 import { Spin } from 'antd';
 
@@ -16,15 +14,19 @@ import { getProfileInfo } from '../../../../ducks/profile/actions/profile';
 const UserInformation: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+  const user = localStorage.getItem('user');
 
   const { t } = useTranslation('profile');
   const dispatch = useDispatch();
   const selectMessage = (state: any) => state.message;
   const { message } = useSelector(selectMessage);
 
+  const test = (user: any) => {
+    dispatch(getProfileInfo(user));
+  }
+
   const handleSignup = (user: UserInformationData) => {
     setLoading(true);
-    dispatch(getProfileInfo('asd'));
     setVisible(true);
     setLoading(false);
   };
@@ -45,65 +47,36 @@ const UserInformation: React.FC = () => {
 
         <Form.Item
           label={t('username')}
-          name="username"
-          rules={[{
-            required: true,
-            message: t('username_missing')
-          }]}>
+          name="username">
           <Input />
         </Form.Item>
 
         <Form.Item
           label={t('email')}
-          name="email"
-          rules={[{
-            required: true,
-            message: t('email_missing'),
-            type: 'email'
-          }]}>
+          name="email">
           <Input />
         </Form.Item>
 
         <Form.Item
           label={t('firstname')}
-          name="firstname"
-          rules={[{
-            required: true,
-            message: t('firstname_missing')
-          }]}>
+          name="firstname">
           <Input />
         </Form.Item>
 
         <Form.Item
           label={t('lastname')}
-          name="lastname"
-          rules={[{
-            required: true,
-            message: t('lastname_missing')
-          }]}>
+          name="lastname">
           <Input />
         </Form.Item>
 
-        <Form.Item
-          label={t('password')}
-          name="password"
-          rules={[{
-            required: true,
-            message: t('password_missing')
-          }, {
-            min: 8,
-            message: t('password_too_short')
-          }, {
-            pattern: new RegExp("^.*[0-9]$"), 
-            message: t('password_contain')
-          }]}>
-          <Input.Password />
-        </Form.Item>
+        <Button type="primary" htmlType="submit">
+              {t('change password')}
+        </Button>
 
         <Form.Item>
           <Spin spinning={loading} >
-            <Button type="primary" htmlType="submit">
-              {t('signup')}
+            <Button onClick={() => test(user)} type="primary" htmlType="submit">
+              {t('change information')}
             </Button>
           </Spin>
         </Form.Item>
