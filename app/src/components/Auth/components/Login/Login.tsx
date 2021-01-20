@@ -15,7 +15,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const { message } = useSelector((state: any) => state.counter);
+  const message = useSelector((state: any) => state.counter);
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
@@ -28,8 +28,6 @@ const Login: React.FC = () => {
     setLoading(true);
     dispatch(login(username, password));
     setLoading(false);
-    console.log(message);
-    console.log(visible);
   };
 
   const handleClose = () => {

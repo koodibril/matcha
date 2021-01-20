@@ -7,6 +7,7 @@ interface UserOptions {
   firstname?: string;
   lastname?: string;
   token?: string;
+  pictures?: string[];
 }
 
 const toUpper = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1).toLowerCase()}`;
