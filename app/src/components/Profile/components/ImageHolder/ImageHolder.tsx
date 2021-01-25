@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Upload, Modal, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { ImageData } from './ImageHolder.d';
 
 function getBase64(file: any) {
   return new Promise((resolve, reject) => {
@@ -17,7 +16,7 @@ const ImageHolder: React.FC = () => {
     const [previewImage, setPreviewImage] = useState();
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<any[]>([]);
-    const user = localStorage.getItem('user');
+    const user = { "token": localStorage.getItem('user') };
 
     const handleCancel = () => setPreviewVisible(false);
   
@@ -36,11 +35,21 @@ const ImageHolder: React.FC = () => {
       newFileList.splice(index, 1);
       setFileList(newFileList)
     }
-  
-    const handleChange = (file: any) => {
-      console.log(file);
-      setFileList(file.fileList);
-    };
+
+    const handleChange = (info: any) => {
+      let newFileList = info.fileList;
+
+      const status = info.file.status;
+      if (status !== 'uploading') {
+          console.log(info.file, info.fileList);
+      }
+      if (status === 'done') {
+          console.log(`${info.file.name} file uploaded successfully.`);
+      } else if (status === 'error') {
+          console.log(`${info.file.name} file upload failed.`);
+      }
+      setFileList(newFileList);
+    }
 
     const uploadButton = (
       <div>
@@ -52,6 +61,7 @@ const ImageHolder: React.FC = () => {
       return (
         <Row justify="center" align="middle">
           <Upload
+            data={user}
             action="http://localhost:3001/api/auth/picture"
             listType="picture-card"
             fileList={fileList}
