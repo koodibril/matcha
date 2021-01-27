@@ -19,7 +19,6 @@ export const login = async (req: any, res: any) => {
     if (!passwordMatch) return conflict(res, `Credentials for (${username}) are incorrect`);
 
     const token = getToken({ username });
-    console.log(token);
     const updated = await updateToken({ username, token }, session);
     if (!updated || token !== updated) return conflict(res, `Error when generating token for (${username})`);
 
