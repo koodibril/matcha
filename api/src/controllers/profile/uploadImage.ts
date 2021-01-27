@@ -51,6 +51,8 @@ export const uploadImage = async (req: any, res: any) => {
         } finally {
           await session.close();
         }
+      } else {
+        fs.unlinkSync(uploadDir + '/' + fileName);
       }
     });
     busboy.on('finish', function() {
