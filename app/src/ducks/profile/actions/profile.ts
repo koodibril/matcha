@@ -24,9 +24,10 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Firstname,
     Lastname,
     Username,
-    Password
+    Password,
+    Pictures
   } = res.data.userInfo.properties;
-  const info = { Email, Firstname, Lastname, Username, Password}
+  const info = { Email, Firstname, Lastname, Username, Password, Pictures}
   dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: info });
   return Promise.resolve();
 }

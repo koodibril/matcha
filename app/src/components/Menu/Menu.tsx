@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import { Menu } from 'antd';
 import { HomeOutlined, MailOutlined, SettingOutlined, LogoutOutlined, UserOutlined, SearchOutlined, WechatOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
+import { logout } from '../../ducks/authentication/actions/authentication';
 
 const { SubMenu } = Menu;
 
@@ -17,9 +18,9 @@ const MainMenu: React.FC = () => {
 
     const handleClick = (key: any) => {
         if (key.key === "logout") {
-            localStorage.removeItem('user');
             setLogged("Login");
             setCurrent(['auth']);
+            logout();
             dispatch(pushState('/'));
         }
         else {

@@ -16,7 +16,7 @@ export const uploadImage = async (req: any, res: any) => {
     let token = '';
     let fileName = '';
     var busboy = new Busboy({ headers: req.headers });
-    busboy.on('file', function(file: any, filename: any) {
+    busboy.on('file', function(fieldname: any, file: any, filename: any, encoding: any, mimetype: any, object: any) {
       fileName = filename;
       file.pipe(fs.createWriteStream(uploadDir + '/' + filename));
       console.log('Uploading: ' + filename);
@@ -26,7 +26,6 @@ export const uploadImage = async (req: any, res: any) => {
         try {
           token = val;
           const userInfo = await getUserInfo({ token }, session) as any;
-          console.log(userInfo);
           let pictures = userInfo.properties.Pictures as string[];
           const username = userInfo.properties.Username;
           const userDir = './public/users/' + userInfo.identity;
@@ -40,11 +39,10 @@ export const uploadImage = async (req: any, res: any) => {
           let block = false;
           pictures.forEach(function (picture, i) {
             if (picture === '' && !block) {
-              pictures[i] = userDir + '/' + fileName;
+              pictures[i] = '/users/' + userInfo.identity + '/' + fileName;
               block = true;
             }
           });
-          console.log(pictures);
           await updateUserPictures({ username, pictures }, session);
         } catch (e) {
           return internalError(res)(e);

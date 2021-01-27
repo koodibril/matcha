@@ -12,5 +12,6 @@ app.use(allowCrossDomain);
 
 app.use(express.json({ limit: '1mb' }));
 app.use('/api/auth', userRoutes);
+app.use(express.static('public'));
 
 export default app;

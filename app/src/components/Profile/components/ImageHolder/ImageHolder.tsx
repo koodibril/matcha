@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, Modal, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
 function getBase64(file: any) {
   return new Promise((resolve, reject) => {
@@ -17,8 +18,21 @@ const ImageHolder: React.FC = () => {
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<any[]>([]);
     const user = { "token": localStorage.getItem('user') };
+    const info = useSelector((state: any) => state.profile);
 
     const handleCancel = () => setPreviewVisible(false);
+
+    if (info && fileList.length === 0 && info.payload) {
+      let pictures = info.payload.Pictures as string[];
+      pictures.forEach((picture: any, i:number) => {
+        if (picture !== '') {
+          const newPic = { uid: i, status: 'done', url: 'http://localhost:3001/' + picture };
+          let newFileList = fileList;
+          newFileList.push(newPic);
+          setFileList(newFileList);
+        }
+      });
+    }
   
     const handlePreview = async (file: any) => {
       if (!file.url && !file.preview) {
@@ -38,6 +52,7 @@ const ImageHolder: React.FC = () => {
 
     const handleChange = (info: any) => {
       let newFileList = info.fileList;
+      console.log(fileList);
 
       const status = info.file.status;
       if (status !== 'uploading') {

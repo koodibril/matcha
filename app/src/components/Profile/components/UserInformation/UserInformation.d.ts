@@ -4,4 +4,5 @@ export interface UserInformationData {
     Lastname: string;
     Username: string;
     Password: string;
+    Pictures: string[];
   }
