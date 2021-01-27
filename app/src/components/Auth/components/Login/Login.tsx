@@ -15,12 +15,12 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const message = useSelector((state: any) => state.counter);
+  const message = useSelector((state: any) => state.message);
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
 
-  if (message && visible === false) setVisible(true);
+  if (message && message.message !== '' && visible === false) setVisible(true);
 
   const goToSignup = () => dispatch(pushState('/auth/signup'));
 
@@ -43,7 +43,7 @@ const Login: React.FC = () => {
         onFinish={handleLogin}
         onFinishFailed={console.error}>
 
-        { visible ? (<Alert style={{ margin: '16px 0' }} message={message} type="error" closable afterClose={handleClose}/>) : null }
+        { visible ? (<Alert style={{ margin: '16px 0' }} message={message.message} type="error" closable afterClose={handleClose}/>) : null }
         
         <Form.Item
           label={t('username')}
