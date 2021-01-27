@@ -20,7 +20,7 @@ const MainMenu: React.FC = () => {
         if (key.key === "logout") {
             setLogged("Login");
             setCurrent(['auth']);
-            logout();
+            logout(dispatch);
             dispatch(pushState('/'));
         }
         else {

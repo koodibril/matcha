@@ -3,12 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { Row, Form, Button, Input, Alert } from 'antd';
 import { Spin } from 'antd';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { UserInformationData } from './UserInformation.d';
-
-import { getProfileInfo } from '../../../../ducks/profile/actions/profile';
 
 
 const UserInformation: React.FC = () => {
@@ -17,14 +15,9 @@ const UserInformation: React.FC = () => {
   const user = localStorage.getItem('user');
 
   const { t } = useTranslation('profile');
-  const dispatch = useDispatch();
   const message= useSelector((state: any) => state.message);
 
   const info = useSelector((state: any) => state.profile);
-
-  useEffect(() => {
-    if (user) dispatch(getProfileInfo(user));
-  }, []);
 
   const handleSignup = (user: UserInformationData) => {
     setLoading(true);

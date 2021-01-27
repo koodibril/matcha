@@ -29,7 +29,10 @@ export const login = (username: string, password: string) => (dispatch: any) => 
   .post(`${API_URL}${LOGIN_ENDPOINT}`, { username, password })
   .then((res) => { setUser(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const logout = () => localStorage.removeItem('user');
+export const logout = (dispatch: any) => {
+  dispatch({ type: 'LOGOUT' });
+  localStorage.removeItem('user');
+}
 
 export const signup = ({ email, username, firstname, lastname, password }: SignupData) => (dispatch: any) => axios
   .post(`${API_URL}${SIGNUP_ENDPOINT}`, { email, username, firstname, lastname, password })
