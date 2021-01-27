@@ -18,6 +18,8 @@ const UserInformation: React.FC = () => {
   const message= useSelector((state: any) => state.message);
 
   const info = useSelector((state: any) => state.profile);
+  
+  if (message && message.message !== '' && visible === false) setVisible(true);
 
   const handleSignup = (user: UserInformationData) => {
     setLoading(true);
@@ -37,7 +39,7 @@ const UserInformation: React.FC = () => {
         onFinish={handleSignup}
         onFinishFailed={console.error}>
         
-        { visible ? (<Alert style={{ margin: '16px 0' }} message={ message } type="error" closable afterClose={handleClose}/>) : null }
+        { visible ? (<Alert style={{ margin: '16px 0' }} message={ message.message } type="error" closable afterClose={handleClose}/>) : null }
 
         <Form.Item
           label={t('username')}

@@ -8,6 +8,7 @@ const ADDRESS = 'localhost';
 const PROTOCOL = 'http';
 const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 const PROFILE_INFO_ENDPOINT = '/api/auth/profile/info';
+const PROFILE_PICTURE_REMOVE = '/api/auth/profile/picture/remove';
 const PROFILE_UPDATE_ENDPOINT = '/api/auth/profile/update';
 
 
@@ -34,6 +35,10 @@ const setProfileInfo = (dispatch: any, res: any) => {
 
 export const getProfileInfo = (token: string) => (dispatch: any) => axios
   .post(`${API_URL}${PROFILE_INFO_ENDPOINT}`, { token })
+  .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
+
+export const removeProfilePicture = (token: string, picture: any) => (dispatch: any) => axios
+  .post(`${API_URL}${PROFILE_PICTURE_REMOVE}`, { token, picture })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
 export const updateProfileInfo = ({ Email, Username, Firstname, Lastname, Password }: UserInformationData) => (dispatch: any) => axios

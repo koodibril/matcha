@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Upload, Modal, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeProfilePicture } from '../../../../ducks/profile/actions/profile';
 
 function getBase64(file: any) {
   return new Promise((resolve, reject) => {
@@ -17,8 +18,9 @@ const ImageHolder: React.FC = () => {
     const [previewImage, setPreviewImage] = useState();
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<any[]>([]);
-    const user = { "token": localStorage.getItem('user') };
+    const user = { "token": localStorage.getItem('user') as string };
     const info = useSelector((state: any) => state.profile);
+    const dispatch = useDispatch();
 
     const handleCancel = () => setPreviewVisible(false);
 
@@ -47,6 +49,7 @@ const ImageHolder: React.FC = () => {
       const index = fileList.indexOf(file);
       const newFileList:any = fileList.slice();
       newFileList.splice(index, 1);
+      dispatch(removeProfilePicture(user.token, file));
       setFileList(newFileList)
     }
 
@@ -77,7 +80,7 @@ const ImageHolder: React.FC = () => {
         <Row justify="center" align="middle">
           <Upload
             data={user}
-            action="http://localhost:3001/api/auth/picture"
+            action="http://localhost:3001/api/auth/picture/upload"
             listType="picture-card"
             fileList={fileList}
             onPreview={handlePreview}
