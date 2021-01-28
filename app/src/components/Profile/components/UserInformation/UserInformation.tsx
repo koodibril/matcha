@@ -3,16 +3,18 @@ import React, { useState, useEffect } from 'react';
 import { Row, Form, Button, Input, Alert } from 'antd';
 import { Spin } from 'antd';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { UserInformationData } from './UserInformation.d';
+import { updateProfileInfo } from '../../../../ducks/profile/actions/profile';
+import { SignupData } from '../../../Auth/components/Signup/Signup.d';
 
 
 const UserInformation: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const user = localStorage.getItem('user');
+  const dispatch = useDispatch();
 
   const { t } = useTranslation('profile');
   const message= useSelector((state: any) => state.message);
@@ -21,9 +23,9 @@ const UserInformation: React.FC = () => {
   
   if (message && message.message !== '' && visible === false) setVisible(true);
 
-  const handleSignup = (user: UserInformationData) => {
+  const handleUpdate = (usr: SignupData) => {
     setLoading(true);
-    setVisible(true);
+    dispatch(updateProfileInfo(usr, user))
     setLoading(false);
   };
 
@@ -33,10 +35,17 @@ const UserInformation: React.FC = () => {
 
   return (
     <Row justify="center" align="middle">
+      { info.payload ? (
       <Form
+        initialValues= {{
+          username: info.payload.Username,
+          email: info.payload.Email,
+          firstname: info.payload.Firstname,
+          lastname: info.payload.Lastname
+        }}
         style={{ margin: '16px 0' }}
-        name="signup"
-        onFinish={handleSignup}
+        name="update"
+        onFinish={handleUpdate}
         onFinishFailed={console.error}>
         
         { visible ? (<Alert style={{ margin: '16px 0' }} message={ message.message } type="error" closable afterClose={handleClose}/>) : null }
@@ -44,25 +53,25 @@ const UserInformation: React.FC = () => {
         <Form.Item
           label={t('username')}
           name="username">
-          { info.payload ? (<Input defaultValue={info.payload.Username}/>) : null }
+            <Input />
         </Form.Item>
 
         <Form.Item
           label={t('email')}
           name="email">
-          { info.payload ? (<Input defaultValue={info.payload.Email}/>) : null }
+          <Input />
         </Form.Item>
 
         <Form.Item
           label={t('firstname')}
           name="firstname">
-          { info.payload ? (<Input defaultValue={info.payload.Firstname}/>) : null }
+          <Input />
         </Form.Item>
 
         <Form.Item
           label={t('lastname')}
           name="lastname">
-          { info.payload ? (<Input defaultValue={info.payload.Lastname}/>) : null }
+          <Input />
         </Form.Item>
 
         <Button type="primary" htmlType="submit">
@@ -76,7 +85,7 @@ const UserInformation: React.FC = () => {
             </Button>
           </Spin>
         </Form.Item>
-      </Form>
+      </Form>) : null }
     </Row>
   )
 }

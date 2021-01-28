@@ -12,9 +12,9 @@ interface UserOptions {
 
 const toUpper = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1).toLowerCase()}`;
 const generateParams = (params: (string)[]) => params.map(p => `${toUpper(p)}: $${p.toLowerCase()}`);
-const generateUpdateParams = (params: (string)[]) => params.map(p => `SET a.${toUpper(p)} = $${p.toLowerCase()} `);
+const generateUpdateParams = (params: (string)[]) => params.map(p => ` a.${toUpper(p)} = $${p.toLowerCase()}`);
 const generateQuery: any = (action: string, model: string, params: (string)[], getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`} { ${generateParams(params)} }) RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
-const generateUpdateQuery: any = (action: string, model: string, params: (string)[], updateParams: (string)[], value: string, getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`} { ${generateParams(params)} }) ${generateUpdateParams(updateParams)} RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
+const generateUpdateQuery: any = (action: string, model: string, params: (string)[], updateParams: (string)[], value: string, getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`} { ${generateParams(params)} }) SET ${generateUpdateParams(updateParams)} RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
 const queryMatchingUser = generateQuery('match', 'user', ['username'], true);
 const queryMatchingEmail = generateQuery('match', 'user', ['email'], true);
 const queryMatchingPassword = `${generateQuery('match', 'user', ['username'], false)}.Password`;
@@ -22,6 +22,7 @@ const queryCreateUser = generateQuery('create', 'user', ['username', 'firstname'
 const queryGetUserInfo = generateQuery('match', 'user', ['token'], false);
 const queryupdateToken = `${generateUpdateQuery('match', 'user', ['username'], ['token'], false)}.Token`;
 const queryupdateUserPictures = generateUpdateQuery('match', 'user', ['username'], ['pictures'], false);
+const queryUpdateUserInfo = generateUpdateQuery('match', 'user', ['token'], ['username', 'firstname', 'lastname', 'email'], false);;
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
 export const getUserMatchCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingUser, options, session) as number);
@@ -31,3 +32,4 @@ export const createUser = async (options: UserOptions, session: Session, callbac
 export const getUserInfo = async (options: UserOptions, session: Session) => (await runQuery(queryGetUserInfo, options, session) as string);
 export const updateToken = async (options: UserOptions, session: Session) => (await runQuery(queryupdateToken, options, session) as string);
 export const updateUserPictures = async (options: UserOptions, session: Session) => (await runQuery(queryupdateUserPictures, options, session) as string);
+export const updateUserInfo = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUserInfo, options, session) as string);
