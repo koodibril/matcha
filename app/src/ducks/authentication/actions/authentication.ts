@@ -17,7 +17,7 @@ const handleError = (dispatch: any, error: any) => {
   return Promise.reject();
 }
 
-export const setUser = (dispatch: any, res: any) => {
+const setUser = (dispatch: any, res: any) => {
   const { token } = res.data;
   localStorage.setItem('user', token);
   dispatch({ type: 'LOGIN_SUCCESS', payload: token });

@@ -55,17 +55,6 @@ const ImageHolder: React.FC = () => {
 
     const handleChange = (info: any) => {
       let newFileList = info.fileList;
-      console.log(fileList);
-
-      const status = info.file.status;
-      if (status !== 'uploading') {
-          console.log(info.file, info.fileList);
-      }
-      if (status === 'done') {
-          console.log(`${info.file.name} file uploaded successfully.`);
-      } else if (status === 'error') {
-          console.log(`${info.file.name} file upload failed.`);
-      }
       setFileList(newFileList);
     }
 
