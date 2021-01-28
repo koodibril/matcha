@@ -32,6 +32,11 @@ export const uploadImage = async (req: any, res: any) => {
           if (!fs.existsSync(userDir)) {
               fs.mkdirSync(userDir);
           }
+          let i = 0;
+          while (!fs.existsSync(userDir + '/' + fileName)) {
+            fileName = i + fileName;
+            i++
+          }
           fs.rename(uploadDir + '/' + fileName, userDir + '/' + fileName, function (err) {
             if (err)
               throw err;
@@ -39,7 +44,7 @@ export const uploadImage = async (req: any, res: any) => {
           let block = false;
           pictures.forEach(function (picture, i) {
             if (picture === '' && !block) {
-              pictures[i] = '/users/' + userInfo.identity + '/' + fileName;
+              pictures[i] = 'users/' + userInfo.identity + '/' + fileName;
               block = true;
             }
           });
