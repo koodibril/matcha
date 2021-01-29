@@ -11,13 +11,14 @@ export const removeImage = async (req: any, res: any) => {
   const picture = req.body.picture;
 
   try {
-    const userInfo = await getUserInfo({ token }, session) as any;
+    let userInfo = await getUserInfo({ token }, session) as any;
     const url = new URL(picture.url as string);
-    let urlpic = url.pathname;
+    let urlpic = url.pathname.slice(1);
     if (urlpic) {
       let pictures = userInfo.properties.Pictures as string[];
       const username = userInfo.properties.Username;
       let block = false;
+      console.log(pictures);
       if (pictures.length > 1) {
         pictures.forEach(function (pic, i) {
           if (pic === urlpic && !block) {
@@ -25,7 +26,7 @@ export const removeImage = async (req: any, res: any) => {
             block = true;
           }
         });
-        await updateUserPictures({ username, pictures }, session);
+        userInfo = await updateUserPictures({ username, pictures }, session);
         fs.unlinkSync('./public/' + urlpic);}
     }
 

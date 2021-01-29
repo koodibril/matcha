@@ -14,7 +14,10 @@ const Profile: React.FC = () => {
   if (!user) dispatch(pushState('/auth'));
   
   useEffect(() => {
-    if (user) dispatch(getProfileInfo(user));
+    const path = window.location.pathname.split('/');
+    if (path.length === 3) {
+      dispatch(getProfileInfo(path[2]));
+    } else if (user) dispatch(getProfileInfo(user));
   }, []);
 
   return (

@@ -33,11 +33,12 @@ export const uploadImage = async (req: any, res: any) => {
               fs.mkdirSync(userDir);
           }
           let i = 0;
-          while (!fs.existsSync(userDir + '/' + fileName)) {
-            fileName = i + fileName;
+          let newFileName = fileName;
+          while (fs.existsSync(userDir + '/' + newFileName)) {
+            newFileName = i + newFileName;
             i++
           }
-          fs.rename(uploadDir + '/' + fileName, userDir + '/' + fileName, function (err) {
+          fs.rename(uploadDir + '/' + fileName, userDir + '/' + newFileName, function (err) {
             if (err)
               throw err;
           });

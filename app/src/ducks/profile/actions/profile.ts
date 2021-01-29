@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-import { setUser } from '../../authentication/actions/authentication';
 import { SignupData } from '../../../components/Auth/components/Signup/Signup.d';
 
 const PORT = 3001;
@@ -13,7 +12,7 @@ const PROFILE_UPDATE_ENDPOINT = '/api/auth/profile/update';
 
 
 const handleError = (dispatch: any, error: any) => {
-  const message = (error.response && error.response.data && error.response.data.message || error.message || error.toString())
+  const message = (error.response && error.response.data && error.response.data.errno && error.response.data.message || error.message || error.toString())
   dispatch({ type: 'SET_MESSAGE', payload: message});
   return Promise.reject();
 }

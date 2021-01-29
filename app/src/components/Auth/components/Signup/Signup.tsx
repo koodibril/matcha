@@ -26,7 +26,6 @@ const Signup: React.FC = () => {
   const handleSignup = (user: SignupData) => {
     setLoading(true);
     dispatch(signup({ ...user }));
-    setVisible(true);
     setLoading(false);
   };
 
