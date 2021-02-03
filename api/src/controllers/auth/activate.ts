@@ -9,9 +9,7 @@ export const activateUser = async (req: any, res: any) => {
   const token = req.body.token;
 
   try {
-    console.log(token);
     const userInfo = await getUserInfoT({ token }, session) as any;
-    console.log(userInfo);
     if (!userInfo) {
         return conflict(res, `Your token is invalid`);
     } else {
