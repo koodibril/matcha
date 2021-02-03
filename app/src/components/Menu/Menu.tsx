@@ -5,8 +5,6 @@ import { useDispatch } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
 import { logout } from '../../ducks/authentication/actions/authentication';
 
-const { SubMenu } = Menu;
-
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
     const [logged, setLogged] = useState("Login");
@@ -17,6 +15,8 @@ const MainMenu: React.FC = () => {
 
 
     const handleClick = (key: any) => {
+      dispatch({ type: 'CLEAR_MESSAGE' });
+      dispatch({ type: 'CLEAR_PROFILE' });
         if (key.key === "logout") {
             setLogged("Login");
             setCurrent(['auth']);

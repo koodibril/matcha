@@ -1,6 +1,6 @@
 import { getSession } from '../../shared/neo4j/neo4j';
 import { info, internalError, conflict } from '../../shared/utils';
-import { getUserMatchCount, getUserEmailCount, getUserInfo, updateUserInfo } from '../../shared/neo4j/queries';
+import { getUserMatchCount, getUserEmailCount, getUserInfoT, updateUserInfo } from '../../shared/neo4j/queries';
 
 export const updateProfile = async (req: any, res: any) => {
   const session = getSession();
@@ -14,7 +14,7 @@ export const updateProfile = async (req: any, res: any) => {
   const userParams = { username, firstname, lastname, email, token };
 
   try {
-    const oldInfo = await getUserInfo({ token }, session) as any;
+    const oldInfo = await getUserInfoT({ token }, session) as any;
     if (oldInfo.properties.Username !== username) {
       const userMatch = await getUserMatchCount({ username }, session);
       if (userMatch > 0) return conflict(res, `Username (${username}) already in use`);

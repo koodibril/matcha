@@ -12,7 +12,7 @@ const PROFILE_UPDATE_ENDPOINT = '/api/auth/profile/update';
 
 
 const handleError = (dispatch: any, error: any) => {
-  const message = (error.response && error.response.data && error.response.data.errno && error.response.data.message || error.message || error.toString())
+  const message = (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'SET_MESSAGE', payload: message});
   return Promise.reject();
 }
@@ -20,25 +20,23 @@ const handleError = (dispatch: any, error: any) => {
 const setProfileInfo = (dispatch: any, res: any) => {
   const {
     Email,
-    Firstname,
-    Lastname,
     Username,
     Password,
     Pictures
   } = res.data.userInfo.properties;
-  const info = { Email, Firstname, Lastname, Username, Password, Pictures}
+  const info = { Email, Username, Password, Pictures}
   dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: info });
   return Promise.resolve();
 }
 
-export const getProfileInfo = (token: string) => (dispatch: any) => axios
-  .post(`${API_URL}${PROFILE_INFO_ENDPOINT}`, { token })
+export const getProfileInfo = (token: any, username: any) => (dispatch: any) => axios
+  .post(`${API_URL}${PROFILE_INFO_ENDPOINT}`, { token, username })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
 export const removeProfilePicture = (token: string, picture: any) => (dispatch: any) => axios
   .post(`${API_URL}${PROFILE_PICTURE_REMOVE}`, { token, picture })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const updateProfileInfo = ({ email, username, firstname, lastname }: SignupData, token: any) => (dispatch: any) => axios
-  .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, { email, username, firstname, lastname, token })
+export const updateProfileInfo = ({ email, username, }: SignupData, token: any) => (dispatch: any) => axios
+  .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, { email, username, token })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });

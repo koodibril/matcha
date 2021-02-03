@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Row, Form, Button, Input, Alert } from 'antd';
 import { Spin } from 'antd';
@@ -10,7 +10,7 @@ import { updateProfileInfo } from '../../../../ducks/profile/actions/profile';
 import { SignupData } from '../../../Auth/components/Signup/Signup.d';
 
 
-const UserInformation: React.FC = () => {
+const UpdateUserInformation: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const user = localStorage.getItem('user');
@@ -31,24 +31,32 @@ const UserInformation: React.FC = () => {
 
   const handleClose = () => {
     setVisible(false);
+    dispatch({ type: 'CLEAR_MESSAGE' });
   };
 
+  const errorMessage = (
+    <Alert 
+      style={{ margin: '16px 0' }} 
+      message={ message.message } 
+      type="error" 
+      closable 
+      afterClose={handleClose}/>
+  );
+
   return (
-    <Row justify="center" align="middle">
+    <Row>
       { info.payload ? (
       <Form
         initialValues= {{
           username: info.payload.Username,
-          email: info.payload.Email,
-          firstname: info.payload.Firstname,
-          lastname: info.payload.Lastname
+          email: info.payload.Email
         }}
         style={{ margin: '16px 0' }}
         name="update"
         onFinish={handleUpdate}
         onFinishFailed={console.error}>
         
-        { visible ? (<Alert style={{ margin: '16px 0' }} message={ message.message } type="error" closable afterClose={handleClose}/>) : null }
+        { visible ? errorMessage : null }
 
         <Form.Item
           label={t('username')}
@@ -59,18 +67,6 @@ const UserInformation: React.FC = () => {
         <Form.Item
           label={t('email')}
           name="email">
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={t('firstname')}
-          name="firstname">
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={t('lastname')}
-          name="lastname">
           <Input />
         </Form.Item>
 
@@ -85,9 +81,9 @@ const UserInformation: React.FC = () => {
             </Button>
           </Spin>
         </Form.Item>
-      </Form>) : null }
+      </Form>) : visible ? errorMessage : null }
     </Row>
   )
 }
 
-export default UserInformation;
+export default UpdateUserInformation;

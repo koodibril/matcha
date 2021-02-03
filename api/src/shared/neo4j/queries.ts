@@ -4,9 +4,8 @@ interface UserOptions {
   username?: string;
   password?: string;
   email?: string;
-  firstname?: string;
-  lastname?: string;
   token?: string;
+  active?: boolean;
   pictures?: string[];
 }
 
@@ -18,18 +17,20 @@ const generateUpdateQuery: any = (action: string, model: string, params: (string
 const queryMatchingUser = generateQuery('match', 'user', ['username'], true);
 const queryMatchingEmail = generateQuery('match', 'user', ['email'], true);
 const queryMatchingPassword = `${generateQuery('match', 'user', ['username'], false)}.Password`;
-const queryCreateUser = generateQuery('create', 'user', ['username', 'firstname', 'lastname', 'password', 'email', 'token', 'pictures'], false);
-const queryGetUserInfo = generateQuery('match', 'user', ['token'], false);
+const queryCreateUser = generateQuery('create', 'user', ['username', 'password', 'email', 'active', 'token', 'pictures'], false);
+const queryGetUserInfoT = generateQuery('match', 'user', ['token'], false);
+const queryGetUserInfoU = generateQuery('match', 'user', ['username'], false);
 const queryupdateToken = `${generateUpdateQuery('match', 'user', ['username'], ['token'], false)}.Token`;
 const queryupdateUserPictures = generateUpdateQuery('match', 'user', ['username'], ['pictures'], false);
-const queryUpdateUserInfo = generateUpdateQuery('match', 'user', ['token'], ['username', 'firstname', 'lastname', 'email'], false);;
+const queryUpdateUserInfo = generateUpdateQuery('match', 'user', ['token'], ['username', 'email', 'active'], false);;
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
 export const getUserMatchCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingUser, options, session) as number);
 export const getUserEmailCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingEmail, options, session) as number)
 export const getUserPassword = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingPassword, options, session) as string);
 export const createUser = async (options: UserOptions, session: Session, callback: any) => await session.run(queryCreateUser, options).catch(callback);
-export const getUserInfo = async (options: UserOptions, session: Session) => (await runQuery(queryGetUserInfo, options, session) as string);
+export const getUserInfoT = async (options: UserOptions, session: Session) => (await runQuery(queryGetUserInfoT, options, session) as string);
+export const getUserInfoU = async (options: UserOptions, session: Session) => (await runQuery(queryGetUserInfoU, options, session) as string);
 export const updateToken = async (options: UserOptions, session: Session) => (await runQuery(queryupdateToken, options, session) as string);
 export const updateUserPictures = async (options: UserOptions, session: Session) => (await runQuery(queryupdateUserPictures, options, session) as string);
 export const updateUserInfo = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUserInfo, options, session) as string);

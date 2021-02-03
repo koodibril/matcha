@@ -13,7 +13,7 @@ function getBase64(file: any) {
   });
 }
 
-const ImageHolder: React.FC = () => {
+const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [previewTitle, setPreviewTitle] = useState('');
@@ -46,6 +46,8 @@ const ImageHolder: React.FC = () => {
     }
 
     const onRemove = (file: any) => {
+      if (reading.reading)
+        return (false);
       const index = fileList.indexOf(file);
       const newFileList:any = fileList.slice();
       newFileList.splice(index, 1);
@@ -66,7 +68,8 @@ const ImageHolder: React.FC = () => {
     );
 
       return (
-        <Row justify="center" align="middle">
+        info.payload ? (
+        <Row>
           <Upload
             data={user}
             action="http://localhost:3001/api/auth/picture/upload"
@@ -76,7 +79,7 @@ const ImageHolder: React.FC = () => {
             onChange={handleChange}
             onRemove={onRemove}
           >
-            {fileList.length >= 5 ? null : uploadButton}
+            {fileList.length <= 5 && !reading.reading ? uploadButton : null}
           </Upload>
           <Modal
             visible={previewVisible}
@@ -86,7 +89,7 @@ const ImageHolder: React.FC = () => {
           >
             <img alt="example" style={{ width: '100%' }} src={previewImage} />
           </Modal>
-        </Row>
+        </Row>) : null
       );
     }
 

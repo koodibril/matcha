@@ -1,6 +1,6 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { internalError } from '../../shared/utils';
-import { getUserInfo, updateUserPictures } from '../../shared/neo4j/queries';
+import { getUserInfoT, updateUserPictures } from '../../shared/neo4j/queries';
 import fs from 'fs';
 
 const uploadDir = './public/users/tmp';
@@ -25,7 +25,7 @@ export const uploadImage = async (req: any, res: any) => {
       if (fieldname === 'token') {
         try {
           token = val;
-          const userInfo = await getUserInfo({ token }, session) as any;
+          const userInfo = await getUserInfoT({ token }, session) as any;
           let pictures = userInfo.properties.Pictures as string[];
           const username = userInfo.properties.Username;
           const userDir = './public/users/' + userInfo.identity;

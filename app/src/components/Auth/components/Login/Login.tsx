@@ -32,8 +32,17 @@ const Login: React.FC = () => {
 
   const handleClose = () => {
     setVisible(false);
-    dispatch({ type: 'CLEAR_MESSAGE'});
+    dispatch({ type: 'CLEAR_MESSAGE' });
   };
+
+  const errorMessage = (
+    <Alert 
+      style={{ margin: '16px 0' }} 
+      message={ message.message } 
+      type="error" 
+      closable 
+      afterClose={handleClose}/>
+  );
 
   return (
     <Row justify="center" align="middle">
@@ -43,7 +52,7 @@ const Login: React.FC = () => {
         onFinish={handleLogin}
         onFinishFailed={console.error}>
 
-        { visible ? (<Alert style={{ margin: '16px 0' }} message={message.message} type="error" closable afterClose={handleClose}/>) : null }
+        { visible ? errorMessage : null }
         
         <Form.Item
           label={t('username')}

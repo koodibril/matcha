@@ -3,19 +3,19 @@ import { getToken } from '../../shared/jwt/getToken';
 import { info, internalError, conflict } from '../../shared/utils';
 import { getUserMatchCount, getUserEmailCount, createUser } from '../../shared/neo4j/queries';
 import { hashPassword } from './hashPassword';
+import { sendMail } from '../../shared/mail/mailer';
 
 export const signup = async (req: any, res: any) => {
   const session = getSession();
   const {
     username,
-    firstname,
-    lastname,
     email,
     password
   } = req.body;
   const pictures = ['', '', '', '', ''];
+  const active = false;
   const token = getToken({ username });
-  const userParams = { username, firstname, lastname, email, password, token, pictures };
+  const userParams = { username, email, password, token, pictures, active };
   userParams.password = await hashPassword(password);
 
   try {
@@ -26,6 +26,7 @@ export const signup = async (req: any, res: any) => {
     if (emailMatch > 0) return conflict(res, `Email (${email}) already in use`);
 
     await createUser(userParams, session, internalError(res));
+    sendMail(email, 'Activate your account', token, username);
 
     info(`New user account, welcome to ${username}`);
     return res

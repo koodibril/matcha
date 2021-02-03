@@ -1,6 +1,6 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { info, internalError } from '../../shared/utils';
-import { getUserInfo, updateUserPictures } from '../../shared/neo4j/queries';
+import { getUserInfoT, updateUserPictures } from '../../shared/neo4j/queries';
 import fs from 'fs';
 
 
@@ -11,7 +11,7 @@ export const removeImage = async (req: any, res: any) => {
   const picture = req.body.picture;
 
   try {
-    let userInfo = await getUserInfo({ token }, session) as any;
+    let userInfo = await getUserInfoT({ token }, session) as any;
     const url = new URL(picture.url as string);
     let urlpic = url.pathname.slice(1);
     if (urlpic) {
