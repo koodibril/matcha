@@ -18,7 +18,6 @@ export const removeImage = async (req: any, res: any) => {
       let pictures = userInfo.properties.Pictures as string[];
       const username = userInfo.properties.Username;
       let block = false;
-      console.log(pictures);
       if (pictures.length > 1) {
         pictures.forEach(function (pic, i) {
           if (pic === urlpic && !block) {
@@ -27,7 +26,9 @@ export const removeImage = async (req: any, res: any) => {
           }
         });
         userInfo = await updateUserPictures({ username, pictures }, session);
-        fs.unlinkSync('./public/' + urlpic);}
+        if (fs.existsSync('./public/' + urlpic))
+          fs.unlinkSync('./public/' + urlpic);
+      }
     }
 
     info(`Image removed`);

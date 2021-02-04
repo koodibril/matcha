@@ -19,16 +19,20 @@ export const login = async (req: any, res: any) => {
     if (!passwordMatch) return conflict(res, `Credentials for (${username}) are incorrect`);
 
     const activated = await getUserInfoU({ username }, session) as any;
-    if (activated.active === false) return conflict(res, `You must activate your account, check your emails !`);
+    if (activated.properties.Active === false) return conflict(res, `You must activate your account, check your emails !`);
 
     const token = getToken({ username });
     const updated = await updateToken({ username, token }, session);
     if (!updated || token !== updated) return conflict(res, `Error when generating token for (${username})`);
 
+    const valid = activated.properties.Valid;
+    console.log(valid);
+    console.log(token);
+
     info(`User '${username}' logged in`);
     return res
       .status(200)
-      .json({ token });
+      .json({ token, valid });
   } catch (e) {
     return internalError(res)(e);
   } finally {

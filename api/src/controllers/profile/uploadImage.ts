@@ -45,7 +45,7 @@ export const uploadImage = async (req: any, res: any) => {
           let block = false;
           pictures.forEach(function (picture, i) {
             if (picture === '' && !block) {
-              pictures[i] = 'users/' + userInfo.identity + '/' + fileName;
+              pictures[i] = 'users/' + userInfo.identity + '/' + newFileName;
               block = true;
             }
           });

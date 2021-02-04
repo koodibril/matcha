@@ -14,8 +14,9 @@ export const signup = async (req: any, res: any) => {
   } = req.body;
   const pictures = ['', '', '', '', ''];
   const active = false;
+  const valid = false;
   const token = getToken({ username });
-  const userParams = { username, email, password, token, pictures, active };
+  const userParams = { username, email, password, token, pictures, active, valid };
   userParams.password = await hashPassword(password);
 
   try {

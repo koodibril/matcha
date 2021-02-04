@@ -1,6 +1,7 @@
-export interface UserInformationData {
-    Email: string;
-    Username: string;
-    Password: string;
-    Pictures: string[];
+export interface UserData {
+    age: number;
+    gender: string;
+    sexo: string;
+    bio: string;
+    interests: string[];
   }

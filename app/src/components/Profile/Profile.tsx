@@ -17,7 +17,7 @@ const Profile: React.FC = () => {
   
   useEffect(() => {
     const path = window.location.pathname.split('/');
-    if (path.length === 3) {
+    if (path.length === 3 && path[1] === 'profile') {
       setReading(true);
       dispatch(getProfileInfo(user, path[2]));
     } else if (user) dispatch(getProfileInfo(user, null));

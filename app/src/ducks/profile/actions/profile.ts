@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { SignupData } from '../../../components/Auth/components/Signup/Signup.d';
+import { UserData } from '../../../components/Profile/components/UpdateUserInformation/UpdateUserInformation.d';
 
 const PORT = 3001;
 const ADDRESS = 'localhost';
@@ -15,16 +15,22 @@ const handleError = (dispatch: any, error: any) => {
   const message = (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'SET_MESSAGE', payload: message});
   return Promise.reject();
-}
+} 
 
 const setProfileInfo = (dispatch: any, res: any) => {
+  const valid = res.data.userInfo.properties.Valid;
+  localStorage.setItem('valid', valid);
   const {
     Email,
     Username,
-    Password,
+    Age,
+    Bio,
+    Gender,
+    Sexo,
+    Interests,
     Pictures
   } = res.data.userInfo.properties;
-  const info = { Email, Username, Password, Pictures}
+  const info = { Email, Username, Age, Bio, Gender, Sexo, Interests, Pictures}
   dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: info });
   return Promise.resolve();
 }
@@ -37,6 +43,6 @@ export const removeProfilePicture = (token: string, picture: any) => (dispatch: 
   .post(`${API_URL}${PROFILE_PICTURE_REMOVE}`, { token, picture })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const updateProfileInfo = ({ email, username, }: SignupData, token: any) => (dispatch: any) => axios
-  .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, { email, username, token })
+export const updateProfileInfo = ({ age, gender, sexo, bio, interests }: UserData, token: any) => (dispatch: any) => axios
+  .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, { age, gender, sexo, bio, interests, token })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });

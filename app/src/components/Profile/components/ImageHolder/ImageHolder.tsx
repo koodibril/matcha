@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Upload, Modal, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeProfilePicture } from '../../../../ducks/profile/actions/profile';
+import { getProfileInfo, removeProfilePicture } from '../../../../ducks/profile/actions/profile';
 
 function getBase64(file: any) {
   return new Promise((resolve, reject) => {
@@ -19,23 +19,38 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<any[]>([]);
     const user = { "token": localStorage.getItem('user') as string };
+    const userr = localStorage.getItem('user');
     const info = useSelector((state: any) => state.profile);
     const dispatch = useDispatch();
 
     const handleCancel = () => setPreviewVisible(false);
 
-    if (info && fileList.length === 0 && info.payload) {
+    const updateList = () => {
       let pictures = info.payload.Pictures as string[];
+      let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {
         if (picture !== '') {
           const newPic = { uid: i, status: 'done', url: 'http://localhost:3001/' + picture };
-          let newFileList = fileList;
           newFileList.push(newPic);
           setFileList(newFileList);
         }
       });
     }
+
+    const getFileLength = () => {
+      let pictures = info.payload.Pictures as string[];
+      let i = 0;
+      pictures.forEach((picture: any) => {
+        if (picture !== '')
+        i++;
+      })
+      return i;
+    }
+
+    if (info && info.payload && fileList.length !== getFileLength()) updateList();
   
+    if (info && fileList.length === 0 && info.payload) updateList();
+
     const handlePreview = async (file: any) => {
       if (!file.url && !file.preview) {
         file.preview = await getBase64(file.originFileObj);
@@ -46,8 +61,6 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
     }
 
     const onRemove = (file: any) => {
-      if (reading.reading)
-        return (false);
       const index = fileList.indexOf(file);
       const newFileList:any = fileList.slice();
       newFileList.splice(index, 1);
@@ -56,8 +69,9 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
     }
 
     const handleChange = (info: any) => {
-      let newFileList = info.fileList;
-      setFileList(newFileList);
+      if (info.file.status === 'done'){
+        dispatch(getProfileInfo(userr, null));
+      }
     }
 
     const uploadButton = (
@@ -72,9 +86,15 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
         <Row>
           <Upload
             data={user}
+            accept="image/png,image/jpeg,.png,.jpeg"
             action="http://localhost:3001/api/auth/picture/upload"
             listType="picture-card"
             fileList={fileList}
+            showUploadList={{
+              showPreviewIcon: true,
+              showDownloadIcon: false,
+              showRemoveIcon: true
+            }}
             onPreview={handlePreview}
             onChange={handleChange}
             onRemove={onRemove}

@@ -19,8 +19,10 @@ const handleError = (dispatch: any, error: any) => {
 }
 
 const setUser = (dispatch: any, res: any) => {
-  const { token } = res.data;
+  const token = res.data.token;
+  const valid = res.data.valid;
   localStorage.setItem('user', token);
+  localStorage.setItem('valid', valid);
   dispatch({ type: 'LOGIN_SUCCESS', payload: token });
   dispatch(pushState('/'));
   return Promise.resolve();
@@ -42,6 +44,7 @@ export const login = (username: string, password: string) => (dispatch: any) => 
 export const logout = (dispatch: any) => {
   dispatch({ type: 'LOGOUT' });
   localStorage.removeItem('user');
+  localStorage.removeItem('valid');
 }
 
 export const signup = ({ email, username, password }: SignupData) => (dispatch: any) => axios

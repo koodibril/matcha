@@ -41,7 +41,7 @@ const UserInfoHolder: React.FC = () => {
               location
           </Paragraph>
           <Paragraph>
-              Description
+              { info.payload.Bio }
           </Paragraph>
       </Typography>) : visible ? errorMessage : null }
     </Row>
