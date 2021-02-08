@@ -30,6 +30,7 @@ const queryupdateToken = `${generateUpdateQuery('match', 'user', ['username'], [
 const queryupdateUserPictures = generateUpdateQuery('match', 'user', ['username'], ['pictures'], false);
 const queryUpdateUserInfo = generateUpdateQuery('match', 'user', ['token'], ['username', 'email', 'active'], false);;
 const queryUpdateUserData = generateUpdateQuery('match', 'user', ['token'], ['age', 'gender', 'sexo', 'bio', 'interests', 'valid'], false);;
+const queryUpdatePassword = generateUpdateQuery('match', 'user', ['token'], ['password'], false);
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
 export const getUserMatchCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingUser, options, session) as number);
@@ -42,3 +43,4 @@ export const updateToken = async (options: UserOptions, session: Session) => (aw
 export const updateUserPictures = async (options: UserOptions, session: Session) => (await runQuery(queryupdateUserPictures, options, session) as string);
 export const updateUserInfo = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUserInfo, options, session) as string);
 export const updateUserData = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUserData, options, session) as string);
+export const updatePassword = async (options: UserOptions, session: Session) => (await runQuery(queryUpdatePassword, options, session) as string);

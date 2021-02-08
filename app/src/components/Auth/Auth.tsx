@@ -6,6 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import LoginComponent from './components/Login/Login'
 import SignupComponent from './components/Signup/Signup';
 import ActivateComponent from './components/Activate/Activate';
+import ChangePasswordComponent from './components/ChangePassword/ChangePassword';
 
 const Auth: React.FC = () => {
   useAuth();
@@ -17,6 +18,7 @@ const Auth: React.FC = () => {
         <Route path="/auth/signup" component={SignupComponent} />
         <Route path="/auth/login" component={LoginComponent} />
         <Route path="/auth/activate" component={ActivateComponent} />
+        <Route path="/auth/password" component={ChangePasswordComponent} />
       </Switch>
     </>
   )

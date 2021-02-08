@@ -6,12 +6,14 @@ import { uploadImage } from '../controllers/profile/uploadImage';
 import { removeImage } from '../controllers/profile/removeImage';
 import { updateProfile } from '../controllers/profile/updateProfile';
 import { activateUser } from '../controllers/auth/activate';
+import { changePassword } from '../controllers/auth/changePassword';
 
 const router = Router();
 
 router.post('/signup', signup);
 router.post('/login', login);
 router.post('/activate', activateUser);
+router.post('/password', changePassword);
 router.post('/profile/info', getProfileInfo);
 router.post('/profile/update', updateProfile);
 router.post('/picture/upload', uploadImage);

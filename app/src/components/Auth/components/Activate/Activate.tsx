@@ -9,6 +9,7 @@ const Activate: React.FC = () => {
 
   useEffect(() => {
     const path = window.location.pathname.split('/');
+    console.log(path);
     if (path.length === 4) {
       dispatch(activateUser(path[3]));
     } else dispatch(pushState('/auth'));
