@@ -12,16 +12,18 @@ const MainMenu: React.FC = () => {
     const dispatch = useDispatch();
     const user = localStorage.getItem('user');
     const valid = localStorage.getItem('valid');
-    const [previewVisible, setPreviewVisible] = useState(true);
+    const [previewVisible, setPreviewVisible] = useState(false);
     const [userIsValid, setUserIsValid] = useState(false);
 
-    if (valid === 'true' && !userIsValid) {
+    if (user && logged === "Login") {
+      setPreviewVisible(true);
+      setLogged("Logout");
+    }
+
+    if (valid && valid === 'true' && !userIsValid) {
       setPreviewVisible(false);
       setUserIsValid(true);
     }
-
-    if (user && logged === "Login") setLogged("Logout");
-
 
     const handleClick = (key: any) => {
       dispatch({ type: 'CLEAR_MESSAGE' });
