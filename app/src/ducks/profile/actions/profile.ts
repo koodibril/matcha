@@ -6,9 +6,9 @@ const PORT = 3001;
 const ADDRESS = 'localhost';
 const PROTOCOL = 'http';
 const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
-const PROFILE_INFO_ENDPOINT = '/api/auth/profile/info';
-const PROFILE_PICTURE_REMOVE = '/api/auth/picture/remove';
-const PROFILE_UPDATE_ENDPOINT = '/api/auth/profile/update';
+const PROFILE_INFO_ENDPOINT = '/api/profile/info';
+const PROFILE_PICTURE_REMOVE = '/api/profile/picture/remove';
+const PROFILE_UPDATE_ENDPOINT = '/api/profile/update';
 
 
 const handleError = (dispatch: any, error: any) => {

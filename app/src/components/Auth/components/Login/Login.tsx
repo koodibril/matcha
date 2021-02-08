@@ -23,6 +23,7 @@ const Login: React.FC = () => {
   if (message && message.message !== '' && visible === false) setVisible(true);
 
   const goToSignup = () => dispatch(pushState('/auth/signup'));
+  const goToRecovery = () => dispatch(pushState('/auth/recovery'));
 
   const handleLogin = ({ username, password }: LoginData) => {
     setLoading(true);
@@ -77,6 +78,12 @@ const Login: React.FC = () => {
         <Form.Item>
           <Button type="text" onClick={goToSignup}>
             {t('go_to_signup')}
+          </Button>
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="text" onClick={goToRecovery}>
+            {t('go_to_recovery')}
           </Button>
         </Form.Item>
 

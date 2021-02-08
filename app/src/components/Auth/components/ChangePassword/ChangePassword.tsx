@@ -13,6 +13,8 @@ const ChangePassword: React.FC = () => {
   const { t } = useTranslation('authentication');
   const [visible, setVisible] = useState(false);
 
+  if (message && message.message !== '' && visible === false) setVisible(true);
+
   useEffect(() => {
     const path = window.location.pathname.split('/');
     if (path.length === 4) {
@@ -20,10 +22,10 @@ const ChangePassword: React.FC = () => {
     } else dispatch(pushState('/auth'));
   }, [dispatch]);
 
-  const handleChangePassword = (password: string) => {
-      console.log(password);
+  const handleChangePassword = (info: any) => {
+      console.log(info);
       setLoading(true);
-      changePassword(token, password);
+      dispatch(changePassword(token, info.password));
       setLoading(false);
   }
 
@@ -52,7 +54,7 @@ const ChangePassword: React.FC = () => {
             { visible ? errorMessage : null }
 
                 <Form.Item
-                    label={t('password')}
+                    label={t('new password')}
                     name="password"
                     rules={[{
                         required: true,
@@ -68,7 +70,7 @@ const ChangePassword: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label={t('password')}
+                    label={t('confirm new password')}
                     name="checkPassword"
                     dependencies={['password']}
                     rules={[{
@@ -96,7 +98,7 @@ const ChangePassword: React.FC = () => {
                 <Form.Item>
                     <Spin spinning={loading} >
                         <Button type="primary" htmlType="submit">
-                        {t('signup')}
+                        {t('update password')}
                         </Button>
                     </Spin>
                 </Form.Item>

@@ -1,12 +1,13 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { conflict, info, internalError } from '../../shared/utils';
-import { getUserInfoT, updateUserInfo } from '../../shared/neo4j/queries';
+import { getUserInfoT, updateToken, updateUserInfo } from '../../shared/neo4j/queries';
+import { getToken } from '../../shared/jwt/getToken';
 
 
 
 export const activateUser = async (req: any, res: any) => {
   const session = getSession();
-  const token = req.body.token;
+  let token = req.body.token;
 
   try {
     const userInfo = await getUserInfoT({ token }, session) as any;
@@ -17,6 +18,9 @@ export const activateUser = async (req: any, res: any) => {
         const email = userInfo.properties.Email;
         const username = userInfo.properties.Username;
         await updateUserInfo({ token, email, username, active }, session);
+        token = getToken({ username });
+        const updated = await updateToken({ username, token }, session);
+        if (!updated || token !== updated) return conflict(res, `Error when generating new token for (${username})`);
     }
 
     info(`User activated !`);

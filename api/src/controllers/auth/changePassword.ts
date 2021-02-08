@@ -1,13 +1,15 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { conflict, info, internalError } from '../../shared/utils';
-import { getUserInfoT, updatePassword } from '../../shared/neo4j/queries';
+import { getUserInfoT, updatePassword, updateToken } from '../../shared/neo4j/queries';
+import { hashPassword } from './hashPassword';
+import { getToken } from '../../shared/jwt/getToken';
 
 
 
 export const changePassword = async (req: any, res: any) => {
   const session = getSession();
-  const token = req.body.token;
-  const password = req.body.password;
+  let token = req.body.token;
+  const password = await hashPassword(req.body.password);
 
   try {
     const userInfo = await getUserInfoT({ token }, session) as any;
@@ -15,9 +17,13 @@ export const changePassword = async (req: any, res: any) => {
         return conflict(res, `Your token is invalid`);
     } else {
         await updatePassword({ token, password }, session);
+        const username = userInfo.properties.Username;
+        token = getToken({ username });
+        const updated = await updateToken({ username, token }, session);
+        if (!updated || token !== updated) return conflict(res, `Error when generating new token for (${username})`);
     }
 
-    info(`User activated !`);
+    info(`Password Updated !`);
     return res
       .status(200)
       .json({ userInfo });

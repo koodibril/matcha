@@ -87,7 +87,7 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
           <Upload
             data={user}
             accept="image/png,image/jpeg,.png,.jpeg"
-            action="http://localhost:3001/api/auth/picture/upload"
+            action="http://localhost:3001/api/profile/picture/upload"
             listType="picture-card"
             fileList={fileList}
             showUploadList={{

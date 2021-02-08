@@ -26,6 +26,7 @@ const queryMatchingPassword = `${generateQuery('match', 'user', ['username'], fa
 const queryCreateUser = generateQuery('create', 'user', ['username', 'password', 'email', 'active', 'valid', 'token', 'pictures'], false);
 const queryGetUserInfoT = generateQuery('match', 'user', ['token'], false);
 const queryGetUserInfoU = generateQuery('match', 'user', ['username'], false);
+const queryGetUserInfoE = generateQuery('match', 'user', ['email'], false);
 const queryupdateToken = `${generateUpdateQuery('match', 'user', ['username'], ['token'], false)}.Token`;
 const queryupdateUserPictures = generateUpdateQuery('match', 'user', ['username'], ['pictures'], false);
 const queryUpdateUserInfo = generateUpdateQuery('match', 'user', ['token'], ['username', 'email', 'active'], false);;
@@ -39,6 +40,7 @@ export const getUserPassword = async (options: UserOptions, session: Session) =>
 export const createUser = async (options: UserOptions, session: Session, callback: any) => await session.run(queryCreateUser, options).catch(callback);
 export const getUserInfoT = async (options: UserOptions, session: Session) => (await runQuery(queryGetUserInfoT, options, session) as string);
 export const getUserInfoU = async (options: UserOptions, session: Session) => (await runQuery(queryGetUserInfoU, options, session) as string);
+export const getUserInfoE = async (options: UserOptions, session: Session) => (await runQuery(queryGetUserInfoE, options, session) as string);
 export const updateToken = async (options: UserOptions, session: Session) => (await runQuery(queryupdateToken, options, session) as string);
 export const updateUserPictures = async (options: UserOptions, session: Session) => (await runQuery(queryupdateUserPictures, options, session) as string);
 export const updateUserInfo = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUserInfo, options, session) as string);
