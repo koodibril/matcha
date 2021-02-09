@@ -74,6 +74,18 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
       }
     }
 
+    const uploadList = ({
+      showPreviewIcon: true,
+      showDownloadIcon: false,
+      showRemoveIcon: true
+    });
+
+    const readingList = ({
+      showPreviewIcon: true,
+      showDownloadIcon: false,
+      showRemoveIcon: false
+    });
+
     const uploadButton = (
       <div>
         <PlusOutlined />
@@ -90,11 +102,7 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
             action="http://localhost:3001/api/profile/picture/upload"
             listType="picture-card"
             fileList={fileList}
-            showUploadList={{
-              showPreviewIcon: true,
-              showDownloadIcon: false,
-              showRemoveIcon: true
-            }}
+            showUploadList={ reading ? readingList : uploadList }
             onPreview={handlePreview}
             onChange={handleChange}
             onRemove={onRemove}

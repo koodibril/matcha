@@ -26,8 +26,6 @@ export const login = async (req: any, res: any) => {
     if (!updated || token !== updated) return conflict(res, `Error when generating new token for (${username})`);
 
     const valid = activated.properties.Valid;
-    console.log(valid);
-    console.log(token);
 
     info(`User '${username}' logged in`);
     return res
