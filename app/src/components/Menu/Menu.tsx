@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Menu, Modal } from 'antd';
 import { HomeOutlined, MailOutlined, SettingOutlined, LogoutOutlined, UserOutlined, SearchOutlined, WechatOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
 import { logout } from '../../ducks/authentication/actions/authentication';
 import ProfileComponent from '../Profile/Profile';
@@ -11,16 +11,16 @@ const MainMenu: React.FC = () => {
     const [logged, setLogged] = useState("Login");
     const dispatch = useDispatch();
     const user = localStorage.getItem('user');
-    const valid = localStorage.getItem('valid');
     const [previewVisible, setPreviewVisible] = useState(false);
     const [userIsValid, setUserIsValid] = useState(false);
+    const info = useSelector((state: any) => state.profile);
 
-    if (user && logged === "Login") {
+    if (user && logged === "Login" && window.location.pathname.split('/').length < 3) {
       setPreviewVisible(true);
       setLogged("Logout");
     }
 
-    if (valid && valid === 'true' && !userIsValid) {
+    if (info.payload && info.payload.Valid === true && !userIsValid) {
       setPreviewVisible(false);
       setUserIsValid(true);
     }

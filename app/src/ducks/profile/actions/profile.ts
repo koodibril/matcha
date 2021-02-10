@@ -20,8 +20,6 @@ const handleError = (dispatch: any, error: any) => {
 } 
 
 const setProfileInfo = (dispatch: any, res: any) => {
-  const valid = res.data.userInfo.properties.Valid;
-  localStorage.setItem('valid', valid);
   const {
     Email,
     Username,
@@ -30,9 +28,10 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Gender,
     Sexo,
     Interests,
-    Pictures
+    Pictures,
+    Valid
   } = res.data.userInfo.properties;
-  const info = { Email, Username, Age, Bio, Gender, Sexo, Interests, Pictures}
+  const info = { Email, Username, Age, Bio, Gender, Sexo, Interests, Pictures, Valid}
   dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: info });
   return Promise.resolve();
 }
