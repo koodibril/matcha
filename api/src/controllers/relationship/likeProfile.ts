@@ -4,26 +4,29 @@ import { createRelationship, getRelationship, updateRelationship } from '../../s
 
 
 
-export const blockProfile = async (req: any, res: any) => {
+export const likeProfile = async (req: any, res: any) => {
   const session = getSession();
   const token = req.body.token;
   const username = req.body.user;
 
   try {
     const match = false;
-    const block = true;
-    const like = false;
-    let relationship = await getRelationship({ token, username }, session);
+    const block = false;
+    let like = true;
+    let relationship = await getRelationship({ token, username }, session) as any;
     if (!relationship) {
       relationship = await createRelationship({ token, username, match, block, like}, session);
-    } else {
+    } else if (relationship.properties.Like === true){
+        like = false;
         relationship = await updateRelationship({ token, username, match, block, like}, session);
+    } else {
+      relationship = await updateRelationship({ token, username, match, block, like}, session);
     }
 
-    info(`user blocked`);
+    info(`user liked`);
     return res
       .status(200)
-      .json({ relationship })
+      .json({ relationship });
   } catch (e) {
     return internalError(res)(e);
   } finally {

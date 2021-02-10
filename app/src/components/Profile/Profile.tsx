@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
 import { getProfileInfo } from '../../ducks/profile/actions/profile';
 import { Row } from 'antd';
+import { getRelationship } from '../../ducks/relationship/actions/relationship';
 
 const Profile: React.FC = () => {
   const [reading, setReading] = useState(false);
@@ -20,6 +21,7 @@ const Profile: React.FC = () => {
     if (path.length === 3 && path[1] === 'profile') {
       setReading(true);
       dispatch(getProfileInfo(user, path[2]));
+      dispatch(getRelationship(user, path[2]));
     } else if (user) dispatch(getProfileInfo(user, null));
   }, [user, dispatch]);
 

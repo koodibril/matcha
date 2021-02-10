@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { updateProfileInfo } from '../../../../ducks/profile/actions/profile';
 import { UserData } from '../../../Profile/components/UpdateUserInformation/UpdateUserInformation.d';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
-import Title from 'antd/lib/skeleton/Title';
 
 
 const UpdateUserInformation: React.FC = () => {
@@ -27,7 +26,7 @@ const UpdateUserInformation: React.FC = () => {
 
   const info = useSelector((state: any) => state.profile);
 
-  if (info && selectedTags.length === 0 && info.payload && !tagsLoaded) {
+  if (info && info.payload && info.payload.Interests && selectedTags.length === 0  && !tagsLoaded) {
     setSelectedTags(info.payload.Interests);
     setTagsLoaded(true);
   }

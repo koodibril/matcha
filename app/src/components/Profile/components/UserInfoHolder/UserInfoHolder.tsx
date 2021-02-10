@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 import { Row, Alert, Typography, Button} from 'antd';
-import { HeartOutlined, StopOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled, StopOutlined } from '@ant-design/icons';
 
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'antd/lib/modal/Modal';
-import { blockUser, likeUser } from '../../../../ducks/profile/actions/profile';
+import { blockUser, likeUser } from '../../../../ducks/relationship/actions/relationship';
 
 const { Title, Paragraph} = Typography;
 
@@ -16,7 +16,7 @@ const UserInfoHolder: React.FC = () => {
   const dispatch = useDispatch();
 
   const message= useSelector((state: any) => state.message);
-
+  const relationship = useSelector((state: any) => state.relationship);
   const info = useSelector((state: any) => state.profile);
   
   if (message && message.message !== '' && visible === false) setVisible(true);
@@ -57,7 +57,7 @@ const UserInfoHolder: React.FC = () => {
 
   return (
     <Row>
-      { info.payload ? (
+      { info.payload && relationship.relationship && relationship.relationship.Block === false ? (
       <Typography>
           <Title>
               { info.payload.Username + ' 24'}
@@ -68,7 +68,7 @@ const UserInfoHolder: React.FC = () => {
           <Paragraph>
               { info.payload.Bio }
           </Paragraph>
-          <Button onClick={handleLike} icon={ <HeartOutlined/> }>
+          <Button onClick={handleLike} icon={ relationship.relationship.Like ? <HeartFilled/> : <HeartOutlined/> }>
             like
           </Button>
           <Button onClick={showModal} icon={ <StopOutlined/> }>

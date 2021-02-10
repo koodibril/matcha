@@ -1,28 +1,29 @@
 import { getSession } from '../../shared/neo4j/neo4j'
-import { internalError } from '../../shared/utils';
+import { info, internalError } from '../../shared/utils';
 import { createRelationship, getRelationship, updateRelationship } from '../../shared/neo4j/queries';
 
 
 
-export const likeProfile = async (req: any, res: any) => {
+export const blockProfile = async (req: any, res: any) => {
   const session = getSession();
   const token = req.body.token;
-  const username = req.body.username;
+  const username = req.body.user;
 
   try {
     const match = false;
-    const block = false;
-    const like = true;
-    let relationship = await getRelationship({ token, username }, session);
+    const block = true;
+    const like = false;
+    let relationship = await getRelationship({ token, username }, session) as any;
     if (!relationship) {
       relationship = await createRelationship({ token, username, match, block, like}, session);
-    } else {
+    } else if (relationship.properties.Block !== true){
         relationship = await updateRelationship({ token, username, match, block, like}, session);
     }
 
+    info(`user blocked`);
     return res
       .status(200)
-      .json({ relationship });
+      .json({ relationship })
   } catch (e) {
     return internalError(res)(e);
   } finally {

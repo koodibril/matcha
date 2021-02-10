@@ -9,8 +9,6 @@ const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 const PROFILE_INFO_ENDPOINT = '/api/profile/info';
 const PROFILE_PICTURE_REMOVE = '/api/profile/picture/remove';
 const PROFILE_UPDATE_ENDPOINT = '/api/profile/update';
-const PROFILE_LIKE_ENDPOINT = '/api/profile/like';
-const PROFILE_BLOCK_ENDPOINT = '/api/profile/block';
 
 
 const handleError = (dispatch: any, error: any) => {
@@ -46,12 +44,4 @@ export const removeProfilePicture = (token: string, picture: any) => (dispatch: 
 
 export const updateProfileInfo = ({ age, gender, sexo, bio, interests }: UserData, token: any) => (dispatch: any) => axios
   .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, { age, gender, sexo, bio, interests, token })
-  .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
-
-export const blockUser = (token: any, user: string) => (dispatch: any) => axios
-  .post(`${API_URL}${PROFILE_BLOCK_ENDPOINT}`, { token, user })
-  .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
-  
-export const likeUser = (token: any, user: string) => (dispatch: any) => axios
-  .post(`${API_URL}${PROFILE_LIKE_ENDPOINT}`, { token, user })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });

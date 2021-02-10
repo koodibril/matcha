@@ -29,8 +29,10 @@ const toUpper = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1).t
 const generateParams = (params: (string)[]) => params.map(p => `${toUpper(p)}: $${p.toLowerCase()}`);
 const generateRelationshipActionParams = (relationshipParams: (string)[]) => '[r:ACTION { ' + generateParams(relationshipParams) + '}]';
 const generateUpdateParams = (params: (string)[]) => params.map(p => ` a.${toUpper(p)} = $${p.toLowerCase()}`);
+const generateRelationshipUpdateParams = (params: (string)[]) => params.map(p => ` r.${toUpper(p)} = $${p.toLowerCase()}`);
 const generateRelationshipQuery: any = (action: string, nodes: string[], params: string[], relationshipParams: string[]) => `MATCH (a:${toUpper(nodes[0])}), (b:${toUpper(nodes[1])}) WHERE a.${toUpper(params[0])} = $${params[0].toLowerCase()} AND b.${toUpper(params[1])} = $${params[1].toLowerCase()} ${action.toUpperCase()} (a)-${generateRelationshipActionParams(relationshipParams)}->(b) RETURN r`;
-const generateGetRelationshipQuery: any = (action: string, nodes: string[], params: string[]) => `MATCH (a:${toUpper(nodes[0])}), (b:${toUpper(nodes[1])}) WHERE a.${toUpper(params[0])} = $${params[0].toLowerCase()} AND b.${toUpper(params[1])} = $${params[1].toLowerCase()} ${action.toUpperCase()} (a)-[r]->(b) RETURN r`;
+const generateGetRelationshipQuery: any = (nodes: string[], params: string[]) => `MATCH (a:${toUpper(nodes[0])}{${toUpper(params[0])}: $${params[0].toLowerCase()}})-[r]->(b:${toUpper(nodes[1])}{${toUpper(params[1])}: $${params[1].toLowerCase()}}) RETURN r`;
+const generateUpdateRelationshipQuery: any = (action: string, nodes: string[], params: string[], relationshipParams: string[]) => `MATCH (a:${toUpper(nodes[0])}{${toUpper(params[0])}: $${params[0].toLowerCase()}})-[r]->(b:${toUpper(nodes[1])}{${toUpper(params[1])}: $${params[1].toLowerCase()}}) ${action.toUpperCase()} ${generateRelationshipUpdateParams(relationshipParams)} RETURN r`;
 const generateQuery: any = (action: string, model: string, params: (string)[], getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`} { ${generateParams(params)} }) RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
 const generateUpdateQuery: any = (action: string, model: string, params: (string)[], updateParams: (string)[], value: string, getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`} { ${generateParams(params)} }) SET ${generateUpdateParams(updateParams)} RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
 const queryMatchingUser = generateQuery('match', 'user', ['username'], true);
@@ -46,8 +48,8 @@ const queryUpdateUserInfo = generateUpdateQuery('match', 'user', ['token'], ['us
 const queryUpdateUserData = generateUpdateQuery('match', 'user', ['token'], ['age', 'gender', 'sexo', 'bio', 'interests', 'valid'], false);;
 const queryUpdatePassword = generateUpdateQuery('match', 'user', ['token'], ['password'], false);
 const queryCreateRelationship = generateRelationshipQuery('create', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
-const queryGetRelationship = generateGetRelationshipQuery('match', ['user', 'user'], ['token', 'username']);
-const queryUpdateRelationship = generateRelationshipQuery('set', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
+const queryGetRelationship = generateGetRelationshipQuery(['user', 'user'], ['token', 'username']);
+const queryUpdateRelationship = generateUpdateRelationshipQuery('set', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
 export const getUserMatchCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingUser, options, session) as number);
