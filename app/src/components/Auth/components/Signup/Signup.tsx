@@ -18,20 +18,30 @@ const Signup: React.FC = () => {
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
-  const selectMessage = (state: any) => state.message;
-  const { message } = useSelector(selectMessage);
+  const message = useSelector((state: any) => state.message);
+  
+  if (message && message.message !== '' && visible === false) setVisible(true);
 
   const goToLogin = () => dispatch(pushState('/auth/login'))
   const handleSignup = (user: SignupData) => {
     setLoading(true);
     dispatch(signup({ ...user }));
-    setVisible(true);
     setLoading(false);
   };
 
   const handleClose = () => {
     setVisible(false);
+    dispatch({ type: 'CLEAR_MESSAGE' });
   };
+
+  const errorMessage = (
+    <Alert 
+      style={{ margin: '16px 0' }} 
+      message={ message.message } 
+      type="error" 
+      closable 
+      afterClose={handleClose}/>
+  );
 
   return (
     <Row justify="center" align="middle">
@@ -41,7 +51,7 @@ const Signup: React.FC = () => {
         onFinish={handleSignup}
         onFinishFailed={console.error}>
         
-        { visible ? (<Alert style={{ margin: '16px 0' }} message={ message } type="error" closable afterClose={handleClose}/>) : null }
+        { visible ? errorMessage : null }
 
         <Form.Item
           label={t('username')}
@@ -60,26 +70,6 @@ const Signup: React.FC = () => {
             required: true,
             message: t('email_missing'),
             type: 'email'
-          }]}>
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={t('firstname')}
-          name="firstname"
-          rules={[{
-            required: true,
-            message: t('firstname_missing')
-          }]}>
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label={t('lastname')}
-          name="lastname"
-          rules={[{
-            required: true,
-            message: t('lastname_missing')
           }]}>
           <Input />
         </Form.Item>

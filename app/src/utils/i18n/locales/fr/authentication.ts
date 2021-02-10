@@ -14,5 +14,6 @@ export default {
   "password_too_short": "Votre mot de passe doit faire au moins 8 characteres",
   "password_contain": "Votre mot de passe doit contenir au moins un chiffre",
   "firstname_missing": "Veuillez entrer un prénom valide",
-  "lastname_missing": "Veuillez entrer un nom valide"
+  "lastname_missing": "Veuillez entrer un nom valide",
+  "go_to_recovery": "Recuperer mon compte"
 }
