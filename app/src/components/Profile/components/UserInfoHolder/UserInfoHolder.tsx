@@ -28,14 +28,11 @@ const UserInfoHolder: React.FC = () => {
 
   const handleLike = () => {
     dispatch(likeUser(user, info.payload.Username));
-    console.log('user liked !');
   };
 
   const handleBlock = () => {
     setBlockConfirmation(false);
-    console.log('blocking ' + info.payload.Username);
     dispatch(blockUser(user, info.payload.Username));
-    console.log('user blocked !')
   };
 
   const showModal = () => {

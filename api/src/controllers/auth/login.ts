@@ -25,12 +25,10 @@ export const login = async (req: any, res: any) => {
     const updated = await updateToken({ username, token }, session);
     if (!updated || token !== updated) return conflict(res, `Error when generating new token for (${username})`);
 
-    const valid = activated.properties.Valid;
-
     info(`User '${username}' logged in`);
     return res
       .status(200)
-      .json({ token, valid });
+      .json({ token });
   } catch (e) {
     return internalError(res)(e);
   } finally {

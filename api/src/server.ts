@@ -20,7 +20,6 @@ const getBind = () => typeof server.address() === 'string'
 
 app.set('port', port);
 
-
 const errorHandler = (error: any) => {
   if (error.syscall !== 'lister') throw error;
   const bind = getBind();

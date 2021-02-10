@@ -23,7 +23,6 @@ const ChangePassword: React.FC = () => {
   }, [dispatch]);
 
   const handleChangePassword = (info: any) => {
-      console.log(info);
       setLoading(true);
       dispatch(changePassword(token, info.password));
       setLoading(false);

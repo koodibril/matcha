@@ -10,7 +10,6 @@ export const recoverPassword = async (req: any, res: any) => {
   const email = req.body.email;
 
   try {
-      console.log(email);
     const userInfo = await getUserInfoE({ email }, session) as any;
     if (!userInfo)
         return conflict(res, `No user with this email`);
