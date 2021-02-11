@@ -4,16 +4,45 @@ import { push as pushState } from 'connected-react-router';
 import { Form, Select, Slider } from 'antd';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useTranslation } from 'react-i18next';
+import { getSearchResult } from '../../../../ducks/search/actions/search';
 
 const Filter: React.FC = () => {
+    const [age, setAge] = useState([18, 26]);
+    const [proximity, setProximity] = useState(24);
+    const [popularity, setPopularity] = useState([0, 10]);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
     const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
+    const dispatch = useDispatch();
 
     const { t } = useTranslation('filter');
     const handleChange = (tag: any, checked: any) => {
         const nexSelectedTags = checked ? [...selectedTags, tag] : selectedTags.filter(t => t !== tag);
         setSelectedTags(nexSelectedTags);
       };
+
+    const handleFilterChange = (type: string, change: any) => {
+        console.log(type, change);
+        if (type === 'age') {
+            dispatch(getSearchResult(change, proximity, popularity, selectedTags));
+        } else if (type === 'pro') {
+            dispatch(getSearchResult(age, change, popularity, selectedTags));
+        } else if (type === 'pop') {
+            dispatch(getSearchResult(age, proximity, change, selectedTags));
+        }
+    }
+
+    const handleAge = (change: any) => {
+        setAge(change);
+        handleFilterChange('age', change);
+    }
+    const handleProximity = (change: any) => {
+        setProximity(change);
+        handleFilterChange('pro', change);
+    }
+    const handlePopularity = (change: any) => {
+        setPopularity(change);
+        handleFilterChange('pop', change);
+    }
 
   return (
   <Form>
@@ -23,6 +52,7 @@ const Filter: React.FC = () => {
         <Slider
             max={80}
             min={18}
+            onAfterChange={handleAge}
             range
             defaultValue={[18, 26]}
             marks={{
@@ -50,6 +80,7 @@ const Filter: React.FC = () => {
         <Slider
             max={24}
             min={0}
+            onAfterChange={handleProximity}
             defaultValue={24}
             marks={{
               0: '0',
@@ -68,6 +99,7 @@ const Filter: React.FC = () => {
             max={10}
             min={0}
             range
+            onAfterChange={handlePopularity}
             defaultValue={[0, 10]}
             marks={{
               0: '0',

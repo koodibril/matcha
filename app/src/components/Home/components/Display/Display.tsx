@@ -1,10 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { push as pushState } from 'connected-react-router';
+import { useSelector } from 'react-redux';
 import { Row } from 'antd';
 
 const Display: React.FC = () => {
-
+    const userList = useSelector((state: any) => state.search);
+      
   return (
       <Row>
           

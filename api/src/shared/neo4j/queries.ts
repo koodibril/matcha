@@ -23,6 +23,13 @@ interface RelationshipOptions {
   like?: boolean
 }
 
+interface Filter {
+  ageGap?: number[];
+  proximity?: number;
+  popularity?: number[];
+  interests?: string[];
+}
+
 
 
 const toUpper = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1).toLowerCase()}`;
@@ -51,6 +58,9 @@ const queryCreateRelationship = generateRelationshipQuery('create', ['user', 'us
 const queryGetRelationship = generateGetRelationshipQuery(['user', 'user'], ['token', 'username']);
 const queryUpdateRelationship = generateUpdateRelationshipQuery('set', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
 
+const generateSearchQuery: any = (ageGap: number[]) => `MATCH (n:User) WHERE n.age <= $ageGap[0] AND n.age >= $ageGap[1] RETURN n`;
+const querySearch = generateSearchQuery('ageGap');
+
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
 export const getUserMatchCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingUser, options, session) as number);
 export const getUserEmailCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingEmail, options, session) as number)
@@ -67,3 +77,4 @@ export const updatePassword = async (options: UserOptions, session: Session) => 
 export const createRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryCreateRelationship, options, session) as string);
 export const getRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryGetRelationship, options, session) as string);
 export const updateRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryUpdateRelationship, options, session) as string);
+export const getSearchResult = async (options: Filter, session: Session) => (await runQuery(querySearch, options, session) as string);;
