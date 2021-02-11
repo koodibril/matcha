@@ -11,11 +11,14 @@ const RELATIONSHIP_BLOCK_ENDPOINT = '/api/relationship/block';
 const RELATIONSHIP_GET_ENDPOINT = '/api/relationship/get';
 
 const setRelationship = (dispatch: any, res: any) => {
-    const {
-        Block,
-        Like,
-        Match
-    } = res.data.relationship.properties;
+  let Block = false;
+  let Like = false;
+  let Match = false;
+  if (res.data.properties) {
+    Block = res.data.properties.Block;
+    Like = res.data.properties.Like;
+    Match = res.data.properties.Match;
+  }
     const info = { Block, Like, Match}
     dispatch({ type: 'LOADING_RELATIONSHIP_SUCCESS', payload: info });
     return Promise.resolve();

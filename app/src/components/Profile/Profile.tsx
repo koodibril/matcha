@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ImageHolderComponent from './components/ImageHolder/ImageHolder'
 import UpdateUserInformationComponent from './components/UpdateUserInformation/UpdateUserInformation';
 import UserInfoHolderComponent from './components/UserInfoHolder/UserInfoHolder';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
 import { getProfileInfo } from '../../ducks/profile/actions/profile';
 import { Row } from 'antd';
@@ -13,6 +13,7 @@ const Profile: React.FC = () => {
   const [reading, setReading] = useState(false);
   const user = localStorage.getItem('user');
   const dispatch = useDispatch();
+  const info = useSelector((state: any) => state.profile);
 
   if (!user) dispatch(pushState('/auth'));
   
@@ -32,7 +33,7 @@ const Profile: React.FC = () => {
 
   const readInfo = (
     <Row justify="center" align="middle">
-        <UserInfoHolderComponent></UserInfoHolderComponent>
+        { info && info.payload ? <UserInfoHolderComponent info={info}></UserInfoHolderComponent> : null}
     </Row>);
 
   return (

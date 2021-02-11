@@ -9,7 +9,7 @@ import { blockUser, likeUser } from '../../../../ducks/relationship/actions/rela
 
 const { Title, Paragraph} = Typography;
 
-const UserInfoHolder: React.FC = () => {
+const UserInfoHolder: React.FC<{info: any}> = (info) => {
   const [visible, setVisible] = useState(false);
   const [blockConfirmation, setBlockConfirmation] = useState(false);
   const user = localStorage.getItem('user');
@@ -17,7 +17,6 @@ const UserInfoHolder: React.FC = () => {
 
   const message= useSelector((state: any) => state.message);
   const relationship = useSelector((state: any) => state.relationship);
-  const info = useSelector((state: any) => state.profile);
   
   if (message && message.message !== '' && visible === false) setVisible(true);
 
@@ -27,12 +26,12 @@ const UserInfoHolder: React.FC = () => {
   };
 
   const handleLike = () => {
-    dispatch(likeUser(user, info.payload.Username));
+    dispatch(likeUser(user, info.info.payload.Username));
   };
 
   const handleBlock = () => {
     setBlockConfirmation(false);
-    dispatch(blockUser(user, info.payload.Username));
+    dispatch(blockUser(user, info.info.payload.Username));
   };
 
   const showModal = () => {
@@ -54,16 +53,16 @@ const UserInfoHolder: React.FC = () => {
 
   return (
     <Row>
-      { info.payload && relationship.relationship && relationship.relationship.Block === false ? (
+      { info.info.payload && relationship.relationship && relationship.relationship.Block === false ? (
       <Typography>
           <Title>
-              { info.payload.Username + ' 24'}
+              { info.info.payload.Username + ' 24'}
           </Title>
           <Paragraph>
               location
           </Paragraph>
           <Paragraph>
-              { info.payload.Bio }
+              { info.info.payload.Bio }
           </Paragraph>
           <Button onClick={handleLike} icon={ relationship.relationship.Like ? <HeartFilled/> : <HeartOutlined/> }>
             like
@@ -75,7 +74,7 @@ const UserInfoHolder: React.FC = () => {
           visible={blockConfirmation}
           onOk={handleBlock}
           onCancel={hideModal}
-          title={'Are you sure you want to block ' + info.payload.Username}>
+          title={'Are you sure you want to block ' + info.info.payload.Username}>
             <Paragraph>Are you sure ? If you block this user, 
               his profile will never appear in search result, 
               and won't create any notifications. This action is irreversible.

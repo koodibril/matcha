@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
+import { Col, Row } from 'antd';
+import FilterComponent from './components/Filter/Filter';
+import DisplayComponent from './components/Display/Display';
 
 const Home: React.FC = () => {
   const user = localStorage.getItem('user');
@@ -14,9 +17,14 @@ const Home: React.FC = () => {
   }
 
   return (
-  <div>Home Component
-    <button onClick={logout}>logout</button>
-  </div>);
+  <Row>
+    <Col span={6}>
+      <FilterComponent></FilterComponent>
+    </Col>
+    <Col span={16}>
+      <DisplayComponent></DisplayComponent>
+    </Col>
+  </Row>);
 };
 
 export default Home;
