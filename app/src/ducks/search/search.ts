@@ -10,7 +10,7 @@ const search = (state = initialState, action: { type: string, payload: any }) =>
 
   switch (type) {
     case LOADING_SEARCH_SUCCESS:
-      return { search: payload };
+      return { userResult: payload };
       
     case LOADING_SEARCH_FAILURE:
         return {};

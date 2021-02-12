@@ -58,10 +58,11 @@ const queryCreateRelationship = generateRelationshipQuery('create', ['user', 'us
 const queryGetRelationship = generateGetRelationshipQuery(['user', 'user'], ['token', 'username']);
 const queryUpdateRelationship = generateUpdateRelationshipQuery('set', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
 
-const generateSearchQuery: any = (ageGap: number[]) => `MATCH (n:User) WHERE n.age <= $ageGap[0] AND n.age >= $ageGap[1] RETURN n`;
+const generateSearchQuery: any = (ageGap: number[]) => `MATCH (n:User) WHERE n.Age <= $ageGap[1] AND n.Age >= $ageGap[0] RETURN n LIMIT 5`;
 const querySearch = generateSearchQuery('ageGap');
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
+export const runSearchQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records.map(p => p.get(0));
 export const getUserMatchCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingUser, options, session) as number);
 export const getUserEmailCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingEmail, options, session) as number)
 export const getUserPassword = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingPassword, options, session) as string);
@@ -77,4 +78,4 @@ export const updatePassword = async (options: UserOptions, session: Session) => 
 export const createRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryCreateRelationship, options, session) as string);
 export const getRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryGetRelationship, options, session) as string);
 export const updateRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryUpdateRelationship, options, session) as string);
-export const getSearchResult = async (options: Filter, session: Session) => (await runQuery(querySearch, options, session) as string);;
+export const getSearchResult = async (options: Filter, session: Session) => (await runSearchQuery(querySearch, options, session));;

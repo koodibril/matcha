@@ -15,6 +15,8 @@ const UserInfoHolder: React.FC<{info: any}> = (info) => {
   const user = localStorage.getItem('user');
   const dispatch = useDispatch();
 
+  console.log(info);
+
   const message= useSelector((state: any) => state.message);
   const relationship = useSelector((state: any) => state.relationship);
   

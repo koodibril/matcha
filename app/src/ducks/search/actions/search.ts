@@ -8,16 +8,12 @@ const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 const SEARCH_GET_ENDPOINT = '/api/search/do';
 
 const setSearchResult = (dispatch: any, res: any) => {
-  let Block = false;
-  let Like = false;
-  let Match = false;
-  if (res.data.properties) {
-    Block = res.data.properties.Block;
-    Like = res.data.properties.Like;
-    Match = res.data.properties.Match;
-  }
-    const info = { Block, Like, Match}
-    dispatch({ type: 'LOADING_SEARCH_SUCCESS', payload: info });
+    const data = res.data.results;
+    const userList: any[]= [];
+    data.forEach((element: any) => {
+      userList.push(element.properties);
+    });
+    dispatch({ type: 'LOADING_SEARCH_SUCCESS', payload: userList });
     return Promise.resolve();
   }
 
