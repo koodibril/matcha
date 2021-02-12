@@ -1,5 +1,5 @@
 import { getSession } from '../../shared/neo4j/neo4j'
-import { getSearchResult } from '../../shared/neo4j/queries';
+import { getRelationship, getSearchResult } from '../../shared/neo4j/queries';
 import { info, internalError } from '../../shared/utils';
 
 export const getResearchResult = async (req: any, res: any) => {
@@ -8,15 +8,23 @@ export const getResearchResult = async (req: any, res: any) => {
       ageGap,
       proximity,
       popularity,
-      interests
+      interests,
+      token
   } = req.body;
   console.log(req.body);
 
   try {
-    const results = await getSearchResult({ ageGap, proximity, popularity, interests }, session);
-    console.log(results)
+    const results = await getSearchResult({ ageGap, proximity, popularity, interests }, session) as any;
+    let index = 0;
+    for (const element of results) {
+      const username = element.properties.Username;
+      const relationship = await getRelationship({ token, username}, session);
+      console.log(relationship);
+      results[index].properties.relationship = relationship;
+      index++;
+    }
 
-    info(`relationship collected`);
+    info(`userlist collected`);
     return res
       .status(200)
       .json({ results })

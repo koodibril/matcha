@@ -13,6 +13,7 @@ const Filter: React.FC = () => {
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
     const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
     const dispatch = useDispatch();
+    const user = localStorage.getItem('user');
 
     const { t } = useTranslation('filter');
     const handleChange = (tag: any, checked: any) => {
@@ -23,11 +24,11 @@ const Filter: React.FC = () => {
     const handleFilterChange = (type: string, change: any) => {
         console.log(type, change);
         if (type === 'age') {
-            dispatch(getSearchResult(change, proximity, popularity, selectedTags));
+            dispatch(getSearchResult(change, proximity, popularity, selectedTags, user));
         } else if (type === 'pro') {
-            dispatch(getSearchResult(age, change, popularity, selectedTags));
+            dispatch(getSearchResult(age, change, popularity, selectedTags, user));
         } else if (type === 'pop') {
-            dispatch(getSearchResult(age, proximity, change, selectedTags));
+            dispatch(getSearchResult(age, proximity, change, selectedTags, user));
         }
     }
 

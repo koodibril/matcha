@@ -23,6 +23,6 @@ const handleError = (dispatch: any, error: any) => {
     return Promise.reject();
   } 
 
-export const getSearchResult = (ageGap: any, proximity: any, popularity: any, interests: any) => (dispatch: any) => axios
-  .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { ageGap, proximity, popularity, interests })
+export const getSearchResult = (ageGap: any, proximity: any, popularity: any, interests: any, token: any) => (dispatch: any) => axios
+  .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { ageGap, proximity, popularity, interests, token })
   .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
