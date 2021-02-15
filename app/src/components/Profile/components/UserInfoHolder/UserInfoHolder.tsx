@@ -9,7 +9,7 @@ import { blockUser, likeUser } from '../../../../ducks/relationship/actions/rela
 
 const { Title, Paragraph} = Typography;
 
-const UserInfoHolder: React.FC<{info: any}> = (info) => {
+const UserInfoHolder: React.FC<{info: any}> = (props) => {
   const [visible, setVisible] = useState(false);
   const [liked, setLiked] = useState(false);
   const [blocked, setBlocked] = useState(false);
@@ -22,9 +22,9 @@ const UserInfoHolder: React.FC<{info: any}> = (info) => {
   
   if (message && message.message !== '' && visible === false) setVisible(true);
 
-  if (info.info.relationship && !init) {
-    setLiked(info.info.relationship.properties.Like);
-    setBlocked(info.info.relationship.properties.Blocked);
+  if (props.info.relationship && !init) {
+    setLiked(props.info.relationship.properties.Like);
+    setBlocked(props.info.relationship.properties.Blocked);
     setInit(true);
   }
 
@@ -34,13 +34,13 @@ const UserInfoHolder: React.FC<{info: any}> = (info) => {
   };
 
   const handleLike = () => {
-    dispatch(likeUser(user, info.info.Username));
+    dispatch(likeUser(user, props.info.Username));
     liked ? setLiked(false) : setLiked(true);
   };
 
   const handleBlock = () => {
     setBlockConfirmation(false);
-    dispatch(blockUser(user, info.info.Username));
+    dispatch(blockUser(user, props.info.Username));
     setBlocked(true);
   };
 
@@ -63,16 +63,16 @@ const UserInfoHolder: React.FC<{info: any}> = (info) => {
 
   return (
     <Row>
-      { info.info && blocked === false ? (
+      { props.info && blocked === false ? (
       <Typography>
           <Title>
-              { info.info.Username + ' 24'}
+              { props.info.Username + ' 24'}
           </Title>
           <Paragraph>
               location
           </Paragraph>
           <Paragraph>
-              { info.info.Bio }
+              { props.info.Bio }
           </Paragraph>
           <Button onClick={handleLike} icon={ liked ? <HeartFilled/> : <HeartOutlined/> }>
             like
@@ -84,7 +84,7 @@ const UserInfoHolder: React.FC<{info: any}> = (info) => {
           visible={blockConfirmation}
           onOk={handleBlock}
           onCancel={hideModal}
-          title={'Are you sure you want to block ' + info.info.Username}>
+          title={'Are you sure you want to block ' + props.info.Username}>
             <Paragraph>Are you sure ? If you block this user, 
               his profile will never appear in search result, 
               and won't create any notifications. This action is irreversible.

@@ -13,7 +13,7 @@ function getBase64(file: any) {
   });
 }
 
-const ImageHolder: React.FC<{ reading: boolean, info: any }> = (props) => {
+const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [previewTitle, setPreviewTitle] = useState('');
@@ -25,7 +25,7 @@ const ImageHolder: React.FC<{ reading: boolean, info: any }> = (props) => {
     const handleCancel = () => setPreviewVisible(false);
 
     const updateList = () => {
-      let pictures = props.info as string[];
+      let pictures = props.pictures;
       let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {
         if (picture !== '') {
@@ -37,7 +37,7 @@ const ImageHolder: React.FC<{ reading: boolean, info: any }> = (props) => {
     }
 
     const getFileLength = () => {
-      let pictures = props.info as string[];
+      let pictures = props.pictures;
       let i = 0;
       pictures.forEach((picture: any) => {
         if (picture !== '')
@@ -46,9 +46,9 @@ const ImageHolder: React.FC<{ reading: boolean, info: any }> = (props) => {
       return i;
     }
 
-    if (props.info && fileList.length !== getFileLength()) updateList();
+    if (props.pictures && fileList.length !== getFileLength()) updateList();
   
-    if (props.info && fileList.length === 0) updateList();
+    if (props.pictures && fileList.length === 0) updateList();
 
     const handlePreview = async (file: any) => {
       if (!file.url && !file.preview) {
@@ -93,7 +93,7 @@ const ImageHolder: React.FC<{ reading: boolean, info: any }> = (props) => {
     );
 
       return (
-        props.info ? (
+        props.pictures ? (
         <Row>
           <Upload
             data={user}

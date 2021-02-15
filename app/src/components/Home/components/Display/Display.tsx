@@ -13,7 +13,7 @@ const Display: React.FC = () => {
       return (List.map((element: any) => (
         <>
           {console.log(element.Pictures)}
-          <ImageHolder info={element.Pictures} reading={true}></ImageHolder>
+          <ImageHolder pictures={element.Pictures} reading={true}></ImageHolder>
           <UserInfoHolderComponent info={element}/>
         </>
       )));

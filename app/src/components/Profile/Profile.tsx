@@ -36,14 +36,14 @@ const Profile: React.FC = () => {
         { info && info.payload ? <UserInfoHolderComponent info={info}></UserInfoHolderComponent> : null}
     </Row>);
 
-  return (
-    <>
+  return ( info && info.payload ?
+    <> 
       <Row justify="center" align="middle">
-          <ImageHolderComponent info={info} reading={reading}></ImageHolderComponent>
+          <ImageHolderComponent pictures={info.payload.Pictures} reading={reading}></ImageHolderComponent>
       </Row>
       { reading ? readInfo : updateInfo }
     </>
-  )
+  : null)
 }
 
 export default Profile;

@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { updateProfileInfo } from '../../../../ducks/profile/actions/profile';
 import { UserData } from '../../../Profile/components/UpdateUserInformation/UpdateUserInformation.d';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
+import Paragraph from 'antd/lib/typography/Paragraph';
 
 
 const UpdateUserInformation: React.FC = () => {
@@ -66,6 +67,18 @@ const UpdateUserInformation: React.FC = () => {
       return Promise.reject('You must select at least 3 tags');
     else
       return Promise.resolve();
+  }
+
+  const position = (position: any) => {
+    console.log(position);
+  }
+
+  const error = (error: any) => {
+    console.log(error);
+  }
+
+  const handleLocation = () => {
+    navigator.geolocation.getCurrentPosition(position, error);
   }
 
   return (
@@ -149,6 +162,17 @@ const UpdateUserInformation: React.FC = () => {
             {tag}
           </CheckableTag>
         ))}
+        </Form.Item>
+
+        <Form.Item
+          label={t('location')}
+          name="location"
+          rules={[{
+            required: true,
+            message: t('location_missing')
+          }]}>
+            <Input disabled value="location"></Input>
+            <Button onClick={handleLocation}>{t('update location')}</Button>
         </Form.Item>
 
         <Form.Item>
