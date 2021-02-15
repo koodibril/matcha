@@ -11,15 +11,13 @@ export const getResearchResult = async (req: any, res: any) => {
       interests,
       token
   } = req.body;
-  console.log(req.body);
 
   try {
-    const results = await getSearchResult({ ageGap, proximity, popularity, interests }, session) as any;
+    const results = interests ? await getSearchResult({ ageGap, proximity, popularity, interests }, session) as any : await getSearchResult({ ageGap, proximity, popularity }, session) as any;
     let index = 0;
     for (const element of results) {
       const username = element.properties.Username;
       const relationship = await getRelationship({ token, username}, session);
-      console.log(relationship);
       results[index].properties.relationship = relationship;
       index++;
     }

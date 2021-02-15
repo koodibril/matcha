@@ -58,8 +58,8 @@ const queryCreateRelationship = generateRelationshipQuery('create', ['user', 'us
 const queryGetRelationship = generateGetRelationshipQuery(['user', 'user'], ['token', 'username']);
 const queryUpdateRelationship = generateUpdateRelationshipQuery('set', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
 
-const generateSearchQuery: any = (ageGap: number[]) => `MATCH (n:User) WHERE n.Age <= $ageGap[1] AND n.Age >= $ageGap[0] RETURN n LIMIT 5`;
-const querySearch = generateSearchQuery('ageGap');
+const generateSearchQuery: any = (ageGap: number[], proximity: number, popularity: number[], interests: string[]) => `MATCH (n:User) WHERE n.Age <= $ageGap[1] AND n.Age >= $ageGap[0] AND n.Proximity <= $proximity AND n.Popularity <= $popularity[0] AND n.Popularity >= $popularity[1] AND n.Valid = true RETURN n LIMIT 5`;
+const querySearch = generateSearchQuery('ageGap', 'proximity', 'popularity', 'interests');
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
 export const runSearchQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records.map(p => p.get(0));

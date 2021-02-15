@@ -17,7 +17,7 @@ const Home: React.FC = () => {
   }
 
   return (
-  <Row>
+  <Row justify="center" align="middle">
     <Col span={6}>
       <FilterComponent></FilterComponent>
     </Col>

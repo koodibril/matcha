@@ -39,7 +39,7 @@ const Profile: React.FC = () => {
   return (
     <>
       <Row justify="center" align="middle">
-          <ImageHolderComponent reading={reading}></ImageHolderComponent>
+          <ImageHolderComponent info={info} reading={reading}></ImageHolderComponent>
       </Row>
       { reading ? readInfo : updateInfo }
     </>

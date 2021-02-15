@@ -23,7 +23,7 @@ export const likeProfile = async (req: any, res: any) => {
       relationship = await updateRelationship({ token, username, match, block, like}, session);
     }
 
-    info(`user liked`);
+    like ? info(`user liked`) : info(`user unliked`);
     return res
       .status(200)
       .json({ relationship });
