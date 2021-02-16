@@ -13,6 +13,9 @@ interface UserOptions {
   active?: boolean;
   valid?: boolean;
   token?: string;
+  location?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 interface RelationshipOptions {
@@ -52,7 +55,7 @@ const queryGetUserInfoE = generateQuery('match', 'user', ['email'], false);
 const queryupdateToken = `${generateUpdateQuery('match', 'user', ['username'], ['token'], false)}.Token`;
 const queryupdateUserPictures = generateUpdateQuery('match', 'user', ['username'], ['pictures'], false);
 const queryUpdateUserInfo = generateUpdateQuery('match', 'user', ['token'], ['username', 'email', 'active'], false);;
-const queryUpdateUserData = generateUpdateQuery('match', 'user', ['token'], ['age', 'gender', 'sexo', 'bio', 'interests', 'valid'], false);;
+const queryUpdateUserData = generateUpdateQuery('match', 'user', ['token'], ['age', 'gender', 'sexo', 'bio', 'interests', 'location', 'latitude', 'longitude', 'valid'], false);;
 const queryUpdatePassword = generateUpdateQuery('match', 'user', ['token'], ['password'], false);
 const queryCreateRelationship = generateRelationshipQuery('create', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
 const queryGetRelationship = generateGetRelationshipQuery(['user', 'user'], ['token', 'username']);

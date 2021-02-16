@@ -27,9 +27,12 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Sexo,
     Interests,
     Pictures,
+    Location,
+    Latitude,
+    Longitude,
     Valid
   } = res.data.userInfo.properties;
-  const info = { Email, Username, Age, Bio, Gender, Sexo, Interests, Pictures, Valid}
+  const info = { Email, Username, Age, Bio, Gender, Sexo, Interests, Pictures, Location, Latitude, Longitude, Valid}
   dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: info });
   return Promise.resolve();
 }
@@ -42,6 +45,6 @@ export const removeProfilePicture = (token: string, picture: any) => (dispatch: 
   .post(`${API_URL}${PROFILE_PICTURE_REMOVE}`, { token, picture })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const updateProfileInfo = ({ age, gender, sexo, bio, interests }: UserData, token: any) => (dispatch: any) => axios
-  .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, { age, gender, sexo, bio, interests, token })
+export const updateProfileInfo = ({ age, gender, sexo, bio, interests }: UserData, token: any, location: any) => (dispatch: any) => axios
+  .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, { age, gender, sexo, bio, interests, token, location })
   .then((res) => { setProfileInfo(dispatch, res) }, (error) => { handleError(dispatch, error) });
