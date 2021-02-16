@@ -80,7 +80,6 @@ const UpdateUserInformation: React.FC = () => {
 
   const handleLocation = () => {
     fetch('https://geolocation-db.com/json/').then(res => res.json().then(res => {
-      console.log(res);
       setLocation(res);
     }));
   }

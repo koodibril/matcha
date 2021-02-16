@@ -69,7 +69,7 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
               { props.info.Username + ' 24'}
           </Title>
           <Paragraph>
-              location
+              location: { props.info.Distance }
           </Paragraph>
           <Paragraph>
               { props.info.Bio }
