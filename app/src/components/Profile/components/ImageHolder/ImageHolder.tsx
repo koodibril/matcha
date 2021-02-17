@@ -25,7 +25,6 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
     const handleCancel = () => setPreviewVisible(false);
 
     const updateList = () => {
-      console.log('called');
       let pictures = props.pictures;
       let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {

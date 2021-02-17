@@ -14,7 +14,7 @@ export const getResearchResult = async (req: any, res: any) => {
   } = req.body;
 
   try {
-    const userInfo = getUserInfoT({ token }, session) as any;
+    const userInfo = await getUserInfoT({ token }, session) as any;
     const results = interests ? await getSearchResult({ ageGap, proximity, popularity, interests }, session) as any : await getSearchResult({ ageGap, proximity, popularity }, session) as any;
     let index = 0;
     const latitudeOne = userInfo.properties.Latitude;
@@ -29,6 +29,8 @@ export const getResearchResult = async (req: any, res: any) => {
       results[index].properties.Distance = distance;
       index++;
     }
+
+    console.log(results);
 
     info(`userlist collected`);
     return res

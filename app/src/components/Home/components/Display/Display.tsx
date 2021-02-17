@@ -8,14 +8,14 @@ const Display: React.FC = () => {
     const userList = useSelector((state: any) => state.search);
 
     const handleUserList = () => {
-      const List = userList.userResult
+      const List = userList.userResult;
       console.log(List);
       return (List.map((element: any) => (
-        <>
-          {console.log(element.Pictures)}
-          <ImageHolder pictures={element.Pictures} reading={true}></ImageHolder>
-          <UserInfoHolderComponent info={element}/>
-        </>
+        element.relationship.properties.Block ? null : (
+          <>
+            <ImageHolder pictures={element.Pictures} reading={true}></ImageHolder>
+            <UserInfoHolderComponent info={element}/>
+          </>)
       )));
     }
       

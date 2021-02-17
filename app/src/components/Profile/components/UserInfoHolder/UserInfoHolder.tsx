@@ -22,6 +22,8 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   
   if (message && message.message !== '' && visible === false) setVisible(true);
 
+  console.log(props.info);
+
   if (props.info.relationship && !init) {
     setLiked(props.info.relationship.properties.Like);
     setBlocked(props.info.relationship.properties.Blocked);
@@ -63,7 +65,7 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
 
   return (
     <Row>
-      { props.info && blocked === false ? (
+      { props.info ? (
       <Typography>
           <Title>
               { props.info.Username + ' 24'}
