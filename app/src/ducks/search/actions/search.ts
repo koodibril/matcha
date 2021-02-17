@@ -11,6 +11,16 @@ const setSearchResult = (dispatch: any, res: any) => {
     const data = res.data.results;
     const userList: any[]= [];
     data.forEach((element: any) => {
+      if (!element.properties.relationship)
+      {
+        // desole c'est sale x) soit ici soit dans le back, donc a voir
+        const Block = false;
+        const Like = false;
+        const Match = false;
+        const properties = {Block, Like, Match};
+        const relationship = {properties};
+        element.properties.relationship = relationship;
+      }
       userList.push(element.properties);
     });
     dispatch({ type: 'LOADING_SEARCH_SUCCESS', payload: userList });

@@ -33,6 +33,12 @@ interface Filter {
   interests?: string[];
 }
 
+interface ChatRoom {
+  userone?: string;
+  usertwo?: string;
+  messages?: {User?: string, Date?: number, message?: string}[];
+}
+
 
 
 const toUpper = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1).toLowerCase()}`;
@@ -42,6 +48,8 @@ const generateUpdateParams = (params: (string)[]) => params.map(p => ` a.${toUpp
 const generateRelationshipUpdateParams = (params: (string)[]) => params.map(p => ` r.${toUpper(p)} = $${p.toLowerCase()}`);
 const generateRelationshipQuery: any = (action: string, nodes: string[], params: string[], relationshipParams: string[]) => `MATCH (a:${toUpper(nodes[0])}), (b:${toUpper(nodes[1])}) WHERE a.${toUpper(params[0])} = $${params[0].toLowerCase()} AND b.${toUpper(params[1])} = $${params[1].toLowerCase()} ${action.toUpperCase()} (a)-${generateRelationshipActionParams(relationshipParams)}->(b) RETURN r`;
 const generateGetRelationshipQuery: any = (nodes: string[], params: string[]) => `MATCH (a:${toUpper(nodes[0])}{${toUpper(params[0])}: $${params[0].toLowerCase()}})-[r]->(b:${toUpper(nodes[1])}{${toUpper(params[1])}: $${params[1].toLowerCase()}}) RETURN r`;
+const generateGetReverseRelationshipQuery: any = (nodes: string[], params: string[]) => `MATCH (a:${toUpper(nodes[0])}{${toUpper(params[0])}: $${params[0].toLowerCase()}})<-[r]-(b:${toUpper(nodes[1])}{${toUpper(params[1])}: $${params[1].toLowerCase()}}) RETURN r`;
+const generateGetMatchedRelationshipQuery: any = (nodes: string[], params: string[]) => `MATCH (a:${toUpper(nodes[0])}{${toUpper(params[0])}: $${params[0].toLowerCase()}})<-[r]->(b:${toUpper(nodes[1])}) WHERE r.Match = true RETURN b`;
 const generateUpdateRelationshipQuery: any = (action: string, nodes: string[], params: string[], relationshipParams: string[]) => `MATCH (a:${toUpper(nodes[0])}{${toUpper(params[0])}: $${params[0].toLowerCase()}})-[r]->(b:${toUpper(nodes[1])}{${toUpper(params[1])}: $${params[1].toLowerCase()}}) ${action.toUpperCase()} ${generateRelationshipUpdateParams(relationshipParams)} RETURN r`;
 const generateQuery: any = (action: string, model: string, params: (string)[], getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`} { ${generateParams(params)} }) RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
 const generateUpdateQuery: any = (action: string, model: string, params: (string)[], updateParams: (string)[], value: string, getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`} { ${generateParams(params)} }) SET ${generateUpdateParams(updateParams)} RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
@@ -59,12 +67,18 @@ const queryUpdateUserData = generateUpdateQuery('match', 'user', ['token'], ['ag
 const queryUpdatePassword = generateUpdateQuery('match', 'user', ['token'], ['password'], false);
 const queryCreateRelationship = generateRelationshipQuery('create', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
 const queryGetRelationship = generateGetRelationshipQuery(['user', 'user'], ['token', 'username']);
+const queryGetReverseRelationship = generateGetReverseRelationshipQuery(['user', 'user'], ['token', 'username']);
 const queryUpdateRelationship = generateUpdateRelationshipQuery('set', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
+const queryGetMatchedRelationship = generateGetMatchedRelationshipQuery(['user', 'user'], ['token']);
+const queryCreateChatRoom = generateQuery('create', 'chatRoom', ['userOne', 'userTwo', 'messages'], false);
+const queryUpdateChatRoom = generateUpdateQuery('match', 'chatRoom', ['userOne', 'userTwo'], ['messages'], false);
+const queryGetChatRoom = generateQuery('match', 'chatRoom', ['userOne', 'userTwo'], false);
 
 const generateSearchQuery: any = (ageGap: number[], proximity: number, popularity: number[], interests: string[]) => `MATCH (n:User) WHERE n.Age <= $ageGap[1] AND n.Age >= $ageGap[0] AND n.Valid = true RETURN n LIMIT 5`;
 const querySearch = generateSearchQuery('ageGap', 'proximity', 'popularity', 'interests');
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
+export const runChatQuery = async (query: string, options: ChatRoom, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
 export const runSearchQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records.map(p => p.get(0));
 export const getUserMatchCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingUser, options, session) as number);
 export const getUserEmailCount = async (options: UserOptions, session: Session) => (await runQuery(queryMatchingEmail, options, session) as number)
@@ -80,5 +94,10 @@ export const updateUserData = async (options: UserOptions, session: Session) => 
 export const updatePassword = async (options: UserOptions, session: Session) => (await runQuery(queryUpdatePassword, options, session) as string);
 export const createRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryCreateRelationship, options, session) as string);
 export const getRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryGetRelationship, options, session) as string);
+export const getReverseRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryGetReverseRelationship, options, session) as string);
 export const updateRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryUpdateRelationship, options, session) as string);
-export const getSearchResult = async (options: Filter, session: Session) => (await runSearchQuery(querySearch, options, session));;
+export const getSearchResult = async (options: Filter, session: Session) => (await runSearchQuery(querySearch, options, session));
+export const getMatchedRelationship = async (options: RelationshipOptions, session: Session) => (await runSearchQuery(queryGetMatchedRelationship, options, session));
+export const createChatRoom = async (options: ChatRoom, session: Session) => (await runChatQuery(queryCreateChatRoom, options, session) as string);
+export const getChatRoom = async (options: ChatRoom, session: Session) => (await runChatQuery(queryGetChatRoom, options, session) as string);
+export const updateChatRoom = async (options: ChatRoom, session: Session) => (await runChatQuery(queryUpdateChatRoom, options, session) as string);

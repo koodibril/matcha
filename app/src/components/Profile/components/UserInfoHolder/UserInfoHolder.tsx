@@ -12,7 +12,6 @@ const { Title, Paragraph} = Typography;
 const UserInfoHolder: React.FC<{info: any}> = (props) => {
   const [visible, setVisible] = useState(false);
   const [liked, setLiked] = useState(false);
-  const [blocked, setBlocked] = useState(false);
   const [blockConfirmation, setBlockConfirmation] = useState(false);
   const [init, setInit] = useState(false);
   const user = localStorage.getItem('user');
@@ -22,11 +21,8 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   
   if (message && message.message !== '' && visible === false) setVisible(true);
 
-  console.log(props.info);
-
   if (props.info.relationship && !init) {
     setLiked(props.info.relationship.properties.Like);
-    setBlocked(props.info.relationship.properties.Blocked);
     setInit(true);
   }
 
@@ -43,7 +39,6 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   const handleBlock = () => {
     setBlockConfirmation(false);
     dispatch(blockUser(user, props.info.Username));
-    setBlocked(true);
   };
 
   const showModal = () => {
@@ -71,7 +66,7 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
               { props.info.Username + ' 24'}
           </Title>
           <Paragraph>
-              location: { props.info.Distance }
+              Distance: { props.info.Distance } km
           </Paragraph>
           <Paragraph>
               { props.info.Bio }

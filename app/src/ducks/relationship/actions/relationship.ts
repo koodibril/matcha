@@ -9,6 +9,7 @@ const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 const RELATIONSHIP_LIKE_ENDPOINT = '/api/relationship/like';
 const RELATIONSHIP_BLOCK_ENDPOINT = '/api/relationship/block';
 const RELATIONSHIP_GET_ENDPOINT = '/api/relationship/get';
+const RELATIONSHIP_GET_MATCH_ENDPOINT = '/api/relationship/matched';
 
 const setRelationship = (dispatch: any, res: any) => {
   let Block = false;

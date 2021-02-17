@@ -11,7 +11,7 @@ const Display: React.FC = () => {
       const List = userList.userResult;
       console.log(List);
       return (List.map((element: any) => (
-        element.relationship.properties.Block ? null : (
+         element.relationship.properties.Block  ? null : (
           <>
             <ImageHolder pictures={element.Pictures} reading={true}></ImageHolder>
             <UserInfoHolderComponent info={element}/>
