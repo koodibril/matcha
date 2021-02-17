@@ -25,15 +25,16 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
     const handleCancel = () => setPreviewVisible(false);
 
     const updateList = () => {
+      console.log('called');
       let pictures = props.pictures;
       let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {
         if (picture !== '') {
           const newPic = { uid: i, status: 'done', url: 'http://localhost:3001/' + picture };
           newFileList.push(newPic);
-          setFileList(newFileList);
         }
       });
+      setFileList(newFileList);
     }
 
     const getFileLength = () => {
@@ -47,8 +48,6 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
     }
 
     if (props.pictures && fileList.length !== getFileLength()) updateList();
-  
-    if (props.pictures && fileList.length === 0) updateList();
 
     const handlePreview = async (file: any) => {
       if (!file.url && !file.preview) {

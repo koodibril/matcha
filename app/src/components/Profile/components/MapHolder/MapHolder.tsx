@@ -12,7 +12,7 @@ const MapHolder: React.FC<{location: string, latitude: number, longitude: number
       <div style={{ height: '30vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: 'AIzaSyCY56vVBpkxVWrQMeL0EC2M6w6VSpXeTS8' }}
-          defaultCenter={{lat: props.latitude, lng: props.longitude}}
+          center={{lat: props.latitude, lng: props.longitude}}
           defaultZoom={15}>
               <AnyReactComponent lat={props.latitude} lng={props.longitude}/>
         </GoogleMapReact>
