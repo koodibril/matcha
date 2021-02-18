@@ -21,7 +21,6 @@ const Filter: React.FC = () => {
 
     const handleFilterChange = (values: any) => {
         setLoading(true);
-        console.log(values);
         dispatch(getSearchResult(values.age, values.proximity, values.popularity, selectedTags, user));
         setLoading(false);
     }

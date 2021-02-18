@@ -11,7 +11,6 @@ const RELATIONSHIP_UPDATE_CHATROOM_ENDPOINT = '/api/chat/update';
 
 const setMatchedProfiles = (dispatch: any, res: any) => {
     const data = res.data.results;
-    console.log(data);
     const userList: any[]= [];
     data.forEach((element: any) => {
       userList.push(element.properties);

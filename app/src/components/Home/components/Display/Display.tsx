@@ -9,7 +9,6 @@ const Display: React.FC = () => {
 
     const handleUserList = () => {
       const List = userList.userResult;
-      console.log(List);
       return (List.map((element: any) => (
          element.relationship.properties.Block  ? null : (
           <>

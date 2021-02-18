@@ -30,8 +30,6 @@ export const getResearchResult = async (req: any, res: any) => {
       index++;
     }
 
-    console.log(results);
-
     info(`userlist collected`);
     return res
       .status(200)
