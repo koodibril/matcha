@@ -5,14 +5,15 @@ import { Col, Row } from 'antd';
 import ImageHolder from '../Profile/components/ImageHolder/ImageHolder';
 import UserInfoHolderComponent from '../Profile/components/UserInfoHolder/UserInfoHolder';
 import ChatHolderComponent from './components/ChatHolder/ChatHolder';
-import { getMatchedProfiles } from '../../ducks/chat/actions/chat';
+import { getChatRoom, getMatchedProfiles } from '../../ducks/chat/actions/chat';
 
 const Chat: React.FC = () => {
-    const [chat, setChat] = useState('');
+    const [username, setUsername] = useState('');
     const [selected, setSelected] = useState(-1);
     const user = localStorage.getItem('user');
     const dispatch = useDispatch();
     const userList = useSelector((state: any) => state.chat);
+    const chatRoom = useSelector((state: any) => state.chatRoom);
   
     if (!user) dispatch(pushState('/auth'));
 
@@ -21,7 +22,8 @@ const Chat: React.FC = () => {
     }, [user, dispatch]);
 
     const loadChat = (element: any, index: any) => {
-      setChat(element);
+      setUsername(element.Username);
+      dispatch(getChatRoom(user, element.Username));
       setSelected(index);
     }
 
@@ -44,7 +46,7 @@ const Chat: React.FC = () => {
         { userList.userResult ? handleUserList() : null}
       </Col>
       <Col span={16}>
-        <ChatHolderComponent info={chat}></ChatHolderComponent>
+        <ChatHolderComponent chatRoom={chatRoom.chatRoom} username={username}></ChatHolderComponent>
       </Col>
     </Row>
   )

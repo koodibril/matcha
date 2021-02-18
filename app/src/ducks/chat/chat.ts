@@ -8,7 +8,7 @@ const CLEAR_CHATROOM = 'CLEAR_CHATROOM';
 
 const initialState = '';
 
-const chat = (state = initialState, action: { type: string, payload: any }) => {
+export const chat = (state = initialState, action: { type: string, payload: any }) => {
     const { type, payload } = action;
 
   switch (type) {
@@ -34,7 +34,7 @@ export const chatRoom = (state = initialState, action: { type: string, payload: 
 
   switch (type) {
     case LOADING_CHATROOM_SUCCESS:
-      return { userResult: payload };
+      return { chatRoom: payload };
       
     case LOADING_CHATROOM_FAILURE:
         return {};
@@ -49,5 +49,3 @@ export const chatRoom = (state = initialState, action: { type: string, payload: 
       return state;
   }
 }
-
-export default chat;
