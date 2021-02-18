@@ -9,9 +9,11 @@ import { useTranslation } from 'react-i18next';
 import { updateProfileInfo } from '../../../../ducks/profile/actions/profile';
 import { UserData } from '../../../Profile/components/UpdateUserInformation/UpdateUserInformation.d';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
+import MapHolderComponent from '../MapHolder/MapHolder';
 
 
 const UpdateUserInformation: React.FC = () => {
+  const [location, setLocation] = useState({city: 'Unknow', latitude: 0, longitude: 0});
   const [selectedTags, setSelectedTags] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -28,6 +30,7 @@ const UpdateUserInformation: React.FC = () => {
 
   if (info && info.payload && info.payload.Interests && selectedTags.length === 0  && !tagsLoaded) {
     setSelectedTags(info.payload.Interests);
+    setLocation({city: info.payload.Location, latitude: info.payload.Latitude, longitude: info.payload.Longitude});
     setTagsLoaded(true);
   }
   
@@ -36,7 +39,7 @@ const UpdateUserInformation: React.FC = () => {
   const handleUpdate = (usr: UserData) => {
     setLoading(true);
     usr.interests = selectedTags;
-    dispatch(updateProfileInfo(usr, user));
+    dispatch(updateProfileInfo(usr, user, location));
     setLoading(false);
   };
 
@@ -66,6 +69,19 @@ const UpdateUserInformation: React.FC = () => {
       return Promise.reject('You must select at least 3 tags');
     else
       return Promise.resolve();
+  }
+
+  const checkLocation = () => {
+    if (location.city === 'Unknow')
+      return Promise.reject('You must set your location');
+    else
+      return Promise.resolve();
+  }
+
+  const handleLocation = () => {
+    fetch('https://geolocation-db.com/json/').then(res => res.json().then(res => {
+      setLocation(res);
+    }));
   }
 
   return (
@@ -149,6 +165,17 @@ const UpdateUserInformation: React.FC = () => {
             {tag}
           </CheckableTag>
         ))}
+        </Form.Item>
+
+        <Form.Item
+          label={t('location')}
+          name="location"
+          rules={[{
+            validator: checkLocation
+          }]}>
+            <Input disabled value={location.city}></Input>
+            <MapHolderComponent location={location.city} latitude={location.latitude} longitude={location.longitude}></MapHolderComponent>
+            <Button onClick={handleLocation}>{t('update location')}</Button>
         </Form.Item>
 
         <Form.Item>

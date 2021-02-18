@@ -13,32 +13,31 @@ function getBase64(file: any) {
   });
 }
 
-const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
+const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState();
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<any[]>([]);
     const user = { "token": localStorage.getItem('user') as string };
     const userr = localStorage.getItem('user');
-    const info = useSelector((state: any) => state.profile);
     const dispatch = useDispatch();
 
     const handleCancel = () => setPreviewVisible(false);
 
     const updateList = () => {
-      let pictures = info.payload.Pictures as string[];
+      let pictures = props.pictures;
       let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {
         if (picture !== '') {
           const newPic = { uid: i, status: 'done', url: 'http://localhost:3001/' + picture };
           newFileList.push(newPic);
-          setFileList(newFileList);
         }
       });
+      setFileList(newFileList);
     }
 
     const getFileLength = () => {
-      let pictures = info.payload.Pictures as string[];
+      let pictures = props.pictures;
       let i = 0;
       pictures.forEach((picture: any) => {
         if (picture !== '')
@@ -47,9 +46,7 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
       return i;
     }
 
-    if (info && info.payload && fileList.length !== getFileLength()) updateList();
-  
-    if (info && fileList.length === 0 && info.payload) updateList();
+    if (props.pictures && fileList.length !== getFileLength()) updateList();
 
     const handlePreview = async (file: any) => {
       if (!file.url && !file.preview) {
@@ -94,7 +91,7 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
     );
 
       return (
-        info.payload ? (
+        props.pictures ? (
         <Row>
           <Upload
             data={user}
@@ -102,12 +99,12 @@ const ImageHolder: React.FC<{ reading: boolean }> = (reading) => {
             action="http://localhost:3001/api/profile/picture/upload"
             listType="picture-card"
             fileList={fileList}
-            showUploadList={ reading ? readingList : uploadList }
+            showUploadList={ props.reading ? readingList : uploadList }
             onPreview={handlePreview}
             onChange={handleChange}
             onRemove={onRemove}
           >
-            {fileList.length <= 5 && !reading.reading ? uploadButton : null}
+            {fileList.length <= 5 && !props.reading ? uploadButton : null}
           </Upload>
           <Modal
             visible={previewVisible}

@@ -12,8 +12,11 @@ export const updateProfile = async (req: any, res: any) => {
     interests,
     token
   } = req.body;
+  const location = req.body.location.city;
+  const latitude = req.body.location.latitude;
+  const longitude = req.body.location.longitude;
   const valid = true;
-  const userParams = { age, gender, sexo, bio, interests, token, valid };
+  const userParams = { age, gender, sexo, bio, interests, token, location, latitude, longitude, valid };
 
   try {
     const userInfo = await updateUserData(userParams, session);
