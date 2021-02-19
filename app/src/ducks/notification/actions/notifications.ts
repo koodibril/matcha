@@ -17,8 +17,6 @@ const setNotifications = (dispatch: any, res: any) => {
             const date = info[2];
             const text = info[3];
             const notification = {viewed, date, text};
-            console.log(info);
-            console.log(notification);
             notifications.push(notification)
         });
     }

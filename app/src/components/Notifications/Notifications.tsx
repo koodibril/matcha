@@ -14,8 +14,6 @@ const Notifications: React.FC = () => {
     useEffect(() => {
       dispatch(getNotifications(user));
     }, [user, dispatch]);
-
-    console.log(notifications);
     
     const handleNotifications = () => {
       const notificationList = notifications.notifications;
