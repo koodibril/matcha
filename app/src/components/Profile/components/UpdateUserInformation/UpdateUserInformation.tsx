@@ -16,7 +16,6 @@ const UpdateUserInformation: React.FC = () => {
   const [location, setLocation] = useState({city: 'Unknow', latitude: 0, longitude: 0});
   const [selectedTags, setSelectedTags] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const user = localStorage.getItem('user');
   const dispatch = useDispatch();
@@ -24,7 +23,6 @@ const UpdateUserInformation: React.FC = () => {
   const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
 
   const { t } = useTranslation('profile');
-  const message= useSelector((state: any) => state.message);
 
   const info = useSelector((state: any) => state.profile);
 
@@ -33,8 +31,6 @@ const UpdateUserInformation: React.FC = () => {
     setLocation({city: info.payload.Location, latitude: info.payload.Latitude, longitude: info.payload.Longitude});
     setTagsLoaded(true);
   }
-  
-  if (message && message.message !== '' && visible === false) setVisible(true);
 
   const handleUpdate = (usr: UserData) => {
     setLoading(true);
@@ -43,26 +39,12 @@ const UpdateUserInformation: React.FC = () => {
     setLoading(false);
   };
 
-  const handleClose = () => {
-    setVisible(false);
-    dispatch({ type: 'CLEAR_MESSAGE' });
-  };
-
   const handleChange = (tag: any, checked: any) => {
     if (selectedTags.length <= 5 || checked === false) {
       const nexSelectedTags = checked ? [...selectedTags, tag] : selectedTags.filter(t => t !== tag);
       setSelectedTags(nexSelectedTags);
     }
   };
-
-  const errorMessage = (
-    <Alert 
-      style={{ margin: '16px 0' }} 
-      message={ message.message } 
-      type="error" 
-      closable 
-      afterClose={handleClose}/>
-  );
 
   const checkTags = () => {
     if (selectedTags.length < 3)
@@ -98,8 +80,6 @@ const UpdateUserInformation: React.FC = () => {
         name="update"
         onFinish={handleUpdate}
         onFinishFailed={console.error}>
-        
-        { visible ? errorMessage : null }
 
         <Form.Item>{info.payload.Username}</Form.Item>
         
@@ -185,7 +165,7 @@ const UpdateUserInformation: React.FC = () => {
             </Button>
           </Spin>
         </Form.Item>
-      </Form>) : visible ? errorMessage : null }
+      </Form>) : null }
     </Row>
   )
 }

@@ -9,11 +9,7 @@ const ChangePassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState('');
   const dispatch = useDispatch();
-  const message = useSelector((state: any) => state.message);
   const { t } = useTranslation('authentication');
-  const [visible, setVisible] = useState(false);
-
-  if (message && message.message !== '' && visible === false) setVisible(true);
 
   useEffect(() => {
     const path = window.location.pathname.split('/');
@@ -28,20 +24,6 @@ const ChangePassword: React.FC = () => {
       setLoading(false);
   }
 
-  const handleClose = () => {
-    setVisible(false);
-    dispatch({ type: 'CLEAR_MESSAGE' });
-  };
-
-  const errorMessage = (
-    <Alert 
-      style={{ margin: '16px 0' }} 
-      message={ message.message } 
-      type="error" 
-      closable 
-      afterClose={handleClose}/>
-  );
-
   return (
         <Row justify="center" align="middle">
             <Form
@@ -49,8 +31,6 @@ const ChangePassword: React.FC = () => {
             name="signup"
             onFinish={handleChangePassword}
             onFinishFailed={console.error}>
-                
-            { visible ? errorMessage : null }
 
                 <Form.Item
                     label={t('new password')}

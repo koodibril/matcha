@@ -5,7 +5,6 @@ import { activateUser } from '../../../../ducks/authentication/actions/authentic
 
 const Activate: React.FC = () => {
   const dispatch = useDispatch();
-  const message = useSelector((state: any) => state.message);
 
   useEffect(() => {
     const path = window.location.pathname.split('/');
@@ -16,7 +15,6 @@ const Activate: React.FC = () => {
 
   return (
     <>
-        { message.message }
     </>
   )
 }

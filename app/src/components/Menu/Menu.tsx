@@ -6,6 +6,7 @@ import { push as pushState } from 'connected-react-router';
 import { logout } from '../../ducks/authentication/actions/authentication';
 import ProfileComponent from '../Profile/Profile';
 import { getProfileInfo } from '../../ducks/profile/actions/profile';
+import { clearMessage } from '../../ducks/message/actions/message';
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
@@ -15,6 +16,26 @@ const MainMenu: React.FC = () => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [userIsValid, setUserIsValid] = useState(true);
     const info = useSelector((state: any) => state.profile);
+    const message = useSelector((state: any) => state.message);
+
+    const countDown = (text: any) => {
+      let secondsToGo = 5;
+      const modal = Modal.success({
+        title: text,
+        content: `This modal will be destroyed after ${secondsToGo} second.`,
+      });
+      const timer = setInterval(() => {
+        secondsToGo -= 1;
+        modal.update({
+          content: `This modal will be destroyed after ${secondsToGo} second.`,
+        });
+      }, 1000);
+      setTimeout(() => {
+        clearInterval(timer);
+        dispatch({ type: 'CLEAR_MESSAGE'});
+        modal.destroy();
+      }, secondsToGo * 1000);
+    }
 
     if (user && logged === "Login") {
       setLogged("Logout");
@@ -29,9 +50,14 @@ const MainMenu: React.FC = () => {
       setPreviewVisible(true);
       setUserIsValid(false);
     }
+
+    if (message && message.message) {
+      countDown(message.message);
+    }
     
     useEffect(() => {
-      dispatch(getProfileInfo(user, null));
+      if (user)
+        dispatch(getProfileInfo(user, null));
     }, [user, dispatch]);
 
     const handleClick = (key: any) => {

@@ -13,14 +13,9 @@ import { login } from '../../../../ducks/authentication/actions/authentication';
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
-
-  const message = useSelector((state: any) => state.message);
 
   const { t } = useTranslation('authentication');
   const dispatch = useDispatch();
-
-  if (message && message.message !== '' && visible === false) setVisible(true);
 
   const goToSignup = () => dispatch(pushState('/auth/signup'));
   const goToRecovery = () => dispatch(pushState('/auth/recovery'));
@@ -31,20 +26,6 @@ const Login: React.FC = () => {
     setLoading(false);
   };
 
-  const handleClose = () => {
-    setVisible(false);
-    dispatch({ type: 'CLEAR_MESSAGE' });
-  };
-
-  const errorMessage = (
-    <Alert 
-      style={{ margin: '16px 0' }} 
-      message={ message.message } 
-      type="error" 
-      closable 
-      afterClose={handleClose}/>
-  );
-
   return (
     <Row justify="center" align="middle">
       <Form
@@ -52,8 +33,6 @@ const Login: React.FC = () => {
         name="login"
         onFinish={handleLogin}
         onFinishFailed={console.error}>
-
-        { visible ? errorMessage : null }
         
         <Form.Item
           label={t('username')}
