@@ -9,6 +9,7 @@ import relationship from './relationship/relationship';
 import search from './search/search';
 import { chat } from './chat/chat';
 import { chatRoom } from './chat/chat';
+import notification from './notification/notifications';
 
 const reducer = (history: History) => combineReducers({
   authentication,
@@ -18,6 +19,7 @@ const reducer = (history: History) => combineReducers({
   search,
   chat,
   chatRoom,
+  notification,
   router: connectRouter(history)
 });
 

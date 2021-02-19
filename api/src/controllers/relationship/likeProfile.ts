@@ -1,6 +1,7 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { info, internalError } from '../../shared/utils';
 import { createRelationship, getRelationship, getReverseRelationship, updateRelationship } from '../../shared/neo4j/queries';
+import { addNotifications, NOTIFICATION_LIKE, NOTIFICATION_LOST_MATCH, NOTIFICATION_NEW_MATCH } from '../notification/addNotification';
 
 
 
@@ -19,12 +20,21 @@ export const likeProfile = async (req: any, res: any) => {
       match = true;
     if (!relationship) {
       relationship = await createRelationship({ token, username, match, block, like}, session);
+      match ? addNotifications(token, username, NOTIFICATION_NEW_MATCH) 
+      && addNotifications(token, '', NOTIFICATION_LIKE) 
+      && addNotifications(token, username, NOTIFICATION_LIKE)
+      : addNotifications(token, username, NOTIFICATION_LIKE);
     } else if (relationship.properties.Like === true){
         like = false;
         match = false;
         relationship = await updateRelationship({ token, username, match, block, like}, session);
+        addNotifications(token, username, NOTIFICATION_LOST_MATCH);
     } else {
       relationship = await updateRelationship({ token, username, match, block, like}, session);
+      match ? addNotifications(token, username, NOTIFICATION_NEW_MATCH) 
+      && addNotifications(token, '', NOTIFICATION_LIKE) 
+      && addNotifications(token, username, NOTIFICATION_LIKE)
+      : addNotifications(token, username, NOTIFICATION_LIKE);
     }
 
     like ? info(`user liked`) : info(`user unliked`);

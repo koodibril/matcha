@@ -20,6 +20,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const path = window.location.pathname.split('/');
     if (path.length === 3 && path[1] === 'profile') {
+      console.log('getting' + path[2])
       setReading(true);
       dispatch(getProfileInfo(user, path[2]));
       dispatch(getRelationship(user, path[2]));
@@ -33,7 +34,7 @@ const Profile: React.FC = () => {
 
   const readInfo = (
     <Row justify="center" align="middle">
-        { info && info.payload ? <UserInfoHolderComponent info={info}></UserInfoHolderComponent> : null}
+        { info && info.payload ? <UserInfoHolderComponent info={info.payload}></UserInfoHolderComponent> : null}
     </Row>);
 
   return ( info && info.payload ?

@@ -30,9 +30,10 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Location,
     Latitude,
     Longitude,
-    Valid
+    Valid,
+    Distance
   } = res.data.userInfo.properties;
-  const info = { Email, Username, Age, Bio, Gender, Sexo, Interests, Pictures, Location, Latitude, Longitude, Valid}
+  const info = { Email, Username, Age, Bio, Gender, Sexo, Interests, Pictures, Location, Distance, Latitude, Longitude, Valid}
   dispatch({ type: 'LOADING_PROFILE_SUCCESS', payload: info });
   return Promise.resolve();
 }

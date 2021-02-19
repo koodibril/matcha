@@ -10,6 +10,7 @@ interface UserOptions {
   bio?: string;
   interests?: string[];
   pictures?: string[];
+  notifications?: string[];
   active?: boolean;
   valid?: boolean;
   token?: string;
@@ -76,6 +77,9 @@ const queryupdateUserPictures = generateUpdateQuery('match', 'user', ['username'
 const queryUpdateUserInfo = generateUpdateQuery('match', 'user', ['token'], ['username', 'email', 'active'], false);;
 const queryUpdateUserData = generateUpdateQuery('match', 'user', ['token'], ['age', 'gender', 'sexo', 'bio', 'interests', 'location', 'latitude', 'longitude', 'valid'], false);;
 const queryUpdatePassword = generateUpdateQuery('match', 'user', ['token'], ['password'], false);
+const queryUpdateUserNotification = generateUpdateQuery('match', 'user', ['token'], ['notifications'], false);
+const queryUpdateUsernameNotification = generateUpdateQuery('match', 'user', ['username'], ['notifications'], false);
+
 
 const queryCreateRelationship = generateRelationshipQuery('create', ['user', 'user'], ['token', 'username'], ['match', 'block', 'like']);
 const queryGetRelationship = generateGetRelationshipQuery(['user', 'user'], ['token', 'username']);
@@ -103,6 +107,8 @@ export const updateToken = async (options: UserOptions, session: Session) => (aw
 export const updateUserPictures = async (options: UserOptions, session: Session) => (await runQuery(queryupdateUserPictures, options, session) as string);
 export const updateUserInfo = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUserInfo, options, session) as string);
 export const updateUserData = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUserData, options, session) as string);
+export const updateUserNotification = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUserNotification, options, session) as string);
+export const updateUsernameNotification = async (options: UserOptions, session: Session) => (await runQuery(queryUpdateUsernameNotification, options, session) as string);
 export const updatePassword = async (options: UserOptions, session: Session) => (await runQuery(queryUpdatePassword, options, session) as string);
 export const createRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryCreateRelationship, options, session) as string);
 export const getRelationship = async (options: RelationshipOptions, session: Session) => (await runQuery(queryGetRelationship, options, session) as string);
