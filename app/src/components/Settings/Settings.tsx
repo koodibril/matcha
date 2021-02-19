@@ -12,7 +12,7 @@ const Settings: React.FC = () => {
   return (
     <>
         <Row>
-            
+            Change password/username/email
         </Row>
     </>
   )

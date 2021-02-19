@@ -59,7 +59,6 @@ const MainMenu: React.FC = () => {
         >
           <Menu.Item key="home" icon={<HomeOutlined />}>Home</Menu.Item>
           <Menu.Item key="profile" icon={<UserOutlined />}>Profile</Menu.Item>
-          <Menu.Item key="search" icon={<SearchOutlined />}>Search</Menu.Item>
           <Menu.Item key="chat" icon={<WechatOutlined />}>Chat</Menu.Item>
           <Menu.Item key="notifications" icon={<MailOutlined />}>Notifications</Menu.Item>
           <Menu.Item key="settings" icon={<SettingOutlined />}>Settings</Menu.Item>
