@@ -18,12 +18,20 @@ const MainMenu: React.FC = () => {
     const info = useSelector((state: any) => state.profile);
     const message = useSelector((state: any) => state.message);
 
-    const countDown = (text: any) => {
-      let secondsToGo = 5;
-      const modal = Modal.success({
-        title: text,
-        content: `This modal will be destroyed after ${secondsToGo} second.`,
-      });
+    const countDown = (text: any, error: boolean) => {
+      let secondsToGo = 3;
+      let modal: any;
+      if (error) {
+        modal = Modal.error({
+          title: text,
+          content: `This modal will be destroyed after ${secondsToGo} second.`,
+        });
+      } else {
+        modal = Modal.success({
+          title: text,
+          content: `This modal will be destroyed after ${secondsToGo} second.`,
+        });
+      }
       const timer = setInterval(() => {
         secondsToGo -= 1;
         modal.update({
@@ -52,7 +60,7 @@ const MainMenu: React.FC = () => {
     }
 
     if (message && message.message) {
-      countDown(message.message);
+      countDown(message.message, message.error);
     }
     
     useEffect(() => {

@@ -13,7 +13,7 @@ const PROFILE_UPDATE_ENDPOINT = '/api/profile/update';
 
 const handleError = (dispatch: any, error: any) => {
   const message = (error.response.data.message || error.response.data.errno);
-  dispatch({ type: 'SET_MESSAGE', payload: message});
+  dispatch({ type: 'ERROR_MESSAGE', payload: message});
   return Promise.reject();
 } 
 

@@ -9,7 +9,6 @@ const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 const RELATIONSHIP_LIKE_ENDPOINT = '/api/relationship/like';
 const RELATIONSHIP_BLOCK_ENDPOINT = '/api/relationship/block';
 const RELATIONSHIP_GET_ENDPOINT = '/api/relationship/get';
-const RELATIONSHIP_GET_MATCH_ENDPOINT = '/api/relationship/matched';
 
 const setRelationship = (dispatch: any, res: any) => {
   let Block = false;
@@ -27,7 +26,7 @@ const setRelationship = (dispatch: any, res: any) => {
 
 const handleError = (dispatch: any, error: any) => {
     const message = (error.response.data.message || error.response.data.errno);
-    dispatch({ type: 'SET_MESSAGE', payload: message});
+    dispatch({ type: 'ERROR_MESSAGE', payload: message});
     return Promise.reject();
   } 
 
