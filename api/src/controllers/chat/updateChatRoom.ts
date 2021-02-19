@@ -1,6 +1,7 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { info, internalError } from '../../shared/utils';
 import { getChatRoom, getUserInfoT, updateChatRoom } from '../../shared/neo4j/queries';
+import { addNotifications, NOTIFICATION_MESSAGE } from '../notification/addNotification';
 
 
 
@@ -19,6 +20,7 @@ export const updateChatRoomUser = async (req: any, res: any) => {
     const newMessage = "User:" + userOne.properties.Username + "Date:" + 10 + "Message:" + message;
     messages.push(newMessage);
     chatRoom = await updateChatRoom({ identity, messages}, session);
+    addNotifications(token, username, NOTIFICATION_MESSAGE);
 
     info(`chatRoom collected`);
     return res

@@ -33,7 +33,7 @@ const Profile: React.FC = () => {
 
   const readInfo = (
     <Row justify="center" align="middle">
-        { info && info.payload ? <UserInfoHolderComponent info={info}></UserInfoHolderComponent> : null}
+        { info && info.payload ? <UserInfoHolderComponent info={info.payload}></UserInfoHolderComponent> : null}
     </Row>);
 
   return ( info && info.payload ?

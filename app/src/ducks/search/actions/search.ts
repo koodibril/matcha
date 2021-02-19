@@ -13,7 +13,6 @@ const setSearchResult = (dispatch: any, res: any) => {
     data.forEach((element: any) => {
       if (!element.properties.relationship)
       {
-        // desole c'est sale x) soit ici soit dans le back, donc a voir
         const Block = false;
         const Like = false;
         const Match = false;
