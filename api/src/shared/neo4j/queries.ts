@@ -37,7 +37,7 @@ interface ChatRoom {
   identity?: number;
   username?: string;
   token?: string;
-  messages?: [];
+  messages?: string[];
 }
 
 
