@@ -1,24 +1,23 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { push as pushState } from 'connected-react-router';
-import { activateUser } from '../../../../ducks/authentication/actions/authentication';
+import React, { useEffect } from "react";
+import { useAuthentication } from "src/ducks/authentication/actions/authentication";
+import { useNavigation } from "src/ducks/navigation/navigation";
+import { getMessage } from "src/ducks/message/message";
 
 const Activate: React.FC = () => {
-  const dispatch = useDispatch();
-  const message = useSelector((state: any) => state.message);
+  const { activateUser } = useAuthentication();
+  const { pushState } = useNavigation();
+  const message = getMessage();
 
   useEffect(() => {
-    const path = window.location.pathname.split('/');
-    if (path.length === 4) {
-      dispatch(activateUser(path[3]));
-    } else dispatch(pushState('/auth'));
-  }, [dispatch]);
+    const path = window.location.pathname.split("/");
 
-  return (
-    <>
-        { message.message }
-    </>
-  )
-}
+    if (path.length === 4) {
+      activateUser(path[3]);
+    } else pushState("/auth");
+  }, [activateUser, pushState]);
+
+  return <>{message?.message}</>;
+};
 
 export default Activate;
+

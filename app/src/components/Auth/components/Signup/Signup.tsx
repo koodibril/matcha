@@ -1,111 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { push as pushState } from 'connected-react-router';
+import { push as pushState } from "connected-react-router";
 
-import { Row, Form, Button, Input, Alert } from 'antd';
-import { Spin } from 'antd';
+import { Row, Form, Button, Input, Alert } from "antd";
+import { Spin } from "antd";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-import { SignupData } from './Signup.d';
+import { SignupData } from "./Signup.d";
 
-import { signup } from '../../../../ducks/authentication/actions/authentication';
+import { useAuthentication } from "src/ducks/authentication/actions/authentication";
+import { useNavigation } from "src/ducks/navigation/navigation";
+import { getMessage, useMessage } from "src/ducks/message/message";
 
 const Signup: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const { t } = useTranslation('authentication');
-  const dispatch = useDispatch();
-  const message = useSelector((state: any) => state.message);
-  
-  if (message && message.message !== '' && visible === false) setVisible(true);
+  const { t } = useTranslation("authentication");
+  const { signup } = useAuthentication();
+  const { pushState } = useNavigation();
+  const { clearMessage } = useMessage();
+  const message = getMessage();
 
-  const goToLogin = () => dispatch(pushState('/auth/login'))
+  if (message && message.message !== "" && visible === false) setVisible(true);
+
+  const goToLogin = () => pushState("/auth/login");
   const handleSignup = (user: SignupData) => {
     setLoading(true);
-    dispatch(signup({ ...user }));
+    signup({ ...user });
     setLoading(false);
   };
 
   const handleClose = () => {
     setVisible(false);
-    dispatch({ type: 'CLEAR_MESSAGE' });
+    clearMessage();
   };
 
   const errorMessage = (
-    <Alert 
-      style={{ margin: '16px 0' }} 
-      message={ message.message } 
-      type="error" 
-      closable 
-      afterClose={handleClose}/>
+    <Alert
+      style={{ margin: "16px 0" }}
+      message={message?.message}
+      type="error"
+      closable
+      afterClose={handleClose}
+    />
   );
 
   return (
     <Row justify="center" align="middle">
       <Form
-        style={{ margin: '16px 0' }}
+        style={{ margin: "16px 0" }}
         name="signup"
         onFinish={handleSignup}
-        onFinishFailed={console.error}>
-        
-        { visible ? errorMessage : null }
+        onFinishFailed={console.error}
+      >
+        {visible ? errorMessage : null}
 
         <Form.Item
-          label={t('username')}
+          label={t("username")}
           name="username"
-          rules={[{
-            required: true,
-            message: t('username_missing')
-          }]}>
+          rules={[
+            {
+              required: true,
+              message: t("username_missing"),
+            },
+          ]}
+        >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label={t('email')}
+          label={t("email")}
           name="email"
-          rules={[{
-            required: true,
-            message: t('email_missing'),
-            type: 'email'
-          }]}>
+          rules={[
+            {
+              required: true,
+              message: t("email_missing"),
+              type: "email",
+            },
+          ]}
+        >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label={t('password')}
+          label={t("password")}
           name="password"
-          rules={[{
-            required: true,
-            message: t('password_missing')
-          }, {
-            min: 8,
-            message: t('password_too_short')
-          }, {
-            pattern: new RegExp("^.*[0-9]$"), // LES REGEX ICI C'EST DE LA GROSSE MERDE (regexp prend pas le \d pour les chiffres, mais pour un char d...)
-            message: t('password_contain')
-          }]}>
+          rules={[
+            {
+              required: true,
+              message: t("password_missing"),
+            },
+            {
+              min: 8,
+              message: t("password_too_short"),
+            },
+            {
+              pattern: new RegExp("^.*[0-9]$"), // LES REGEX ICI C'EST DE LA GROSSE MERDE (regexp prend pas le \d pour les chiffres, mais pour un char d...)
+              message: t("password_contain"),
+            },
+          ]}
+        >
           <Input.Password />
         </Form.Item>
 
         <Form.Item>
           <Button type="text" onClick={goToLogin}>
-            {t('go_to_login')}
+            {t("go_to_login")}
           </Button>
         </Form.Item>
 
         <Form.Item>
-          <Spin spinning={loading} >
+          <Spin spinning={loading}>
             <Button type="primary" htmlType="submit">
-              {t('signup')}
+              {t("signup")}
             </Button>
           </Spin>
         </Form.Item>
       </Form>
     </Row>
-  )
-}
+  );
+};
 
 export default Signup;
+
