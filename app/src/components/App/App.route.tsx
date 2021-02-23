@@ -1,14 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from "react-router-dom";
 
-import HomeComponent from '../Home/Home';
-import AuthComponent from '../Auth/Auth';
-import ProfileComponent from '../Profile/Profile';
-import SettingsComponent from '../Settings/Settings';
-import ChatComponent from '../Chat/Chat';
-import NotificationsComponent from '../Notifications/Notifications';
-
+import HomeComponent from "../Home/Home";
+import AuthComponent from "../Auth/Auth";
+import ProfileComponent from "../Profile/Profile";
+import SettingsComponent from "../Settings/Settings";
+import ChatComponent from "../Chat/Chat";
+import NotificationsComponent from "../Notifications/Notifications";
 
 const AppRoutes: React.FC = () => (
   <>
@@ -24,3 +23,4 @@ const AppRoutes: React.FC = () => (
 );
 
 export default AppRoutes;
+

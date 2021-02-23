@@ -1,81 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { Form, Input, Button, Spin, Row, Alert } from 'antd';
-import { push as pushState } from 'connected-react-router';
+import { Form, Input, Button, Spin, Row } from "antd";
 
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from "react-i18next";
 
-import { LoginData } from './Login.d';
+import { LoginData } from "./Login.d";
 
-import { login } from '../../../../ducks/authentication/actions/authentication';
-
+import { useAuthentication } from "src/ducks/authentication/actions/authentication";
+import { useNavigation } from "src/ducks/navigation/navigation";
+import { getMessage } from "src/ducks/message/message";
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  const { t } = useTranslation('authentication');
-  const dispatch = useDispatch();
+  const message = getMessage();
 
-  const goToSignup = () => dispatch(pushState('/auth/signup'));
-  const goToRecovery = () => dispatch(pushState('/auth/recovery'));
+  const { t } = useTranslation("authentication");
+  const { login } = useAuthentication();
+  const { pushState } = useNavigation();
+
+  if (message?.message !== "" && visible === false) setVisible(true);
+
+  const goToSignup = () => pushState("/auth/signup");
+  const goToRecovery = () => pushState("/auth/recovery");
 
   const handleLogin = ({ username, password }: LoginData) => {
     setLoading(true);
-    dispatch(login(username, password));
+    login(username, password);
     setLoading(false);
   };
 
   return (
     <Row justify="center" align="middle">
       <Form
-        style={{ margin: '16px 0' }}
+        style={{ margin: "16px 0" }}
         name="login"
         onFinish={handleLogin}
-        onFinishFailed={console.error}>
-        
+        onFinishFailed={console.error}
+      >
         <Form.Item
-          label={t('username')}
+          label={t("username")}
           name="username"
-          rules={[{
-            required: true,
-            message: t('username_missing')
-          }]}>
+          rules={[
+            {
+              required: true,
+              message: t("username_missing"),
+            },
+          ]}
+        >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label={t('password')}
+          label={t("password")}
           name="password"
-          rules={[{
-            required: true,
-            message: t('password_missing')
-          }]}>
+          rules={[
+            {
+              required: true,
+              message: t("password_missing"),
+            },
+          ]}
+        >
           <Input.Password />
         </Form.Item>
 
         <Form.Item>
           <Button type="text" onClick={goToSignup}>
-            {t('go_to_signup')}
+            {t("go_to_signup")}
           </Button>
         </Form.Item>
 
         <Form.Item>
           <Button type="text" onClick={goToRecovery}>
-            {t('go_to_recovery')}
+            {t("go_to_recovery")}
           </Button>
         </Form.Item>
 
         <Form.Item>
           <Spin spinning={loading}>
             <Button type="primary" htmlType="submit">
-              {t('login')}
+              {t("login")}
             </Button>
           </Spin>
         </Form.Item>
       </Form>
     </Row>
-  )
-}
+  );
+};
 
-export default Login; 
+export default Login;
+
