@@ -12,7 +12,7 @@ import { SignupData } from "./Signup.d";
 
 import { useAuthentication } from "src/ducks/authentication/actions/authentication";
 import { useNavigation } from "src/ducks/navigation/navigation";
-import { getMessage, useMessage } from "src/ducks/message/message";
+import { useMessage, useMessageActions } from "src/ducks/message/message";
 
 const Signup: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -21,8 +21,8 @@ const Signup: React.FC = () => {
   const { t } = useTranslation("authentication");
   const { signup } = useAuthentication();
   const { pushState } = useNavigation();
-  const { clearMessage } = useMessage();
-  const message = getMessage();
+  const { clearMessage } = useMessageActions();
+  const message = useMessage();
 
   if (message && message.message !== "" && visible === false) setVisible(true);
 

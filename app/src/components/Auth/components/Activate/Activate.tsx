@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useAuthentication } from "src/ducks/authentication/actions/authentication";
 import { useNavigation } from "src/ducks/navigation/navigation";
-import { getMessage } from "src/ducks/message/message";
+import { useMessage } from "src/ducks/message/message";
 
 const Activate: React.FC = () => {
   const { activateUser } = useAuthentication();
   const { pushState } = useNavigation();
-  const message = getMessage();
+  const message = useMessage();
 
   useEffect(() => {
     const path = window.location.pathname.split("/");
@@ -20,4 +20,3 @@ const Activate: React.FC = () => {
 };
 
 export default Activate;
-

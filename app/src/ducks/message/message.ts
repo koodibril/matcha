@@ -20,12 +20,11 @@ export default function (state = initialState, action: any) {
   }
 }
 
-export const getMessage = () =>
-  useSelector<RootStateOrAny, any>((state) => state.message);
-
 export const clearMessage = () => ({ type: "CLEAR_MESSAGE" });
 
-export const useMessage = () => {
+export const useMessage = () =>
+  useSelector((state: RootState) => state.message);
+export const useMessageActions = () => {
   const dispatch = useDispatch();
 
   return useMemo(
