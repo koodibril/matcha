@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 
-import { push as pushState } from "connected-react-router";
-
 import { Row, Form, Button, Input, Alert } from "antd";
 import { Spin } from "antd";
 
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { SignupData } from "./Signup.d";
@@ -125,4 +122,3 @@ const Signup: React.FC = () => {
 };
 
 export default Signup;
-

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
 import { Form, Input, Button, Spin, Row, Alert } from "antd";
-import { push as pushState } from "connected-react-router";
 
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 
 import { LoginData } from "./Login.d";
 
@@ -110,4 +108,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
