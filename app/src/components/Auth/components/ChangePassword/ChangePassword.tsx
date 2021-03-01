@@ -67,8 +67,8 @@ const ChangePassword: React.FC = () => {
       pattern: new RegExp("^.*[0-9]$"), // LES REGEX ICI C'EST DE LA GROSSE MERDE (regexp prend pas le \d pour les chiffres, mais pour un char d...)
       message: t("password_contain"),
     },
-    ({ getFieldValue }) => ({
-      validator(_, value) {
+    ({ getFieldValue }: { getFieldValue: (password: string) => string }) => ({
+      validator(_: any, value: string) {
         if (!value || getFieldValue("password") === value) {
           return Promise.resolve();
         }
@@ -129,4 +129,3 @@ const ChangePassword: React.FC = () => {
 };
 
 export default ChangePassword;
-

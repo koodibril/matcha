@@ -1,9 +1,14 @@
 import { useMemo } from "react";
-import { RootStateOrAny, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "src/store/configure";
 
 import { SET_MESSAGE, CLEAR_MESSAGE } from "./actions/message";
 
 const initialState = "";
+
+export interface MessageType {
+  message?: string;
+}
 
 export default function (state = initialState, action: any) {
   const { type, payload } = action;
@@ -34,4 +39,3 @@ export const useMessageActions = () => {
     [dispatch]
   );
 };
-

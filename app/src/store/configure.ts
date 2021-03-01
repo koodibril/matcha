@@ -4,10 +4,19 @@ import { routerMiddleware } from "connected-react-router";
 import thunk from "redux-thunk";
 
 import reducer from "src/ducks/reducer";
+import { MessageType } from "src/ducks/message/message";
+import { AuthenticationType } from "src/ducks/authentication/authentication";
+import { ProfileType } from "src/ducks/profile/profile";
 
 export const history = createBrowserHistory();
 
 const composeEnhancers = (f: any) => f;
+
+export interface RootState {
+  message: MessageType;
+  authentication: AuthenticationType;
+  profile: ProfileType;
+}
 
 const configure = () =>
   createStore(

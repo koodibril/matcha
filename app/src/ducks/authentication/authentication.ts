@@ -4,7 +4,15 @@ const LOGOUT = "LOGOUT";
 
 const initialState = {};
 
-const authentication = (state = initialState, action: { type: string, payload: any }) => {
+export interface AuthenticationType {
+  isAuthenticated?: boolean;
+  user: Promise<any>;
+}
+
+const authentication = (
+  state = initialState,
+  action: { type: string; payload: any }
+) => {
   const { type, payload } = action;
 
   switch (type) {
