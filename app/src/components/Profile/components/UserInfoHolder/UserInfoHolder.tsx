@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { Row, Alert, Typography, Button} from 'antd';
+import { Row, Typography, Button} from 'antd';
 import { HeartOutlined, HeartFilled, StopOutlined } from '@ant-design/icons';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Modal from 'antd/lib/modal/Modal';
 import { blockUser, likeUser } from '../../../../ducks/relationship/actions/relationship';
 

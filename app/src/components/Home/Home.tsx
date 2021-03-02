@@ -11,11 +11,6 @@ const Home: React.FC = () => {
 
   if (!user) dispatch(pushState('/auth'));
 
-  const logout = () => {
-    localStorage.removeItem('user');
-    dispatch(pushState('/'));
-  }
-
   return (
   <Row justify="center" align="middle">
     <Col span={6}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, Modal, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getProfileInfo, removeProfilePicture } from '../../../../ducks/profile/actions/profile';
 
 function getBase64(file: any) {

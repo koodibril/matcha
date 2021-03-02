@@ -8,20 +8,13 @@ import { LoginData } from "./Login.d";
 
 import { useAuthentication } from "src/ducks/authentication/actions/authentication";
 import { useNavigation } from "src/ducks/navigation/navigation";
-import { useMessage, useMessageActions } from "src/ducks/message/message";
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
-
-  const message = useMessage();
-  const { clearMessage } = useMessageActions();
 
   const { t } = useTranslation("authentication");
   const { login } = useAuthentication();
   const { pushState } = useNavigation();
-
-  if (message?.message !== "" && visible === false) setVisible(true);
 
   const goToSignup = () => pushState("/auth/signup");
   const goToRecovery = () => pushState("/auth/recovery");

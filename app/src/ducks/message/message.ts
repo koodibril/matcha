@@ -8,6 +8,7 @@ const initialState = "";
 
 export interface MessageType {
   message?: string;
+  error: boolean;
 }
 
 export default function (state = initialState, action: any) {

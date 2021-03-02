@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { Menu, Modal } from 'antd';
-import { HomeOutlined, MailOutlined, SettingOutlined, LogoutOutlined, UserOutlined, SearchOutlined, WechatOutlined } from '@ant-design/icons';
+import { HomeOutlined, MailOutlined, SettingOutlined, LogoutOutlined, UserOutlined, WechatOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
 import { logout } from '../../ducks/authentication/actions/authentication';
 import ProfileComponent from '../Profile/Profile';
 import { getProfileInfo } from '../../ducks/profile/actions/profile';
-import { clearMessage } from '../../ducks/message/actions/message';
+import { useMessage, useMessageActions } from "src/ducks/message/message";
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
@@ -16,9 +16,11 @@ const MainMenu: React.FC = () => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [userIsValid, setUserIsValid] = useState(true);
     const info = useSelector((state: any) => state.profile);
-    const message = useSelector((state: any) => state.message);
 
-    const countDown = (text: any, error: boolean) => {
+    const message = useMessage();
+    const { clearMessage } = useMessageActions();
+
+    const countDown = (text: string, error: boolean) => {
       let secondsToGo = 3;
       let modal: any;
       if (error) {
@@ -40,7 +42,7 @@ const MainMenu: React.FC = () => {
       }, 1000);
       setTimeout(() => {
         clearInterval(timer);
-        dispatch({ type: 'CLEAR_MESSAGE'});
+        clearMessage();
         modal.destroy();
       }, secondsToGo * 1000);
     }
