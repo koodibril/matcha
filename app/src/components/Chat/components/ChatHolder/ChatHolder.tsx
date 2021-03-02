@@ -1,5 +1,4 @@
 import { Row, Input, Form } from 'antd';
-import FormItem from 'antd/lib/form/FormItem';
 import React from 'react';
 
 import { useDispatch } from 'react-redux';

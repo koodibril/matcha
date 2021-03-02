@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Row, Form, Button, Input, Alert } from "antd";
+import { Row, Form, Button, Input } from "antd";
 import { Spin } from "antd";
 
 import { useTranslation } from "react-i18next";
@@ -9,19 +9,13 @@ import { SignupData } from "./Signup.d";
 
 import { useAuthentication } from "src/ducks/authentication/actions/authentication";
 import { useNavigation } from "src/ducks/navigation/navigation";
-import { useMessage, useMessageActions } from "src/ducks/message/message";
 
 const Signup: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
 
   const { t } = useTranslation("authentication");
   const { signup } = useAuthentication();
   const { pushState } = useNavigation();
-  const { clearMessage } = useMessageActions();
-  const message = useMessage();
-
-  if (message && message.message !== "" && visible === false) setVisible(true);
 
   const goToLogin = () => pushState("/auth/login");
   const handleSignup = (user: SignupData) => {
@@ -29,21 +23,6 @@ const Signup: React.FC = () => {
     signup({ ...user });
     setLoading(false);
   };
-
-  const handleClose = () => {
-    setVisible(false);
-    clearMessage();
-  };
-
-  const errorMessage = (
-    <Alert
-      style={{ margin: "16px 0" }}
-      message={message?.message}
-      type="error"
-      closable
-      afterClose={handleClose}
-    />
-  );
 
   return (
     <Row justify="center" align="middle">
@@ -53,7 +32,6 @@ const Signup: React.FC = () => {
         onFinish={handleSignup}
         onFinishFailed={console.error}
       >
-        {visible ? errorMessage : null}
 
         <Form.Item
           label={t("username")}

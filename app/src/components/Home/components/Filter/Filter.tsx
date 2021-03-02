@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { push as pushState } from 'connected-react-router';
-import { Button, Form, Row, Select, Slider, Spin } from 'antd';
+import { Button, Form, Row, Slider, Spin } from 'antd';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useTranslation } from 'react-i18next';
 import { getSearchResult } from '../../../../ducks/search/actions/search';

@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Row, Form, Input, Spin, Button, Alert } from "antd";
+import { Row, Form, Input, Spin, Button } from "antd";
 
 import { useAuthentication } from "src/ducks/authentication/actions/authentication";
 import { useNavigation } from "src/ducks/navigation/navigation";
-import { useMessage, useMessageActions } from "src/ducks/message/message";
 
 const ChangePassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState("");
-  const [visible, setVisible] = useState(false);
 
-  const message = useMessage();
-  const { clearMessage } = useMessageActions();
   const { pushState } = useNavigation();
   const { changePassword } = useAuthentication();
   const { t } = useTranslation("authentication");
-
-  if (message?.message !== "" && visible === false) setVisible(true);
 
   useEffect(() => {
     const path = window.location.pathname.split("/");
@@ -32,11 +26,6 @@ const ChangePassword: React.FC = () => {
     setLoading(true);
     changePassword(token, info.password);
     setLoading(false);
-  };
-
-  const handleClose = () => {
-    setVisible(false);
-    clearMessage();
   };
 
   const newPasswordRules = [
@@ -66,28 +55,8 @@ const ChangePassword: React.FC = () => {
     {
       pattern: new RegExp("^.*[0-9]$"), // LES REGEX ICI C'EST DE LA GROSSE MERDE (regexp prend pas le \d pour les chiffres, mais pour un char d...)
       message: t("password_contain"),
-    },
-    ({ getFieldValue }: { getFieldValue: (password: string) => string }) => ({
-      validator(_: any, value: string) {
-        if (!value || getFieldValue("password") === value) {
-          return Promise.resolve();
-        }
-        return Promise.reject(
-          "The two passwords that you entered do not match!"
-        );
-      },
-    }),
+    }
   ];
-
-  const errorMessage = (
-    <Alert
-      style={{ margin: "16px 0" }}
-      message={message?.message}
-      type="error"
-      closable
-      afterClose={handleClose}
-    />
-  );
 
   return (
     <Row justify="center" align="middle">
@@ -97,7 +66,6 @@ const ChangePassword: React.FC = () => {
         onFinish={handleChangePassword}
         onFinishFailed={console.error}
       >
-        {visible ? errorMessage : null}
 
         <Form.Item
           label={t("new password")}
@@ -111,7 +79,17 @@ const ChangePassword: React.FC = () => {
           label={t("confirm new password")}
           name="checkPassword"
           dependencies={["password"]}
-          rules={confirmPasswordRules}
+          rules={confirmPasswordRules && 
+            [({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("password") === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  "The two passwords that you entered do not match!"
+                );
+              },
+            }),]}
         >
           <Input.Password />
         </Form.Item>

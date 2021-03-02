@@ -1,35 +1,25 @@
 import React, { useState } from 'react';
 
-import { Row, Alert, Typography, Button} from 'antd';
+import { Row, Typography, Button} from 'antd';
 import { HeartOutlined, HeartFilled, StopOutlined } from '@ant-design/icons';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Modal from 'antd/lib/modal/Modal';
 import { blockUser, likeUser } from '../../../../ducks/relationship/actions/relationship';
 
 const { Title, Paragraph} = Typography;
 
 const UserInfoHolder: React.FC<{info: any}> = (props) => {
-  const [visible, setVisible] = useState(false);
   const [liked, setLiked] = useState(false);
   const [blockConfirmation, setBlockConfirmation] = useState(false);
   const [init, setInit] = useState(false);
   const user = localStorage.getItem('user');
   const dispatch = useDispatch();
 
-  const message= useSelector((state: any) => state.message);
-  
-  if (message && message.message !== '' && visible === false) setVisible(true);
-
   if (props.info.relationship && !init) {
     setLiked(props.info.relationship.properties.Like);
     setInit(true);
   }
-
-  const handleClose = () => {
-    setVisible(false);
-    dispatch({ type: 'CLEAR_MESSAGE' });
-  };
 
   const handleLike = () => {
     dispatch(likeUser(user, props.info.Username));
@@ -48,15 +38,6 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   const hideModal = () => {
     setBlockConfirmation(false);
   }
-
-  const errorMessage = (
-    <Alert 
-      style={{ margin: '16px 0' }} 
-      message={ message.message } 
-      type="error" 
-      closable 
-      afterClose={handleClose}/>
-  );
 
   return (
     <Row>
@@ -87,7 +68,7 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
               and won't create any notifications. This action is irreversible.
             </Paragraph>
           </Modal>
-      </Typography>) : visible ? errorMessage : null }
+      </Typography>) : null }
     </Row>
   )
 }
