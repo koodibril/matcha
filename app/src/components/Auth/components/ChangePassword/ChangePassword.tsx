@@ -5,15 +5,15 @@ import { Row, Form, Input, Spin, Button } from "antd";
 
 import { useAuthentication } from "src/ducks/authentication/actions/authentication";
 import { useNavigation } from "src/ducks/navigation/navigation";
-import { getMessage, useMessage } from "src/ducks/message/message";
+import { useMessage, useMessageActions } from "src/ducks/message/message";
 
 const ChangePassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState("");
   const [visible, setVisible] = useState(false);
 
-  const message = getMessage();
-  const { clearMessage } = useMessage();
+  const message = useMessage();
+  const { clearMessage } = useMessageActions();
   const { pushState } = useNavigation();
   const { changePassword } = useAuthentication();
   const { t } = useTranslation("authentication");

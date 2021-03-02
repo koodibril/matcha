@@ -1,25 +1,34 @@
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-const LOGIN_FAILURE = 'LOGIN_FAILURE';
-const LOGOUT = 'LOGOUT';
+const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+const LOGIN_FAILURE = "LOGIN_FAILURE";
+const LOGOUT = "LOGOUT";
 
 const initialState = {};
 
-const authentication = (state = initialState, action: { type: string, payload: any }) => {
+export interface AuthenticationType {
+  isAuthenticated?: boolean;
+  user: Promise<any>;
+}
+
+const authentication = (
+  state = initialState,
+  action: { type: string; payload: any }
+) => {
   const { type, payload } = action;
 
   switch (type) {
     case LOGIN_SUCCESS:
       return {
         isAuthenticated: true,
-        user: payload
-      }
+        user: payload,
+      };
     case LOGIN_FAILURE:
-      return {}
+      return {};
     case LOGOUT:
       return {};
     default:
       return state;
   }
-}
+};
 
 export default authentication;
+

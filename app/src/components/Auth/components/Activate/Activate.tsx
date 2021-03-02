@@ -18,4 +18,3 @@ const Activate: React.FC = () => {
 };
 
 export default Activate;
-
