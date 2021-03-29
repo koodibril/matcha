@@ -7,16 +7,16 @@ export const generateQuery = (actions: string[], models: string[], params: strin
     let querie = '';
     querie = actions[0].toUpperCase() + ' ' //MATCH or CREATE
     if (models.length === 1) { //we just want one node
-        querie = querie + '(a: ' + models[0] + ' { ' + generateParams(params[0], false, false) + ' }) ';
+        querie = querie + '(a: ' + toUpper(models[0]) + ' { ' + generateParams(params[0], false, false) + ' }) ';
     } else if (models.length === 2) { // we are going to create a relationship
         querie = querie
-        + '(a: ' + models[0] + ' { ' + generateParams(params[0], false, false) + ' }), '
-        + '(b: ' + models[1] + ' { ' + generateParams(params[1], false, false) + ' }) ';
+        + '(a: ' + toUpper(models[0]) + ' { ' + generateParams(params[0], false, false) + ' }), '
+        + '(b: ' + toUpper(models[1]) + ' { ' + generateParams(params[1], false, false) + ' }) ';
     } else if (models.length === 3) { // we are looking for a relationship between 2 nodes
         querie = querie
-        + '(a: ' + models[0] + ' { ' + generateParams(params[0], false, false) + ' })'
+        + '(a: ' + toUpper(models[0]) + ' { ' + generateParams(params[0], false, false) + ' })'
         + '<-[r: ' + models[1].toUpperCase() + ']->' //the double arrow will return all relationship in both ways
-        + '(b: ' + models[2] + ' { ' + generateParams(params[2], false, false) + ' }) ';
+        + '(b: ' + toUpper(models[2]) + ' { ' + generateParams(params[2], false, false) + ' }) ';
     }
     if (actions.length === 2) { //we want to either create a relationship, or update a user or a relationship or match with a specific search
         querie = querie + actions[1].toUpperCase() + ' '; // CREATE or SET or WHERE
