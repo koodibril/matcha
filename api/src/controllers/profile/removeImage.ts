@@ -11,7 +11,7 @@ export const removeImage = async (req: any, res: any) => {
   const picture = req.body.picture;
 
   try {
-    let userInfo = await getUserInfoT({ token }, session) as any;
+    let userInfo = await getUserInfoT({ token }, session, internalError(res)) as any;
     const url = new URL(picture.url as string);
     let urlpic = url.pathname.slice(1);
     if (urlpic) {
@@ -25,7 +25,7 @@ export const removeImage = async (req: any, res: any) => {
             block = true;
           }
         });
-        userInfo = await updateUserPictures({ username, pictures }, session);
+        userInfo = await updateUserPictures({ username, pictures }, session, internalError(res));
         if (fs.existsSync('./public/' + urlpic))
           fs.unlinkSync('./public/' + urlpic);
       }

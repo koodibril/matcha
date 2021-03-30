@@ -13,7 +13,7 @@ export const updateChatRoomUser = async (req: any, res: any) => {
 
   try {
     let chatRoom = await getChatRoom({token, username}, session) as any;
-    const userOne = await getUserInfoT({token}, session) as any;
+    const userOne = await getUserInfoT({token}, session, internalError(res)) as any;
     let messages = chatRoom.properties.Messages ? chatRoom.properties.Messages : [];
     const identity = chatRoom.identity;
 

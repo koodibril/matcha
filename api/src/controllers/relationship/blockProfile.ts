@@ -13,11 +13,11 @@ export const blockProfile = async (req: any, res: any) => {
     const match = false;
     const block = true;
     const like = false;
-    let relationship = await getRelationship({ token, username }, session) as any;
+    let relationship = await getRelationship({ token, username }, session, internalError(res)) as any;
     if (!relationship) {
-      relationship = await createRelationship({ token, username, match, block, like}, session);
+      relationship = await createRelationship({ token, username, match, block, like}, session, internalError(res));
     } else if (relationship.properties.Block !== true){
-        relationship = await updateRelationship({ token, username, match, block, like}, session);
+        relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
     }
 
     info(`user blocked`);
