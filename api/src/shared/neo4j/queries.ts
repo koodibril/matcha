@@ -91,14 +91,14 @@ const queryUpdateUserNotification = generateQuery(['match'], ['user'], [['token'
 const queryUpdateUsernameNotification = generateQuery(['match'], ['user'], [['username']], ['notifications'], false);
 
 const queryCreateRelationship = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], ['action'], false);
-const queryGetRelationship = generateQuery(['match'], ['user', 'user'], [['token'], ['username']], [], false);
+const queryGetRelationship = generateQuery(['match'], ['user', 'action', 'user'], [['token'], [], ['username']], [], false);
 const queryUpdateRelationship = generateQuery(['match', 'set'], ['user', 'action', 'user'], [['token'], [], ['username']], ['match', 'block', 'like'], false);
 const queryGetMatchedRelationship = generateQuery(['match'], ['user', 'action', 'user'], [['token'], [], []], [], false);
-
+ 
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records.map(p => p.get(0));
 
-export const createUser = async (options: UserOptions, session: Session, callback: any) => await session.run(queryCreateUser, options).catch(callback);
+export const createUser = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryCreateUser, options, session).catch(callback);
 export const getUserMatchCount = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingUser, options, session).catch(callback);
 export const getUserEmailCount = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingEmail, options, session).catch(callback)
 export const getUserPassword = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingPassword, options, session).catch(callback);

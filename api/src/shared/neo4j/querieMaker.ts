@@ -29,7 +29,7 @@ export const generateQuery = (actions: string[], models: string[], params: strin
             }
         } else if (models.length === 2){ //create relationship 
             querie = querie
-            + 'a-[r: ' + updates[0].toUpperCase() + ']->b ';
+            + '(a)-[r: ' + updates[0].toUpperCase() + ']->(b) ';
         } else if (models.length === 3) { //update relationship
             querie = querie
             + generateParams(updates, true, true) + ' ';
