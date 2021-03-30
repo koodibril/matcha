@@ -15,7 +15,7 @@ export const getResearchResult = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUserInfoT({ token }, session, internalError(res)) as any;
-    const results = interests ? await getSearchResult({ ageGap, proximity, popularity, interests }, session) as any : await getSearchResult({ ageGap, proximity, popularity }, session) as any;
+    const results = await getSearchResult({ ageGap, proximity, popularity, interests }, session, internalError(res));
     let index = 0;
     const latitudeOne = userInfo.properties.Latitude;
     const longitudeOne = userInfo.properties.Longitude;

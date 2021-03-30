@@ -3,11 +3,15 @@ const generateParams = (params: (string)[], update: boolean, relationship: boole
     params.map(p => `${update ? relationship ? 'r.' : 'a.' : '' }${toUpper(p)}${update ? ' =' : ':'} $${p.toLowerCase()}`);
 
 
-export const generateQuery = (actions: string[], models: string[], params: string[][], updates: string[], getCount: boolean) => {
+export const generateQuery = (actions: string[], models: string[], params: string[][], updates: string[], conditions: string, getCount: boolean) => {
     let querie = '';
     querie = actions[0].toUpperCase() + ' ' //MATCH or CREATE
     if (models.length === 1) { //we just want one node
-        querie = querie + '(a: ' + toUpper(models[0]) + ' { ' + generateParams(params[0], false, false) + ' }) ';
+        if (params) {
+            querie = querie + '(a: ' + toUpper(models[0]) + ' { ' + generateParams(params[0], false, false) + ' }) ';
+        } else { //querie for search
+            querie = querie + '(a: ' + toUpper(models[0]) + ') ';
+        }
     } else if (models.length === 2) { // we are going to create a relationship
         querie = querie
         + '(a: ' + toUpper(models[0]) + ' { ' + generateParams(params[0], false, false) + ' }), '
@@ -22,7 +26,8 @@ export const generateQuery = (actions: string[], models: string[], params: strin
         querie = querie + actions[1].toUpperCase() + ' '; // CREATE or SET or WHERE
         if (models.length === 1) { //update a user or match a specific search
             if (actions[1] === 'where') { // search query
-                querie = 'MATCH (n: User) WHERE '; // here I guess this query can only be written in brut
+                querie = querie
+                + conditions; // here I guess this query can only be written in brut
             } else if (actions[1] === 'set') { //update query
                 querie = querie
                 + generateParams(updates, true, false) + ' ';
@@ -31,6 +36,16 @@ export const generateQuery = (actions: string[], models: string[], params: strin
             querie = querie
             + '(a)-[r: ' + updates[0].toUpperCase() + ']->(b) ';
         } else if (models.length === 3) { //update relationship
+            querie = querie
+            + generateParams(updates, true, true) + ' ';
+        }
+    }
+    if (actions.length === 3) { //SET after WHERE
+        querie = querie + actions[2].toUpperCase() + ' ';
+        if (models.length === 1) { //Update user or chatroom
+            querie = querie
+            + generateParams(updates, true, false) + ' ';
+        } else if (models.length === 3) { //Update relationship
             querie = querie
             + generateParams(updates, true, true) + ' ';
         }
