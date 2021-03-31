@@ -49,20 +49,20 @@ const queryGetUserInfoT = generateQuery(['match'], ['user'], [['token']], [], ''
 const queryGetUserInfoU = generateQuery(['match'], ['user'], [['username']], [], '', false);
 const queryGetUserInfoE = generateQuery(['match'], ['user'], [['email']], [], '', false);
 
-const queryUpdateToken = `${generateQuery(['match'], ['user'], [['username']], ['token'], '', false)}.Token`;
-const queryUpdateUserPictures = generateQuery(['match'], ['user'], [['username']], ['pictures'], '', false);
-const queryUpdateUserInfo = generateQuery(['match'], ['user'], [['token']], ['username', 'email', 'active'], '', false);;
-const queryUpdateUserData = generateQuery(['match'], ['user'], [['token']], ['age', 'gender', 'sexo', 'bio', 'interests', 'location', 'latitude', 'longitude', 'valid'], '', false);;
-const queryUpdatePassword = generateQuery(['match'], ['user'], [['token']], ['password'], '', false);
-const queryUpdateUserNotification = generateQuery(['match'], ['user'], [['token']], ['notifications'], '', false);
-const queryUpdateUsernameNotification = generateQuery(['match'], ['user'], [['username']], ['notifications'], '', false);
+const queryUpdateToken = `${generateQuery(['match', 'set'], ['user'], [['username']], ['token'], '', false)}.Token`;
+const queryUpdateUserPictures = generateQuery(['match', 'set'], ['user'], [['username']], ['pictures'], '', false);
+const queryUpdateUserInfo = generateQuery(['match', 'set'], ['user'], [['token']], ['username', 'email', 'active'], '', false);;
+const queryUpdateUserData = generateQuery(['match', 'set'], ['user'], [['token']], ['age', 'gender', 'sexo', 'bio', 'interests', 'location', 'latitude', 'longitude', 'valid'], '', false);;
+const queryUpdatePassword = generateQuery(['match', 'set'], ['user'], [['token']], ['password'], '', false);
+const queryUpdateUserNotification = generateQuery(['match', 'set'], ['user'], [['token']], ['notifications'], '', false);
+const queryUpdateUsernameNotification = generateQuery(['match', 'set'], ['user'], [['username']], ['notifications'], '', false);
 
 const queryCreateRelationship = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], ['action'], '', false);
 const queryGetRelationship = generateQuery(['match'], ['user', 'action', 'user'], [['token'], [], ['username']], [], '', false);
 const queryUpdateRelationship = generateQuery(['match', 'set'], ['user', 'action', 'user'], [['token'], [], ['username']], ['match', 'block', 'like'], '', false);
-const queryGetMatchedRelationship = generateQuery(['match'], ['user', 'action', 'user'], [['token'], [], []], [], '', false);
+const queryGetMatchedRelationship = generateQuery(['match', 'where'], ['user', 'action', 'user'], [['token'], [], []], [], 'r.Match = true', false);
 
-const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 'a.Age => $ageGap[0] AND a.Age <= $ageGap[1]', false);
+const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 'a.Age > $ageGap[0] AND a.Age < $ageGap[1]', false);
 
 const queryCreateChatRoom = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], [], 'chatroom', false);
 const queryGetChatRoom = generateQuery(['match'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], [], 'chatroom', false);
@@ -95,5 +95,5 @@ export const getMatchedRelationship = async (options: RelationshipOptions, sessi
 export const getSearchResult = async (options: Filter, session: Session, callback: any) => await runQuery(querySearch, options, session).catch(callback);
 
 export const createChatRoom = async (options: ChatRoom, session: Session, callback: any) => await runQuery(queryCreateChatRoom, options, session).catch(callback);
-export const updateChatRoom = async (options: ChatRoom, session: Session, callback: any) => await runQuery(queryUpdateChatRoom, options, session).catch(callback);
 export const getChatRoom = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetChatRoom, options, session).catch(callback);
+export const updateChatRoom = async (options: ChatRoom, session: Session, callback: any) => await runQuery(queryUpdateChatRoom, options, session).catch(callback);

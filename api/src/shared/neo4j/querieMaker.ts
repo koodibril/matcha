@@ -33,11 +33,11 @@ export const generateQuery = (actions: string[], models: string[], params: strin
     }
     if (actions.length === 2) { //we want to either create a relationship, or update a user or a relationship or match with a specific search
         querie = querie + actions[1].toUpperCase() + ' '; // CREATE or SET or WHERE
-        if (models.length === 1) { //update a user or match a specific search
-            if (actions[1] === 'where') { // search query
-                querie = querie
-                + conditions; // here I guess this query can only be written in brut
-            } else if (actions[1] === 'set') { //update query
+        if (actions[1] === 'where') { // search query
+            querie = querie
+            + conditions + ' '; // here I guess this query can only be written in brut
+        } else if (models.length === 1) { //update a user or match a specific search
+            if (actions[1] === 'set') { //update query
                 querie = querie
                 + generateParams(updates, true, false, false) + ' ';
             }
@@ -70,6 +70,7 @@ export const generateQuery = (actions: string[], models: string[], params: strin
     querie = querie + 'RETURN ' 
     + (getCount ? 'COUNT(' : '(') 
     + (models.length === 1 ? 'a' : (conditions === 'chatroom' ? 'c' : 'r')) + ')';
+    console.log(querie);
     return querie;    
 }
 

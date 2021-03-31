@@ -1,4 +1,4 @@
-import { createRelationship, createUser, getMatchedRelationship, getRelationship, getUserEmailCount, getUserInfoE, getUserInfoT, getUserInfoU, getUserMatchCount, getUserPassword, updatePassword, updateRelationship, updateToken, updateUserData, updateUserInfo, updateUsernameNotification, updateUserNotification, updateUserPictures } from "./queries"
+import { createChatRoom, createRelationship, createUser, getChatRoom, getMatchedRelationship, getRelationship, getSearchResult, getUserEmailCount, getUserInfoE, getUserInfoT, getUserInfoU, getUserMatchCount, getUserPassword, updateChatRoom, updatePassword, updateRelationship, updateToken, updateUserData, updateUserInfo, updateUsernameNotification, updateUserNotification, updateUserPictures } from "./queries"
 import { getSession } from '../../shared/neo4j/neo4j'
 import { internalError } from "../utils";
 
@@ -24,6 +24,8 @@ export const relaseTheKraken = async (res: any) => {
       const match = true;
       const block = true;
       const like = true;
+      const ageGap = [0, 100];
+      const messages = ['kuku'];
 
     try {
         console.log('CREATING USER');
@@ -65,6 +67,16 @@ export const relaseTheKraken = async (res: any) => {
         console.log( await updateRelationship({token, username, match, block, like}, session, internalError(res)));
         console.log('GET RELATIONSHIP WITH MATCH');
         console.log( await getMatchedRelationship({token}, session, internalError(res)));
+
+        console.log('GET SEARCH RESULT WITH AGE GAP');
+        console.log( await getSearchResult({ageGap}, session, internalError(res)));
+
+        console.log('CREATE CHATROOM');
+        console.log( await createChatRoom({token, username}, session, internalError(res)));
+        console.log('GET CHATROOM');
+        console.log( await getChatRoom({token, username}, session, internalError(res)));
+        console.log('UPDATE CHATROOM');
+        console.log( await updateChatRoom({token, username, messages}, session, internalError(res)));
       } catch (e) {
         return internalError(res)(e);
       } finally {
