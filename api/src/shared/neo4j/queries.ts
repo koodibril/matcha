@@ -35,34 +35,10 @@ interface Filter {
 }
 
 interface ChatRoom {
-  identity?: number;
   username?: string;
   token?: string;
   messages?: string[];
 }
-
-
-
-const toUpper = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1).toLowerCase()}`;
-
-const generateGetChatRoomQuery: any = (nodes: string[], params: string[]) => `MATCH (a:${toUpper(nodes[0])}{${toUpper(params[0])}: $${params[0].toLowerCase()}})<-[r1:CHAT]->(b: Chatroom)<-[r2:CHAT]->(c:${toUpper(nodes[1])}{${toUpper(params[1])}: $${params[1].toLowerCase()}}) RETURN b`;
-const generateCreateChatRoomQuery: any = (nodes: string[], params: string[]) => `MATCH (a:${toUpper(nodes[0])}{${toUpper(params[0])}: $${params[0].toLowerCase()}}), (b:${toUpper(nodes[1])}{${toUpper(params[1])}: $${params[1].toLowerCase()}}) CREATE (a)-[r1:CHAT]->(c: Chatroom)-[r2:CHAT]->(b) RETURN c`;
-const generateUpdateChatRoomQuery: any = (action: string, model: string, identity: number, messages: [], getCount: boolean) => `${action.toUpperCase()} (a: ${`${toUpper(model)}`}) WHERE id(a)=$identity SET a.Messages = $messages RETURN ${getCount ? 'COUNT(a)' : 'a'}`;
-
-
-
-
-const queryOldCreateChatRoom = generateCreateChatRoomQuery(['user', 'user'], ['token', 'username'], false);
-const queryOldUpdateChatRoom = generateUpdateChatRoomQuery('match', 'chatroom', 'identity', 'messages', false);
-const queryOldGetChatRoom = generateGetChatRoomQuery(['user', 'user'], ['token', 'username'], false);
-
-
-export const runOldQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
-export const runChatQuery = async (query: string, options: ChatRoom, session: Session) => await (await session.run(query, options))?.records[0]?.get(0);
-
-export const createChatRoom = async (options: ChatRoom, session: Session) => (await runChatQuery(queryOldCreateChatRoom, options, session) as string);
-export const getChatRoom = async (options: UserOptions, session: Session) => (await runChatQuery(queryOldGetChatRoom, options, session) as string);
-export const updateChatRoom = async (options: ChatRoom, session: Session) => (await runChatQuery(queryOldUpdateChatRoom, options, session) as string);
 
 const queryCreateUser = generateQuery(['create'], ['user'], [['username', 'password', 'email', 'active', 'valid', 'token', 'pictures']], [], '', false);
 const queryMatchingUser = generateQuery(['match'], ['user'], [['username']], [], '', true);
@@ -88,6 +64,9 @@ const queryGetMatchedRelationship = generateQuery(['match'], ['user', 'action', 
 
 const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 'a.Age => $ageGap[0] AND a.Age <= $ageGap[1]', false);
 
+const queryCreateChatRoom = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], [], 'chatroom', false);
+const queryGetChatRoom = generateQuery(['match'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], [], 'chatroom', false);
+const queryUpdateChatRoom = generateQuery(['match', 'set'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], ['messages'], 'chatroom', false);
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records.map(p => p.get(0));
 
@@ -114,3 +93,7 @@ export const updateRelationship = async (options: RelationshipOptions, session: 
 export const getMatchedRelationship = async (options: RelationshipOptions, session: Session, callback: any) => await runQuery(queryGetMatchedRelationship, options, session).catch(callback);
 
 export const getSearchResult = async (options: Filter, session: Session, callback: any) => await runQuery(querySearch, options, session).catch(callback);
+
+export const createChatRoom = async (options: ChatRoom, session: Session, callback: any) => await runQuery(queryCreateChatRoom, options, session).catch(callback);
+export const updateChatRoom = async (options: ChatRoom, session: Session, callback: any) => await runQuery(queryUpdateChatRoom, options, session).catch(callback);
+export const getChatRoom = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetChatRoom, options, session).catch(callback);

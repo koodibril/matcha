@@ -10,9 +10,9 @@ export const getChatRoomUser = async (req: any, res: any) => {
   const username = req.body.user;
 
   try {
-    let chatRoom = await getChatRoom({token, username}, session) as any;
+    let chatRoom = await getChatRoom({token, username}, session, internalError(res)) as any;
     if (!chatRoom)
-      chatRoom = await createChatRoom({token, username}, session) as any;
+      chatRoom = await createChatRoom({token, username}, session, internalError(res)) as any;
 
     const messages = chatRoom.properties.Messages;
 
