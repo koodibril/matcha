@@ -12,15 +12,15 @@ export const addNotifications = async (token: string, username: string, notifica
   const session = getSession();
 
   try {
-    let userInfo = username ? await getUserInfoU({username}, session, internalError) : await getUserInfoT({token}, session, internalError) as any;
-    const notifications = userInfo.properties.Notifications ? userInfo.properties.Notifications : [];
+    let userInfo = username ? await getUserInfoU({username}, session, internalError) : await getUserInfoT({token}, session, internalError);
+    const notifications = userInfo[0].properties.Notifications ? userInfo[0].properties.Notifications : [];
 
     const newNotification = 'Viewed:false' + 'Date:' + 10 + 'Notification:' + notification;
     notifications.push(newNotification);
     userInfo = username ? await updateUsernameNotification({username, notifications}, session, internalError) : await updateUserNotification({token, notifications}, session, internalError);
 
     info(`notifications updated`);
-    return (userInfo);
+    return (userInfo[0]);
   } catch (e) {
     return internalError(e);
   } finally {

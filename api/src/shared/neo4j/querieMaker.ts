@@ -70,7 +70,6 @@ export const generateQuery = (actions: string[], models: string[], params: strin
     querie = querie + 'RETURN ' 
     + (getCount ? 'COUNT(' : '(') 
     + (models.length === 1 ? 'a' : (conditions === 'chatroom' ? 'c' : 'r')) + ')';
-    console.log(querie);
     return querie;    
 }
 

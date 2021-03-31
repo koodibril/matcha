@@ -12,11 +12,11 @@ export const updateChatRoomUser = async (req: any, res: any) => {
   const message = req.body.message;
 
   try {
-    let chatRoom = await getChatRoom({token, username}, session, internalError(res)) as any;
-    const userOne = await getUserInfoT({token}, session, internalError(res)) as any;
-    let messages = chatRoom.properties.Messages ? chatRoom.properties.Messages : [];
+    let chatRoom = await getChatRoom({token, username}, session, internalError(res));
+    const userOne = await getUserInfoT({token}, session, internalError(res));
+    let messages = chatRoom[0].properties.Messages ? chatRoom[0].properties.Messages : [];
 
-    const newMessage = "User:" + userOne.properties.Username + "Date:" + 10 + "Message:" + message;
+    const newMessage = "User:" + userOne[0].properties.Username + "Date:" + 10 + "Message:" + message;
     messages.push(newMessage);
     chatRoom = await updateChatRoom({ messages}, session, internalError(res));
     addNotifications(token, username, NOTIFICATION_MESSAGE);

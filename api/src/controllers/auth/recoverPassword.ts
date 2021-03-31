@@ -10,11 +10,11 @@ export const recoverPassword = async (req: any, res: any) => {
   const email = req.body.email;
 
   try {
-    const userInfo = await getUserInfoE({ email }, session, internalError(res)) as any;
-    if (!userInfo)
+    const userInfo = await getUserInfoE({ email }, session, internalError(res));
+    if (!userInfo[0])
         return conflict(res, `No user with this email`);
     
-    sendMail(email, userInfo.properties.Token, userInfo.properties.Username, CHANGE_PASSWORD_EMAIL);
+    sendMail(email, userInfo[0].properties.Token, userInfo[0].properties.Username, CHANGE_PASSWORD_EMAIL);
     
     info(`Email send !`);
     return res

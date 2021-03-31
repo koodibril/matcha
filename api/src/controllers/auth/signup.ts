@@ -21,7 +21,6 @@ export const signup = async (req: any, res: any) => {
 
   try {
     const userMatch = await getUserMatchCount({ username }, session, internalError(res));
-    console.log(userMatch);
     if (userMatch[0] > 0) return conflict(res, `Username (${username}) already in use`);
 
     const emailMatch = await getUserEmailCount({ email }, session, internalError(res));

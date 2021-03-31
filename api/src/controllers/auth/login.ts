@@ -15,18 +15,16 @@ export const login = async (req: any, res: any) => {
 
   try {
     const matchingPassword = await getUserPassword({ username }, session, internalError(res));
-    console.log(matchingPassword);
-    if (!matchingPassword) return conflict(res, `Credentials for (${username}) are incorrect`);
+    if (!matchingPassword[0]) return conflict(res, `Credentials for (${username}) are incorrect`);
     const passwordMatch = await checkPassword(password, matchingPassword[0]);
     if (!passwordMatch) return conflict(res, `Credentials for (${username}) are incorrect`);
 
-    const activated = await getUserInfoU({ username }, session, internalError(res)) as any;
-    if (activated.properties.Active === false) return conflict(res, `You must activate your account, check your emails !`);
+    const activated = await getUserInfoU({ username }, session, internalError(res));
+    if (activated[0].properties.Active === false) return conflict(res, `You must activate your account, check your emails !`);
 
     const token = getToken({ username });
     const updated = await updateToken({ username, token }, session, internalError(res));
-    console.log(updated);
-    if (!updated || token !== updated[0]) return conflict(res, `Error when generating new token for (${username})`);
+    if (!updated[0] || token !== updated[0]) return conflict(res, `Error when generating new token for (${username})`);
 
     info(`User '${username}' logged in`);
     return res

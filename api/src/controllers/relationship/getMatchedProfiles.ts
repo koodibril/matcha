@@ -10,11 +10,11 @@ export const getMatchedProfiles = async (req: any, res: any) => {
   const token = req.body.token;
 
   try {
-    const userInfo = await getUserInfoT({ token }, session, internalError(res)) as any;
+    const userInfo = await getUserInfoT({ token }, session, internalError(res));
     const results = await getMatchedRelationship({ token }, session, internalError(res));
     let index = 0;
-    const latitudeOne = userInfo.properties.Latitude;
-    const longitudeOne = userInfo.properties.Longitude;
+    const latitudeOne = userInfo[0].properties.Latitude;
+    const longitudeOne = userInfo[0].properties.Longitude;
     for (const element of results) {
       const username = element.properties.Username;
       const latitudeTwo = element.properties.Latitude;

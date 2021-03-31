@@ -12,15 +12,15 @@ export const changePassword = async (req: any, res: any) => {
   const password = await hashPassword(req.body.password);
 
   try {
-    const userInfo = await getUserInfoT({ token }, session, internalError(res)) as any;
-    if (!userInfo) {
+    const userInfo = await getUserInfoT({ token }, session, internalError(res));
+    if (!userInfo[0]) {
         return conflict(res, `Your token is invalid`);
     } else {
         await updatePassword({ token, password }, session, internalError(res));
-        const username = userInfo.properties.Username;
+        const username = userInfo[0].properties.Username;
         token = getToken({ username });
         const updated = await updateToken({ username, token }, session, internalError(res));
-        if (!updated || token !== updated) return conflict(res, `Error when generating new token for (${username})`);
+        if (!updated[0] || token !== updated[0]) return conflict(res, `Error when generating new token for (${username})`);
     }
 
     info(`Password Updated !`);
