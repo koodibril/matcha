@@ -9,12 +9,12 @@ const Display: React.FC = () => {
 
     const handleUserList = () => {
       const List = userList.userResult;
-      return (List.map((element: any) => (
-         element.relationship.properties.Block  ? null : (
-          <>
+      return (List.map((element: any, index: number) => (
+         element.relationship.properties && element.relationship.properties.Block  ? null : (
+          <Row key={index}>
             <ImageHolder pictures={element.Pictures} reading={true}></ImageHolder>
             <UserInfoHolderComponent info={element}/>
-          </>)
+          </Row>)
       )));
     }
       

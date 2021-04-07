@@ -16,12 +16,13 @@ export const getMatchedProfiles = async (req: any, res: any) => {
     const latitudeOne = userInfo[0].properties.Latitude;
     const longitudeOne = userInfo[0].properties.Longitude;
     for (const element of results) {
+      console.log(element);
       const username = element.properties.Username;
       const latitudeTwo = element.properties.Latitude;
       const longitudeTwo = element.properties.Longitude;
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
       const relationship = await getRelationship({ token, username}, session, internalError(res));
-      results[index].properties.relationship = relationship;
+      results[index].properties.relationship = relationship[0] && relationship[0].start === userInfo[0].identity ? relationship[0] : relationship[1];
       results[index].properties.Distance = distance;
       index++;
     }

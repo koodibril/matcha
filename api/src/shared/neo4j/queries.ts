@@ -25,6 +25,7 @@ interface RelationshipOptions {
   match?: boolean;
   block?: boolean;
   like?: boolean;
+  identity?: number;
 }
 
 interface Filter {
@@ -40,33 +41,33 @@ interface ChatRoom {
   messages?: string[];
 }
 
-const queryCreateUser = generateQuery(['create'], ['user'], [['username', 'password', 'email', 'active', 'valid', 'token', 'pictures']], [], '', false);
-const queryMatchingUser = generateQuery(['match'], ['user'], [['username']], [], '', true);
-const queryMatchingEmail = generateQuery(['match'], ['user'], [['email']], [], '', true);
-const queryMatchingPassword = `${generateQuery(['match'], ['user'], [['username']], [], '', false)}.Password`;
+const queryCreateUser = generateQuery(['create'], ['user'], [['username', 'password', 'email', 'active', 'valid', 'token', 'pictures']], [], '', 'a', false);
+const queryMatchingUser = generateQuery(['match'], ['user'], [['username']], [], '', 'a', true);
+const queryMatchingEmail = generateQuery(['match'], ['user'], [['email']], [], '', 'a', true);
+const queryMatchingPassword = `${generateQuery(['match'], ['user'], [['username']], [], '', 'a', false)}.Password`;
 
-const queryGetUserInfoT = generateQuery(['match'], ['user'], [['token']], [], '', false);
-const queryGetUserInfoU = generateQuery(['match'], ['user'], [['username']], [], '', false);
-const queryGetUserInfoE = generateQuery(['match'], ['user'], [['email']], [], '', false);
+const queryGetUserInfoT = generateQuery(['match'], ['user'], [['token']], [], '', 'a', false);
+const queryGetUserInfoU = generateQuery(['match'], ['user'], [['username']], [], '', 'a', false);
+const queryGetUserInfoE = generateQuery(['match'], ['user'], [['email']], [], '', 'a', false);
 
-const queryUpdateToken = `${generateQuery(['match', 'set'], ['user'], [['username']], ['token'], '', false)}.Token`;
-const queryUpdateUserPictures = generateQuery(['match', 'set'], ['user'], [['username']], ['pictures'], '', false);
-const queryUpdateUserInfo = generateQuery(['match', 'set'], ['user'], [['token']], ['username', 'email', 'active'], '', false);;
-const queryUpdateUserData = generateQuery(['match', 'set'], ['user'], [['token']], ['age', 'gender', 'sexo', 'bio', 'interests', 'location', 'latitude', 'longitude', 'valid'], '', false);;
-const queryUpdatePassword = generateQuery(['match', 'set'], ['user'], [['token']], ['password'], '', false);
-const queryUpdateUserNotification = generateQuery(['match', 'set'], ['user'], [['token']], ['notifications'], '', false);
-const queryUpdateUsernameNotification = generateQuery(['match', 'set'], ['user'], [['username']], ['notifications'], '', false);
+const queryUpdateToken = `${generateQuery(['match', 'set'], ['user'], [['username']], ['token'], '', 'a', false)}.Token`;
+const queryUpdateUserPictures = generateQuery(['match', 'set'], ['user'], [['username']], ['pictures'], '', 'a', false);
+const queryUpdateUserInfo = generateQuery(['match', 'set'], ['user'], [['token']], ['username', 'email', 'active'], '', 'a', false);;
+const queryUpdateUserData = generateQuery(['match', 'set'], ['user'], [['token']], ['age', 'gender', 'sexo', 'bio', 'interests', 'location', 'latitude', 'longitude', 'valid'], '', 'a', false);;
+const queryUpdatePassword = generateQuery(['match', 'set'], ['user'], [['token']], ['password'], '', 'a', false);
+const queryUpdateUserNotification = generateQuery(['match', 'set'], ['user'], [['token']], ['notifications'], '', 'a', false);
+const queryUpdateUsernameNotification = generateQuery(['match', 'set'], ['user'], [['username']], ['notifications'], '', 'a', false);
 
-const queryCreateRelationship = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], ['action'], '', false);
-const queryGetRelationship = generateQuery(['match'], ['user', 'action', 'user'], [['token'], [], ['username']], [], '', false);
-const queryUpdateRelationship = generateQuery(['match', 'set'], ['user', 'action', 'user'], [['token'], [], ['username']], ['match', 'block', 'like'], '', false);
-const queryGetMatchedRelationship = generateQuery(['match', 'where'], ['user', 'action', 'user'], [['token'], [], []], [], 'r.Match = true', false);
+const queryCreateRelationship = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], ['action'], '', 'r', false);
+const queryGetRelationship = generateQuery(['match'], ['user', 'action', 'user'], [['token'], [], ['username']], [], '', 'r', false);
+const queryUpdateRelationship = generateQuery(['match', 'where', 'set'], ['user', 'action', 'user'], [['token'], [], ['username']], ['match', 'block', 'like'], '(a)-[r]->(b)', 'r', false);
+const queryGetMatchedRelationship = generateQuery(['match', 'where'], ['user', 'action', 'user'], [['token'], [], []], [], 'r.Match = true', 'b', false);
 
-const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 'a.Age > $ageGap[0] AND a.Age < $ageGap[1]', false);
+const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 'a.Age >= $ageGap[0] AND a.Age <= $ageGap[1]', 'a', false);
 
-const queryCreateChatRoom = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], [], 'chatroom', false);
-const queryGetChatRoom = generateQuery(['match'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], [], 'chatroom', false);
-const queryUpdateChatRoom = generateQuery(['match', 'set'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], ['messages'], 'chatroom', false);
+const queryCreateChatRoom = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], [], 'chatroom', 'c', false);
+const queryGetChatRoom = generateQuery(['match'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], [], 'chatroom', 'c', false);
+const queryUpdateChatRoom = generateQuery(['match', 'set'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], ['messages'], 'chatroom', 'c', false);
 
 export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records.map(p => p.get(0));
 

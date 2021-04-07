@@ -3,7 +3,7 @@ const generateParams = (params: (string)[], update: boolean, relationship: boole
     params.map(p => `${update ? relationship ? chatroom ? 'c.' : 'r.' : 'a.' : '' }${toUpper(p)}${update ? ' =' : ':'} $${p.toLowerCase()}`);
 
 
-export const generateQuery = (actions: string[], models: string[], params: string[][], updates: string[], conditions: string, getCount: boolean) => {
+export const generateQuery = (actions: string[], models: string[], params: string[][], updates: string[], conditions: string, toreturn: string, getCount: boolean) => {
     let querie = '';
     querie = actions[0].toUpperCase() + ' ' //MATCH or CREATE
     if (models.length === 1) { //we just want one node
@@ -31,7 +31,7 @@ export const generateQuery = (actions: string[], models: string[], params: strin
         + '<-[r2: ' + models[3].toUpperCase() + ']->' //the double arrow will return all relationship in both ways
         + '(b: ' + toUpper(models[4]) + ' { ' + generateParams(params[1], false, false, false) + ' }) ';
     }
-    if (actions.length === 2) { //we want to either create a relationship, or update a user or a relationship or match with a specific search
+    if (actions.length >= 2) { //we want to either create a relationship, or update a user or a relationship or match with a specific search
         querie = querie + actions[1].toUpperCase() + ' '; // CREATE or SET or WHERE
         if (actions[1] === 'where') { // search query
             querie = querie
@@ -69,7 +69,8 @@ export const generateQuery = (actions: string[], models: string[], params: strin
     }
     querie = querie + 'RETURN ' 
     + (getCount ? 'COUNT(' : '(') 
-    + (models.length === 1 ? 'a' : (conditions === 'chatroom' ? 'c' : 'r')) + ')';
+    + toreturn + ')';
+    console.log(querie);
     return querie;    
 }
 

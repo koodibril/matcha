@@ -18,7 +18,7 @@ export const updateChatRoomUser = async (req: any, res: any) => {
 
     const newMessage = "User:" + userOne[0].properties.Username + "Date:" + 10 + "Message:" + message;
     messages.push(newMessage);
-    chatRoom = await updateChatRoom({ messages}, session, internalError(res));
+    chatRoom = await updateChatRoom({token, username, messages}, session, internalError(res));
     addNotifications(token, username, NOTIFICATION_MESSAGE);
 
     info(`chatRoom collected`);
