@@ -1,6 +1,6 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { info, internalError } from '../../shared/utils';
-import { createRelationship, getRelationship, getReverseRelationship, updateRelationship } from '../../shared/neo4j/queries';
+import { createRelationship, getRelationship, getUserInfoT, updateRelationship } from '../../shared/neo4j/queries';
 import { addNotifications, NOTIFICATION_LIKE, NOTIFICATION_LOST_MATCH, NOTIFICATION_NEW_MATCH } from '../notification/addNotification';
 
 
@@ -14,12 +14,22 @@ export const likeProfile = async (req: any, res: any) => {
     let match = false;
     const block = false;
     let like = true;
-    let relationship = await getRelationship({ token, username }, session) as any;
-    const likedback = await getReverseRelationship({ token, username }, session) as any;
+    let relationships = await getRelationship({ token, username }, session, internalError(res));
+    let relationship;
+    let likedback;
+    const userInfo = await getUserInfoT({ token }, session, internalError(res));
+
+    for (const element of relationships) {
+      if (element.start === userInfo[0].identity)
+        relationship = element;
+      else
+        likedback = element;
+    }
+
     if (likedback && likedback.properties.Like === true)
       match = true;
     if (!relationship) {
-      relationship = await createRelationship({ token, username, match, block, like}, session);
+      relationship = await createRelationship({ token, username, match, block, like}, session, internalError(res));
       match ? addNotifications(token, username, NOTIFICATION_NEW_MATCH) 
       && addNotifications(token, '', NOTIFICATION_LIKE) 
       && addNotifications(token, username, NOTIFICATION_LIKE)
@@ -27,10 +37,10 @@ export const likeProfile = async (req: any, res: any) => {
     } else if (relationship.properties.Like === true){
         like = false;
         match = false;
-        relationship = await updateRelationship({ token, username, match, block, like}, session);
+        relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
         addNotifications(token, username, NOTIFICATION_LOST_MATCH);
     } else {
-      relationship = await updateRelationship({ token, username, match, block, like}, session);
+      relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
       match ? addNotifications(token, username, NOTIFICATION_NEW_MATCH) 
       && addNotifications(token, '', NOTIFICATION_LIKE) 
       && addNotifications(token, username, NOTIFICATION_LIKE)

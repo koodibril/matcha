@@ -12,19 +12,20 @@ export const getProfileInfo = async (req: any, res: any) => {
   const username = req.body.username;
 
   try {
-    const userInfo = username ? await getUserInfoU({ username }, session) as any : await getUserInfoT({ token }, session) as any;
-    if (!userInfo) return conflict(res, `Profile (${username}) doesn't exist`);
+    const userInfoU = username ? await getUserInfoU({ username }, session, internalError(res)) : await getUserInfoT({ token }, session, internalError(res));
+    if (!userInfoU[0]) return conflict(res, `Profile (${username}) doesn't exist`);
 
     if (username) {
-      const userone = await getUserInfoT({token}, session) as any;
-      const latitudeOne = userone.properties.Latitude;
-      const longitudeOne = userone.properties.Longitude;
-      const latitudeTwo = userInfo.properties.Latitude;
-      const longitudeTwo = userInfo.properties.Longitude;
+      const userone = await getUserInfoT({token}, session, internalError(res));
+      const latitudeOne = userone[0].properties.Latitude;
+      const longitudeOne = userone[0].properties.Longitude;
+      const latitudeTwo = userInfoU[0].properties.Latitude;
+      const longitudeTwo = userInfoU[0].properties.Longitude;
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
-      userInfo.properties.Distance = distance;
+      userInfoU[0].properties.Distance = distance;
       await addNotifications(token, username, NOTIFICATION_VISIT);
     }
+    const userInfo = userInfoU[0];
 
     info(`informations collected`);
     return res

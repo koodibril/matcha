@@ -20,11 +20,11 @@ export const signup = async (req: any, res: any) => {
   userParams.password = await hashPassword(password);
 
   try {
-    const userMatch = await getUserMatchCount({ username }, session);
-    if (userMatch > 0) return conflict(res, `Username (${username}) already in use`);
+    const userMatch = await getUserMatchCount({ username }, session, internalError(res));
+    if (userMatch[0] > 0) return conflict(res, `Username (${username}) already in use`);
 
-    const emailMatch = await getUserEmailCount({ email }, session);
-    if (emailMatch > 0) return conflict(res, `Email (${email}) already in use`);
+    const emailMatch = await getUserEmailCount({ email }, session, internalError(res));
+    if (emailMatch[0] > 0) return conflict(res, `Email (${email}) already in use`);
 
     await createUser(userParams, session, internalError(res));
     sendMail(email, token, username, ACTIVATION_EMAIL);

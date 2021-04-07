@@ -16,7 +16,7 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   const user = localStorage.getItem('user');
   const dispatch = useDispatch();
 
-  if (props.info.relationship && !init) {
+  if (props.info.relationship && props.info.relationship.properties && !init) {
     setLiked(props.info.relationship.properties.Like);
     setInit(true);
   }

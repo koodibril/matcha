@@ -9,8 +9,8 @@ export const getNotifications = async (req: any, res: any) => {
   const token = req.body.token;
 
   try {
-    const userInfo = await getUserInfoT({token}, session) as any;
-    const notifications = userInfo.properties.Notifications;
+    const userInfo = await getUserInfoT({token}, session, internalError(res));
+    const notifications = userInfo[0].properties.Notifications;
 
     info(`notifications collected`);
     return res

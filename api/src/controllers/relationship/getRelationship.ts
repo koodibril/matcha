@@ -10,7 +10,7 @@ export const getRelationshipInfo = async (req: any, res: any) => {
   const username = req.body.user;
 
   try {
-    const relationship = await getRelationship({ token, username }, session);
+    const relationship = await getRelationship({ token, username }, session, internalError(res));
 
     info(`relationship collected`);
     return res

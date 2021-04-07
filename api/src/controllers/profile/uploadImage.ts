@@ -25,10 +25,10 @@ export const uploadImage = async (req: any, res: any) => {
       if (fieldname === 'token') {
         try {
           token = val;
-          const userInfo = await getUserInfoT({ token }, session) as any;
-          let pictures = userInfo.properties.Pictures as string[];
-          const username = userInfo.properties.Username;
-          const userDir = './public/users/' + userInfo.identity;
+          const userInfo = await getUserInfoT({ token }, session, internalError(res));
+          let pictures = userInfo[0].properties.Pictures as string[];
+          const username = userInfo[0].properties.Username;
+          const userDir = './public/users/' + userInfo[0].identity;
           if (!fs.existsSync(userDir)) {
               fs.mkdirSync(userDir);
           }
@@ -45,11 +45,11 @@ export const uploadImage = async (req: any, res: any) => {
           let block = false;
           pictures.forEach(function (picture, i) {
             if (picture === '' && !block) {
-              pictures[i] = 'users/' + userInfo.identity + '/' + newFileName;
+              pictures[i] = 'users/' + userInfo[0].identity + '/' + newFileName;
               block = true;
             }
           });
-          await updateUserPictures({ username, pictures }, session);
+          await updateUserPictures({ username, pictures }, session, internalError(res));
         } catch (e) {
           return internalError(res)(e);
         } finally {

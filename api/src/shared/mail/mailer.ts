@@ -9,17 +9,22 @@ export const CHANGE_PASSWORD_EMAIL = "CHANGE_PASSWORD_EMAIL";
 export const sendMail = (dest: string, link: string, username: string, type: string) => {
   let mailOptions;
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: "ssl0.ovh.net",
+    port: 587,
+    secure: false,
     auth: {
       user: SMTP_USERNAME,
       pass: SMTP_SECRET
+    },
+      tls:{
+        ciphers:'SSLv3'
     }
   });
 
   switch (type) {
     case ACTIVATION_EMAIL: {
       mailOptions = {
-        from: 'Matcha Master',
+        from: 'no-reply@koodibril.com',
         to: 'florian.marie.doucet@gmail.com', //don't forget to change to dest ;)
         subject: 'Activate your account',
         text: 'Welcome to MATCHA ' + username + '! To activate your account, click on this link : http://localhost:8080/auth/activate/' + link
@@ -28,7 +33,7 @@ export const sendMail = (dest: string, link: string, username: string, type: str
     }
     case CHANGE_PASSWORD_EMAIL: {
       mailOptions = {
-        from: 'Matcha Master',
+        from: 'no-reply@koodibril.com',
         to: 'florian.marie.doucet@gmail.com',
         subject: 'Change your password',
         text: 'Hello ' + username + '! To change your password, click on this link : http://localhost:8080/auth/password/' + link
