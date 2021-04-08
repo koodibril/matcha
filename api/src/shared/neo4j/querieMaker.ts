@@ -70,7 +70,6 @@ export const generateQuery = (actions: string[], models: string[], params: strin
     querie = querie + 'RETURN ' 
     + (getCount ? 'COUNT(' : '(') 
     + toreturn + ')';
-    console.log(querie);
     return querie;    
 }
 
