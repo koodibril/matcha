@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
 import { Row } from 'antd';
+import FormComponent from './components/Form';
 
 const Settings: React.FC = () => {
     const user = localStorage.getItem('user');
@@ -12,7 +13,7 @@ const Settings: React.FC = () => {
   return (
     <>
         <Row>
-            Change password/username/email
+            <FormComponent></FormComponent>
         </Row>
     </>
   )
