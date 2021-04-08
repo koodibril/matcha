@@ -55,6 +55,8 @@ const queryUpdateUserPictures = generateQuery(['match', 'set'], ['user'], [['use
 const queryUpdateUserInfo = generateQuery(['match', 'set'], ['user'], [['token']], ['username', 'email', 'active'], '', 'a', false);;
 const queryUpdateUserData = generateQuery(['match', 'set'], ['user'], [['token']], ['age', 'gender', 'sexo', 'bio', 'interests', 'location', 'latitude', 'longitude', 'valid'], '', 'a', false);;
 const queryUpdatePassword = generateQuery(['match', 'set'], ['user'], [['token']], ['password'], '', 'a', false);
+const queryUpdateEmail = generateQuery(['match', 'set'], ['user'], [['token']], ['email'], '', 'a', false);
+const queryUpdateUsername = generateQuery(['match', 'set'], ['user'], [['token']], ['username'], '', 'a', false);
 const queryUpdateUserNotification = generateQuery(['match', 'set'], ['user'], [['token']], ['notifications'], '', 'a', false);
 const queryUpdateUsernameNotification = generateQuery(['match', 'set'], ['user'], [['username']], ['notifications'], '', 'a', false);
 
@@ -85,6 +87,8 @@ export const updateUserPictures = async (options: UserOptions, session: Session,
 export const updateUserInfo = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserInfo, options, session).catch(callback);
 export const updateUserData = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserData, options, session).catch(callback);
 export const updatePassword = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdatePassword, options, session).catch(callback);
+export const updateEmail = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateEmail, options, session).catch(callback);
+export const updateUsername = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUsername, options, session).catch(callback);
 export const updateUserNotification = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserNotification, options, session).catch(callback);
 export const updateUsernameNotification = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUsernameNotification, options, session).catch(callback);
 
