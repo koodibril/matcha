@@ -4,6 +4,8 @@ import { signup } from '../controllers/auth/signup';
 import { activateUser } from '../controllers/auth/activate';
 import { changePassword } from '../controllers/auth/changePassword';
 import { recoverPassword } from '../controllers/auth/recoverPassword';
+import { changeEmail } from '../controllers/auth/updateEmail';
+import { changeUsername } from '../controllers/auth/updateUsername';
 
 const router = Router();
 
@@ -11,6 +13,8 @@ router.post('/signup', signup);
 router.post('/login', login);
 router.post('/activate', activateUser);
 router.post('/password', changePassword);
+router.post('/email', changeEmail);
+router.post('/username', changeUsername);
 router.post('/recovery', recoverPassword);
 
 export default router;
