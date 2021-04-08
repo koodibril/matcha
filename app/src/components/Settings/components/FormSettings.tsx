@@ -5,19 +5,16 @@ import { Spin } from "antd";
 
 import { useTranslation } from "react-i18next";
 
-import { SettingsData } from "./Form.d";
+import { SettingsData } from "./FormSettings.d";
 
 import { useAuthentication } from "src/ducks/authentication/actions/authentication";
-import { useNavigation } from "src/ducks/navigation/navigation";
 
-const Signup: React.FC = () => {
+const FormSettings: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const { t } = useTranslation("authentication");
   const { signup } = useAuthentication();
-  const { pushState } = useNavigation();
 
-  const goToLogin = () => pushState("/auth/login");
   const handleSignup = (user: SettingsData) => {
     setLoading(true);
     signup({ ...user });
@@ -82,15 +79,9 @@ const Signup: React.FC = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="text" onClick={goToLogin}>
-            {t("go_to_login")}
-          </Button>
-        </Form.Item>
-
-        <Form.Item>
           <Spin spinning={loading}>
             <Button type="primary" htmlType="submit">
-              {t("signup")}
+              {t("update")}
             </Button>
           </Spin>
         </Form.Item>
@@ -99,4 +90,4 @@ const Signup: React.FC = () => {
   );
 };
 
-export default Form;
+export default FormSettings;
