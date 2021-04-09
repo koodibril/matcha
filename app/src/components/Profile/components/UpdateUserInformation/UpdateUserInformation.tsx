@@ -78,8 +78,7 @@ const UpdateUserInformation: React.FC = () => {
         }}
         style={{ margin: '16px 0' }}
         name="update"
-        onFinish={handleUpdate}
-        onFinishFailed={console.error}>
+        onFinish={handleUpdate}>
 
         <Form.Item>{info.payload.Username}</Form.Item>
         

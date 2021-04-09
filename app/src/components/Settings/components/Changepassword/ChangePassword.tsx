@@ -54,7 +54,6 @@ const ChangePassword: React.FC = () => {
         style={{ margin: "16px 0" }}
         name="signup"
         onFinish={handleChangePassword}
-        onFinishFailed={console.error}
       >
 
         <Form.Item

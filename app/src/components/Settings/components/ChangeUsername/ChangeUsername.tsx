@@ -24,7 +24,6 @@ const ChangeUsername: React.FC = () => {
         style={{ margin: "16px 0" }}
         name="signup"
         onFinish={handleChangeUsername}
-        onFinishFailed={console.error}
       >
 
         <Form.Item

@@ -24,7 +24,6 @@ const ChangeEmail: React.FC = () => {
         style={{ margin: "16px 0" }}
         name="signup"
         onFinish={handleChangeEmail}
-        onFinishFailed={console.error}
       >
 
         <Form.Item

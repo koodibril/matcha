@@ -34,8 +34,7 @@ const Filter: React.FC = () => {
                 age: [18,26],
                 proximity: 24,
                 popularity: [0,10]
-            }}
-            onFinishFailed={console.error}>
+            }}>
             <Form.Item
                 label={t('age')}
                 name="age">

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layout } from 'antd';
+import { Layout, Typography } from 'antd';
 
 import Routes from './App.route';
 
@@ -13,7 +13,9 @@ const { Content, Header } = Layout;
 const App: React.FC = () => (
   <Layout>
     <Header>
-      salut
+      <Typography.Title style={{color: '#fefefe'}}>
+        MATCHA
+      </Typography.Title>
     </Header>
     <MainMenu />
     <Content className={styles.content}>
