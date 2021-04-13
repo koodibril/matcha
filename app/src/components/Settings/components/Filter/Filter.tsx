@@ -8,6 +8,9 @@ import { getSearchResult } from '../../../../ducks/search/actions/search';
 const Filter: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
+    const [ageGap, setAgeGap] = useState([18, 26]);
+    const [proximity, setProximity] = useState(24);
+    const [popularity, setPopularity] = useState([0, 10]);
     const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
     const dispatch = useDispatch();
     const user = localStorage.getItem('user');
@@ -24,81 +27,60 @@ const Filter: React.FC = () => {
         setLoading(false);
     }
 
+    const handleAgeGap = (values: any) => {
+        setAgeGap(values);
+    }
+
+    const handleProximity = (values: any) => {
+        setProximity(values);
+    }
+
+    const handlePopularity = (values: any) => {
+        setPopularity(values);
+    }
+
   return (
-    <Row justify="center" align="middle">
+    <Row justify="center" align="middle" style={{margin: '16px'}}>
         <Form
-            style={{ margin: '16px 0' }}
-            name="login"
-            onFinish={handleFilterChange}
+            name="filter"
+            onValuesChange={handleFilterChange}
             initialValues={{
                 age: [18,26],
                 proximity: 24,
                 popularity: [0,10]
             }}>
             <Form.Item
-                label={t('age')}
-                name="age">
+                label={t('age') + ':   ' + ageGap[0] + ' - ' + ageGap[1] + (ageGap[1] === 80 ? '+' : '')}
+                >
                 <Slider
+                    onChange={handleAgeGap}
                     max={80}
                     min={18}
                     range
-                    defaultValue={[18, 26]}
-                    marks={{
-                    18: '18',
-                    22: '22',
-                    26: '26',
-                    30: '30',
-                    34: '34',
-                    38: '38',
-                    42: '42',
-                    46: '46',
-                    50: '50',
-                    54: '54',
-                    58: '58',
-                    62: '62',
-                    66: '66',
-                    70: '70',
-                    74: '74',
-                    80: '80+'
-                    }}/>
+                    defaultValue={[18, 26]}/>
             </Form.Item>
             <Form.Item
-                label={t('proximity')}
-                name="proximity">
+                label={t('proximity') + ':   ' + proximity}
+                >
                 <Slider
+                    onChange={handleProximity}
                     max={24}
                     min={0}
-                    defaultValue={24}
-                    marks={{
-                    0: '0',
-                    4: '4',
-                    8: '8',
-                    12: '12',
-                    16: '16',
-                    20: '20',
-                    24: '24+',
-                    }}/>
+                    defaultValue={24}/>
             </Form.Item>
             <Form.Item
-                label={t('popularity')}
-                name="popularity">
+                label={t('popularity') + ':   ' + popularity[0] + ' - ' + popularity[1]}
+                >
                 <Slider
+                    onChange={handlePopularity}
                     max={10}
                     min={0}
                     range
-                    defaultValue={[0, 10]}
-                    marks={{
-                    0: '0',
-                    2: '2',
-                    4: '4',
-                    6: '6',
-                    8: '8',
-                    10: "10"
-                    }}/>
+                    defaultValue={[0, 10]}/>
             </Form.Item>
             <Form.Item
                 label={t('interests')}
-                name="interests">
+                >
                 {tagsData.map(tag => (
                 <CheckableTag
                     key={tag}
@@ -107,13 +89,6 @@ const Filter: React.FC = () => {
                     {tag}
                 </CheckableTag>
                 ))}
-            </Form.Item>
-            <Form.Item>
-                <Spin spinning={loading}>
-                    <Button type="primary" htmlType="submit">
-                    {t('search')}
-                    </Button>
-                </Spin>
             </Form.Item>
         </Form>
   </Row>);

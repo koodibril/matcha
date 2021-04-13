@@ -22,7 +22,7 @@ const ChangeEmail: React.FC = () => {
     <Row>
       <Form
         style={{ margin: "16px 0" }}
-        name="signup"
+        name="changeEmail"
         onFinish={handleChangeEmail}
       >
 

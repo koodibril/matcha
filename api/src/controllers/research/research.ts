@@ -14,6 +14,7 @@ export const getResearchResult = async (req: any, res: any) => {
   } = req.body;
 
   try {
+    console.log(req.body);
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
     const results = await getSearchResult({ ageGap, proximity, popularity, interests }, session, internalError(res));
     let index = 0;

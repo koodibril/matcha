@@ -1,8 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { push as pushState } from 'connected-react-router';
-import { Col, Row } from 'antd';
-import FilterComponent from './components/Filter/Filter';
+import { Row } from 'antd';
 import DisplayComponent from './components/Display/Display';
 
 const Home: React.FC = () => {
@@ -13,12 +12,7 @@ const Home: React.FC = () => {
 
   return (
   <Row justify="center" align="middle">
-    <Col span={6}>
-      <FilterComponent></FilterComponent>
-    </Col>
-    <Col span={16}>
       <DisplayComponent></DisplayComponent>
-    </Col>
   </Row>);
 };
 
