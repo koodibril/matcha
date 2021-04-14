@@ -3,6 +3,7 @@ import { Button, Form, Row, Slider, Spin } from 'antd';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useTranslation } from 'react-i18next';
 import { useSearchActions } from '../../../../ducks/search/actions/search';
+import { FilterData } from '../../../Settings/components/Filter/Filter.d';
 
 const Filter: React.FC = () => {
     const [loading, setLoading] = useState(false);
@@ -18,9 +19,10 @@ const Filter: React.FC = () => {
         setSelectedTags(nexSelectedTags);
       };
 
-    const handleFilterChange = (values: any) => {
+    const handleFilterChange = (values: FilterData) => {
         setLoading(true);
-        getSearchResult(values.age, values.proximity, values.popularity, selectedTags, user);
+        values.interests = selectedTags;
+        getSearchResult(values, user);
         setLoading(false);
     }
 

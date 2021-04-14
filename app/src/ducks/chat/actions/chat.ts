@@ -45,15 +45,15 @@ const handleError = (dispatch: any, error: any) => {
   return Promise.reject();
 } 
 
-const getMatchedProfiles = (token: any) => (dispatch: any) => axios
+const getMatchedProfiles = (token: string | null) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_GET_MATCH_ENDPOINT}`, { token })
   .then((res) => { setMatchedProfiles(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-const getChatRoom = (token: any, user: any) => (dispatch: any) => axios
+const getChatRoom = (token: string | null, user: string) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_GET_CHATROOM_ENDPOINT}`, { token, user })
   .then((res) => { setChatRoom(dispatch, res) }, (error) => { handleError(dispatch, error) });
   
-const updateChatRoom = (token: any, user: any, message: string) => (dispatch: any) => axios
+const updateChatRoom = (token: string | null, user: string, message: string) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_UPDATE_CHATROOM_ENDPOINT}`, { token, user, message })
   .then((res) => { setChatRoom(dispatch, res) }, (error) => { handleError(dispatch, error) });
 

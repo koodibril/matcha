@@ -26,7 +26,7 @@ const Profile: React.FC = () => {
       getProfileInfo(user, path[2]);
       getRelationship(user, path[2]);
     } else if (user) getProfileInfo(user, null);
-  }, [user, getProfileInfo]);
+  }, [user, getProfileInfo, getRelationship]);
 
   const updateInfo = (
     <Row justify="center" align="middle">

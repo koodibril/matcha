@@ -33,15 +33,15 @@ const handleError = (dispatch: any, error: any) => {
     return Promise.reject();
   } 
 
-const getRelationship = (token: any, user: string) => (dispatch: any) => axios
+const getRelationship = (token: string | null, user: string) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_GET_ENDPOINT}`, { token, user })
   .then((res) => { setRelationship(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-const blockUser = (token: any, user: string) => (dispatch: any) => axios
+const blockUser = (token: string | null, user: string) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_BLOCK_ENDPOINT}`, { token, user })
   .then((res) => { setRelationship(dispatch, res) }, (error) => { handleError(dispatch, error) });
   
-const likeUser = (token: any, user: string) => (dispatch: any) => axios
+const likeUser = (token: string | null, user: string) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_LIKE_ENDPOINT}`, { token, user })
   .then((res) => { setRelationship(dispatch, res) }, (error) => { handleError(dispatch, error) });
 

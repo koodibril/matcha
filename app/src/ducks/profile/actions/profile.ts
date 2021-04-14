@@ -54,7 +54,7 @@ const setProfileInfo = (dispatch: any, res: any) => {
   return Promise.resolve();
 };
 
-const getProfileInfo = (token: any, username: any) => (dispatch: any) =>
+const getProfileInfo = (token: string | null, username: string | null) => (dispatch: any) =>
   axios.post(`${API_URL}${PROFILE_INFO_ENDPOINT}`, { token, username }).then(
     (res) => {
       setProfileInfo(dispatch, res);
@@ -64,7 +64,7 @@ const getProfileInfo = (token: any, username: any) => (dispatch: any) =>
     }
   );
 
-const removeProfilePicture = (token: string | null, picture: any) => (
+const removeProfilePicture = (token: string | null, picture: string) => (
   dispatch: any
 ) =>
   axios.post(`${API_URL}${PROFILE_PICTURE_REMOVE}`, { token, picture }).then(
@@ -78,8 +78,8 @@ const removeProfilePicture = (token: string | null, picture: any) => (
 
 const updateProfileInfo = (
   { age, gender, sexo, bio, interests }: UserData,
-  token: any,
-  location: any
+  token: string | null,
+  location: string
 ) => (dispatch: any) =>
   axios
     .post(`${API_URL}${PROFILE_UPDATE_ENDPOINT}`, {
