@@ -5,6 +5,11 @@ const LOGOUT = 'LOGOUT';
 
 const initialState = '';
 
+export interface RelationshipType {
+  relationship?: any;
+  payload?: any;
+}
+
 const relationship = (state = initialState, action: { type: string, payload: any }) => {
     const { type, payload } = action;
 

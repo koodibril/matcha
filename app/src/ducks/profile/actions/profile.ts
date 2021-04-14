@@ -1,4 +1,7 @@
 import axios from "axios";
+import { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "src/store/configure";
 
 import { UserData } from "../../../components/Profile/components/UpdateUserInformation/UpdateUserInformation.d";
 
@@ -51,7 +54,7 @@ const setProfileInfo = (dispatch: any, res: any) => {
   return Promise.resolve();
 };
 
-export const getProfileInfo = (token: any, username: any) => (dispatch: any) =>
+const getProfileInfo = (token: any, username: any) => (dispatch: any) =>
   axios.post(`${API_URL}${PROFILE_INFO_ENDPOINT}`, { token, username }).then(
     (res) => {
       setProfileInfo(dispatch, res);
@@ -61,7 +64,7 @@ export const getProfileInfo = (token: any, username: any) => (dispatch: any) =>
     }
   );
 
-export const removeProfilePicture = (token: string, picture: any) => (
+const removeProfilePicture = (token: string | null, picture: any) => (
   dispatch: any
 ) =>
   axios.post(`${API_URL}${PROFILE_PICTURE_REMOVE}`, { token, picture }).then(
@@ -73,7 +76,7 @@ export const removeProfilePicture = (token: string, picture: any) => (
     }
   );
 
-export const updateProfileInfo = (
+const updateProfileInfo = (
   { age, gender, sexo, bio, interests }: UserData,
   token: any,
   location: any
@@ -97,3 +100,23 @@ export const updateProfileInfo = (
       }
     );
 
+const clearProfile = () => ({ type: "CLEAR_PROFILE" });
+
+export const useProfile = () =>
+  useSelector((state: RootState) => state.profile);
+  
+export const useProfileActions = () => {
+  const dispatch = useDispatch();
+  
+  return useMemo(
+    () => ({
+      getProfileInfo: (token: string | null, username: string | null) =>
+        dispatch(getProfileInfo(token, username)),
+      removeProfilePicture: (token: string | null, picture: string) =>
+        dispatch(removeProfilePicture(token, picture)),
+      updateProfileInfo: ({ age, gender, sexo, bio, interests }: UserData, token: string | null, location: any) =>
+        dispatch(updateProfileInfo({age, gender, sexo, bio, interests}, token, location)),
+      clearProfile: () => dispatch(clearProfile())
+    }), [dispatch]
+  );
+};

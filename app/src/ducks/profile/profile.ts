@@ -19,6 +19,7 @@ export interface ProfileType {
   Latitude: any;
   Longitude: any;
   Valid: any;
+  payload: any;
 }
 
 const profile = (

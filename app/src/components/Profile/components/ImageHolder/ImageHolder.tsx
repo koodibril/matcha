@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Upload, Modal, Row } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
-import { getProfileInfo, removeProfilePicture } from '../../../../ducks/profile/actions/profile';
+import { useProfileActions } from '../../../../ducks/profile/actions/profile';
 
 function getBase64(file: any) {
   return new Promise((resolve, reject) => {
@@ -20,7 +19,8 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
     const [fileList, setFileList] = useState<any[]>([]);
     const user = { "token": localStorage.getItem('user') as string };
     const userr = localStorage.getItem('user');
-    const dispatch = useDispatch();
+
+    const { getProfileInfo, removeProfilePicture } = useProfileActions();
 
     const handleCancel = () => setPreviewVisible(false);
 
@@ -61,13 +61,13 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
       const index = fileList.indexOf(file);
       const newFileList:any = fileList.slice();
       newFileList.splice(index, 1);
-      dispatch(removeProfilePicture(user.token, file));
+      removeProfilePicture(user.token, file);
       setFileList(newFileList)
     }
 
     const handleChange = (info: any) => {
       if (info.file.status === 'done'){
-        dispatch(getProfileInfo(userr, null));
+        getProfileInfo(userr, null);
       }
     }
 

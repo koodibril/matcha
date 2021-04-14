@@ -1,8 +1,6 @@
-import { useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "src/store/configure";
-
-import { SET_MESSAGE, CLEAR_MESSAGE, ERROR_MESSAGE } from "./actions/message";
+export const SET_MESSAGE = "SET_MESSAGE";
+export const ERROR_MESSAGE = "ERROR_MESSAGE";
+export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 
 const initialState = "";
 
@@ -28,18 +26,3 @@ export default function (state = initialState, action: any) {
       return state;
   }
 }
-
-export const clearMessage = () => ({ type: "CLEAR_MESSAGE" });
-
-export const useMessage = () =>
-  useSelector((state: RootState) => state.message);
-export const useMessageActions = () => {
-  const dispatch = useDispatch();
-
-  return useMemo(
-    () => ({
-      clearMessage: () => dispatch(clearMessage()),
-    }),
-    [dispatch]
-  );
-};

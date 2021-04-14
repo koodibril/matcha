@@ -1,15 +1,15 @@
 import { Row, Input, Form } from 'antd';
 import React from 'react';
 
-import { useDispatch } from 'react-redux';
-import { updateChatRoom } from '../../../../ducks/chat/actions/chat';
+import { useChatActions } from '../../../../ducks/chat/actions/chat';
 
 const ChatHolder: React.FC<{chatRoom: any, username: string}> = (props) => {
   const user = localStorage.getItem('user');
-  const dispatch = useDispatch();
+
+  const { updateChatRoom } = useChatActions();
 
   const handleUpdate = (form: any) => {
-    dispatch(updateChatRoom(user, props.username, form.message));
+    updateChatRoom(user, props.username, form.message);
   }
 
   const handleChatRoom = () => {

@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { push as pushState } from 'connected-react-router';
 import { Col, Row } from 'antd';
 import ImageHolder from '../Profile/components/ImageHolder/ImageHolder';
 import UserInfoHolderComponent from '../Profile/components/UserInfoHolder/UserInfoHolder';
 import ChatHolderComponent from './components/ChatHolder/ChatHolder';
-import { getChatRoom, getMatchedProfiles } from '../../ducks/chat/actions/chat';
+import { useChat, useChatActions, useChatRoom } from '../../ducks/chat/actions/chat';
+import { useNavigation } from 'src/ducks/navigation/navigation';
 
 const Chat: React.FC = () => {
     const [username, setUsername] = useState('');
     const [selected, setSelected] = useState(-1);
     const user = localStorage.getItem('user');
-    const dispatch = useDispatch();
-    const userList = useSelector((state: any) => state.chat);
-    const chatRoom = useSelector((state: any) => state.chatRoom);
+
+    const userList = useChat();
+    const chatRoom = useChatRoom();
+    const { pushState } = useNavigation();
+    const { getMatchedProfiles, getChatRoom } = useChatActions();
   
-    if (!user) dispatch(pushState('/auth'));
+    if (!user) pushState('/auth');
 
     useEffect(() => {
-      dispatch(getMatchedProfiles(user));
-    }, [user, dispatch]);
+      getMatchedProfiles(user);
+    }, [user, getMatchedProfiles]);
 
     const loadChat = (element: any, index: any) => {
       setUsername(element.Username);
-      dispatch(getChatRoom(user, element.Username));
+      getChatRoom(user, element.Username);
       setSelected(index);
     }
 
