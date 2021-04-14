@@ -37,25 +37,25 @@ const handleError = (dispatch: any, error: any) => {
     dispatch({ type: 'ERROR_MESSAGE', payload: message});
     return Promise.reject();
   } 
+  
+const getSearchResult = ({ ageGap, proximity, popularity, interests }: FilterData, token: any) => (dispatch: any) => axios
+    .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { ageGap, proximity, popularity, interests, token })
+    .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const updateAgeGap = (ageGap: any, token: any) => (dispatch: any) => axios
+const updateAgeGap = (ageGap: any, token: any) => (dispatch: any) => axios
   .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { ageGap, token })
   .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const updateProximity = (proximity: any, token: any) => (dispatch: any) => axios
+const updateProximity = (proximity: any, token: any) => (dispatch: any) => axios
   .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { proximity, token })
   .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const updatePopularity = (popularity: any, token: any) => (dispatch: any) => axios
+const updatePopularity = (popularity: any, token: any) => (dispatch: any) => axios
   .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { popularity, token })
   .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const updateInterests = (interests: any, token: any) => (dispatch: any) => axios
+const updateInterests = (interests: any, token: any) => (dispatch: any) => axios
   .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { interests, token })
-  .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
-
-const getSearchResult = ({ ageGap, proximity, popularity, interests }: FilterData, token: any) => (dispatch: any) => axios
-  .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { ageGap, proximity, popularity, interests, token })
   .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
 export const useSearch = () =>
@@ -67,7 +67,11 @@ export const useSearchActions = () => {
   return useMemo(
     () => ({
       getSearchResult: ({ ageGap, proximity, popularity, interests }: FilterData, token: string | null) => 
-      dispatch(getSearchResult({ ageGap, proximity, popularity, interests}, token))
+      dispatch(getSearchResult({ ageGap, proximity, popularity, interests}, token)),
+      updateAgeGap: (ageGap: number[], token: string | null) => dispatch(updateAgeGap(ageGap, token)),
+      updateProximity: (proximity: number, token: string | null) => dispatch(updateProximity(proximity, token)),
+      updatePopularity: (popularity: number[], token: string) => dispatch(updatePopularity(popularity, token)),
+      updateInterests: (interests: string[], token: string | null) => dispatch (updateInterests(interests, token))
     }), [dispatch]
   );
 };
