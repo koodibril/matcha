@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'src/store/configure';
 
 const PORT = 3001;
 const ADDRESS = 'localhost';
@@ -30,14 +33,29 @@ const handleError = (dispatch: any, error: any) => {
     return Promise.reject();
   } 
 
-export const getRelationship = (token: any, user: string) => (dispatch: any) => axios
+const getRelationship = (token: string | null, user: string) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_GET_ENDPOINT}`, { token, user })
   .then((res) => { setRelationship(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-export const blockUser = (token: any, user: string) => (dispatch: any) => axios
+const blockUser = (token: string | null, user: string) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_BLOCK_ENDPOINT}`, { token, user })
   .then((res) => { setRelationship(dispatch, res) }, (error) => { handleError(dispatch, error) });
   
-export const likeUser = (token: any, user: string) => (dispatch: any) => axios
+const likeUser = (token: string | null, user: string) => (dispatch: any) => axios
   .post(`${API_URL}${RELATIONSHIP_LIKE_ENDPOINT}`, { token, user })
   .then((res) => { setRelationship(dispatch, res) }, (error) => { handleError(dispatch, error) });
+
+export const useRelationship = () =>
+  useSelector((state: RootState) => state.relationship);
+
+export const useRelationshipActions = () => {
+  const dispatch = useDispatch();
+
+  return useMemo(
+    () => ({
+      getRelationship: (token: string | null, user: string) => dispatch(getRelationship(token, user)),
+      blockUser: (token: string | null, user: string) => dispatch(blockUser(token, user)),
+      likeUser: (token: string | null, user: string) => dispatch(likeUser(token, user))
+    }), [dispatch]
+  );
+};

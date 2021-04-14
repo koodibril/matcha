@@ -1,17 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { push as pushState } from 'connected-react-router';
 import { Col, Row } from 'antd';
 import ChangePasswordComponent from './components/Changepassword/ChangePassword';
 import ChangeUsernameComponent from './components/ChangeUsername/ChangeUsername';
 import ChangeEmailComponent from './components/ChangeEmail/ChangeEmail';
 import FilterComponent from './components/Filter/Filter';
+import { useNavigation } from 'src/ducks/navigation/navigation';
 
 const Settings: React.FC = () => {
     const user = localStorage.getItem('user');
-    const dispatch = useDispatch();
+    const { pushState } = useNavigation();
   
-    if (!user) dispatch(pushState('/auth'));
+    if (!user) pushState('/auth');
     
   return (
         <Row justify="center" align="middle">

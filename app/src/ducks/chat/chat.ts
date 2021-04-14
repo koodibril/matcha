@@ -8,6 +8,16 @@ const CLEAR_CHATROOM = 'CLEAR_CHATROOM';
 
 const initialState = '';
 
+export interface ChatType {
+  userResult?: any;
+  payload?: any;
+}
+
+export interface ChatRoomType {
+  chatRoom?: any;
+  payload?: any;
+}
+
 export const chat = (state = initialState, action: { type: string, payload: any }) => {
     const { type, payload } = action;
 

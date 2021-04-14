@@ -1,14 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { push as pushState } from 'connected-react-router';
 import { Row } from 'antd';
 import DisplayComponent from './components/Display/Display';
+import { useNavigation } from 'src/ducks/navigation/navigation';
 
 const Home: React.FC = () => {
   const user = localStorage.getItem('user');
-  const dispatch = useDispatch();
+  const { pushState } = useNavigation();
 
-  if (!user) dispatch(pushState('/auth'));
+  if (!user) pushState('/auth');
 
   return (
   <Row justify="center" align="middle">

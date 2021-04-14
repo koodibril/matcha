@@ -1,24 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import { Menu, Modal } from 'antd';
 import { HomeOutlined, MailOutlined, SettingOutlined, LogoutOutlined, UserOutlined, WechatOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { push as pushState } from 'connected-react-router';
-import { logout } from '../../ducks/authentication/actions/authentication';
+import { useAuthentication } from '../../ducks/authentication/actions/authentication';
 import ProfileComponent from '../Profile/Profile';
-import { getProfileInfo } from '../../ducks/profile/actions/profile';
-import { useMessage, useMessageActions } from "src/ducks/message/message";
+import { useProfile, useProfileActions } from '../../ducks/profile/actions/profile';
+import { useMessage, useMessageActions } from "src/ducks/message/actions/message";
+import { useNavigation } from 'src/ducks/navigation/navigation';
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
     const [logged, setLogged] = useState("Login");
-    const dispatch = useDispatch();
     const user = localStorage.getItem('user');
     const [previewVisible, setPreviewVisible] = useState(false);
     const [userIsValid, setUserIsValid] = useState(true);
-    const info = useSelector((state: any) => state.profile);
 
     const message = useMessage();
     const { clearMessage } = useMessageActions();
+    const info = useProfile();
+    const { getProfileInfo, clearProfile } = useProfileActions();
+    const { logout } = useAuthentication();
+    const { pushState } = useNavigation();
 
     const countDown = (text: string, error: boolean) => {
       let secondsToGo = 3;
@@ -64,21 +65,20 @@ const MainMenu: React.FC = () => {
     
     useEffect(() => {
       if (user)
-        dispatch(getProfileInfo(user, null));
-    }, [user, dispatch]);
+        getProfileInfo(user, null);
+    }, [user, getProfileInfo]);
 
     const handleClick = (key: any) => {
-      dispatch({ type: 'CLEAR_MESSAGE' });
-      dispatch({ type: 'CLEAR_PROFILE' });
+      clearMessage();
+      clearProfile();
         if (key.key === "logout") {
             setLogged("Login");
             setCurrent(['auth']);
-            logout(dispatch);
-            dispatch(pushState('/'));
+            logout();
         }
         else {
             setCurrent(key.key);
-            dispatch(pushState('/' + key.key));
+            pushState('/' + key.key);
         }
     };
 

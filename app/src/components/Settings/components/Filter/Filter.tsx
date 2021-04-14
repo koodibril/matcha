@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Form, Row, Slider } from 'antd';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useTranslation } from 'react-i18next';
@@ -10,8 +9,6 @@ const Filter: React.FC = () => {
     const [proximity, setProximity] = useState(24);
     const [popularity, setPopularity] = useState([0, 10]);
     const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
-    const dispatch = useDispatch();
-    const user = localStorage.getItem('user');
 
     const { t } = useTranslation('filter');
     const handleChange = (tag: any, checked: any) => {

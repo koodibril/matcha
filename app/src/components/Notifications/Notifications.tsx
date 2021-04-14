@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { push as pushState } from 'connected-react-router';
 import { Row } from 'antd';
-import { getNotifications } from '../../ducks/notification/actions/notifications';
+import { useNotifications, useNotificationsActions } from '../../ducks/notification/actions/notifications';
+import { useNavigation } from 'src/ducks/navigation/navigation';
 
 const Notifications: React.FC = () => {
     const user = localStorage.getItem('user');
-    const dispatch = useDispatch();
-    const notifications = useSelector((state: any) => state.notification);
+    
+    const notifications = useNotifications();
+    const { getNotifications } = useNotificationsActions();
+    const { pushState } = useNavigation();
   
-    if (!user) dispatch(pushState('/auth'));
+    if (!user) pushState('/auth');
     
     useEffect(() => {
-      dispatch(getNotifications(user));
-    }, [user, dispatch]);
+      getNotifications(user);
+    }, [user, getNotifications]);
     
     const handleNotifications = () => {
       const notificationList = notifications.notifications;

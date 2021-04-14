@@ -5,6 +5,11 @@ const LOGOUT = 'LOGOUT';
 
 const initialState = '';
 
+export interface SearchType {
+  userResult?: any;
+  payload?: any;
+}
+
 const search = (state = initialState, action: { type: string, payload: any }) => {
     const { type, payload } = action;
 

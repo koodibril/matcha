@@ -82,7 +82,7 @@ const passswordChanged = (dispatch: any, res: any) => {
   });
 };
 
-export const login = (username: string, password: string) => (dispatch: any) =>
+const login = (username: string, password: string) => (dispatch: any) =>
   axios.post(`${API_URL}${LOGIN_ENDPOINT}`, { username, password }).then(
     (res) => {
       setUser(dispatch, res);
@@ -92,12 +92,13 @@ export const login = (username: string, password: string) => (dispatch: any) =>
     }
   );
 
-export const logout = (dispatch: any) => {
+const logout = () => (dispatch: any) => {
   dispatch({ type: "LOGOUT" });
   localStorage.removeItem("user");
+  dispatch(pushState('/'));
 };
 
-export const signup = ({ email, username, password }: SignupData) => (
+const signup = ({ email, username, password }: SignupData) => (
   dispatch: any
 ) =>
   axios
@@ -111,7 +112,7 @@ export const signup = ({ email, username, password }: SignupData) => (
       }
     );
 
-export const activateUser = (token: string) => (dispatch: any) =>
+const activateUser = (token: string) => (dispatch: any) =>
   axios.post(`${API_URL}${ACTIVATE_ENDPOINT}`, { token }).then(
     (res) => {
       userActivated(dispatch, res);
@@ -121,7 +122,7 @@ export const activateUser = (token: string) => (dispatch: any) =>
     }
   );
 
-export const changePassword = (token: string, password: string) => (
+const changePassword = (token: string, password: string) => (
   dispatch: any
 ) =>
   axios.post(`${API_URL}${CHANGE_PASSWORD_ENDPOINT}`, { token, password }).then(
@@ -133,7 +134,7 @@ export const changePassword = (token: string, password: string) => (
     }
   );
   
-export const updatePassword = (token: string | null, password: string) => (
+const updatePassword = (token: string | null, password: string) => (
   dispatch: any
 ) =>
   axios.post(`${API_URL}${CHANGE_PASSWORD_ENDPOINT}`, { token, password }).then(
@@ -145,7 +146,7 @@ export const updatePassword = (token: string | null, password: string) => (
     }
   );
   
-  export const updateEmail = (token: string | null, email: string) => (
+const updateEmail = (token: string | null, email: string) => (
     dispatch: any
   ) =>
     axios.post(`${API_URL}${UPDATE_EMAIL_ENDPOINT}`, { token, email }).then(
@@ -157,7 +158,7 @@ export const updatePassword = (token: string | null, password: string) => (
       }
     );
   
-    export const updateUsername = (token: string | null, username: string) => (
+const updateUsername = (token: string | null, username: string) => (
       dispatch: any
     ) =>
       axios.post(`${API_URL}${UPDATE_USERNAME_ENDPOINT}`, { token, username }).then(
@@ -169,7 +170,7 @@ export const updatePassword = (token: string | null, password: string) => (
         }
       );
 
-export const passwordRecovery = (email: string) => (dispatch: any) =>
+const passwordRecovery = (email: string) => (dispatch: any) =>
   axios.post(`${API_URL}${RECOVER_PASSWORD_ENDPOINT}`, { email }).then(
     (res) => {
       emailSent(dispatch, res);
@@ -197,6 +198,7 @@ export const useAuthentication = () => {
       login: (username: string, password: string) =>
         dispatch(login(username, password)),
       signup: (data: SignupData) => dispatch(signup(data)),
+      logout: () => dispatch(logout())
     }),
     [dispatch]
   );

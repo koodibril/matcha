@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 
-export const pushState = (path: string) => push(path);
+const pushState = (path: string) => push(path);
 
 export const useNavigation = () => {
   const dispatch = useDispatch();

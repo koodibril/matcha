@@ -5,6 +5,10 @@ const LOGOUT = 'LOGOUT';
 
 const initialState = '';
 
+export interface NotificationType {
+  notifications?: any;
+}
+
 const notification = (state = initialState, action: { type: string, payload: any }) => {
     const { type, payload } = action;
 
