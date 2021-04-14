@@ -1,4 +1,9 @@
 import axios from 'axios';
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'src/store/configure';
+
+import { FilterData } from "src/components/Settings/components/Filter/Filter.d";
 
 const PORT = 3001;
 const ADDRESS = 'localhost';
@@ -32,6 +37,20 @@ const handleError = (dispatch: any, error: any) => {
     return Promise.reject();
   } 
 
-export const getSearchResult = (ageGap: any, proximity: any, popularity: any, interests: any, token: any) => (dispatch: any) => axios
+const getSearchResult = ({ ageGap, proximity, popularity, interests }: FilterData, token: any) => (dispatch: any) => axios
   .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { ageGap, proximity, popularity, interests, token })
   .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
+
+export const useSearch = () =>
+  useSelector((state: RootState) => state.search);
+
+export const useSearchActions = () => {
+  const dispatch = useDispatch();
+
+  return useMemo(
+    () => ({
+      getSearchResult: ({ ageGap, proximity, popularity, interests }: FilterData, token: string | null) => 
+      dispatch(getSearchResult({ ageGap, proximity, popularity, interests}, token))
+    }), [dispatch]
+  );
+};

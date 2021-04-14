@@ -1,26 +1,28 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Button, Form, Row, Slider, Spin } from 'antd';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useTranslation } from 'react-i18next';
-import { getSearchResult } from '../../../../ducks/search/actions/search';
+import { useSearchActions } from '../../../../ducks/search/actions/search';
+import { FilterData } from '../../../Settings/components/Filter/Filter.d';
 
 const Filter: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
     const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
-    const dispatch = useDispatch();
     const user = localStorage.getItem('user');
 
     const { t } = useTranslation('filter');
+    const { getSearchResult } = useSearchActions();
+
     const handleChange = (tag: any, checked: any) => {
         const nexSelectedTags = checked ? [...selectedTags, tag] : selectedTags.filter(t => t !== tag);
         setSelectedTags(nexSelectedTags);
       };
 
-    const handleFilterChange = (values: any) => {
+    const handleFilterChange = (values: FilterData) => {
         setLoading(true);
-        dispatch(getSearchResult(values.age, values.proximity, values.popularity, selectedTags, user));
+        values.interests = selectedTags;
+        getSearchResult(values, user);
         setLoading(false);
     }
 

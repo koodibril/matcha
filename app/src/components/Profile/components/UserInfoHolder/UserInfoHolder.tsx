@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { Row, Typography, Button} from 'antd';
 import { HeartOutlined, HeartFilled, StopOutlined } from '@ant-design/icons';
 
-import { useDispatch } from 'react-redux';
 import Modal from 'antd/lib/modal/Modal';
-import { blockUser, likeUser } from '../../../../ducks/relationship/actions/relationship';
+import { useRelationshipActions } from '../../../../ducks/relationship/actions/relationship';
 
 const { Title, Paragraph} = Typography;
 
@@ -14,7 +13,8 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   const [blockConfirmation, setBlockConfirmation] = useState(false);
   const [init, setInit] = useState(false);
   const user = localStorage.getItem('user');
-  const dispatch = useDispatch();
+
+  const { blockUser, likeUser } = useRelationshipActions();
 
   if (props.info.relationship && props.info.relationship.properties && !init) {
     setLiked(props.info.relationship.properties.Like);
@@ -22,13 +22,13 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   }
 
   const handleLike = () => {
-    dispatch(likeUser(user, props.info.Username));
+    likeUser(user, props.info.Username);
     liked ? setLiked(false) : setLiked(true);
   };
 
   const handleBlock = () => {
     setBlockConfirmation(false);
-    dispatch(blockUser(user, props.info.Username));
+    blockUser(user, props.info.Username);
   };
 
   const showModal = () => {

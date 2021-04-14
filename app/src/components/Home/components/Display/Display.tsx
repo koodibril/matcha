@@ -1,11 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Row } from 'antd';
 import UserInfoHolderComponent from '../../../Profile/components/UserInfoHolder/UserInfoHolder';
 import ImageHolder from '../../../Profile/components/ImageHolder/ImageHolder';
+import { useSearch } from 'src/ducks/search/actions/search';
 
 const Display: React.FC = () => {
-    const userList = useSelector((state: any) => state.search);
+    const userList = useSearch();
 
     const handleUserList = () => {
       const List = userList.userResult;

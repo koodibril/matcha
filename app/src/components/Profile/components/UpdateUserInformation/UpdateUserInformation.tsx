@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { Row, Form, Button, Input, Select, InputNumber } from 'antd';
 import { Spin } from 'antd';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import { updateProfileInfo } from '../../../../ducks/profile/actions/profile';
+import { useProfile, useProfileActions } from '../../../../ducks/profile/actions/profile';
 import { UserData } from '../../../Profile/components/UpdateUserInformation/UpdateUserInformation.d';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import MapHolderComponent from '../MapHolder/MapHolder';
@@ -18,13 +17,14 @@ const UpdateUserInformation: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const user = localStorage.getItem('user');
-  const dispatch = useDispatch();
+
+  const info = useProfile();
+  const { updateProfileInfo } = useProfileActions(); 
+  const { t } = useTranslation('profile');
 
   const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
 
-  const { t } = useTranslation('profile');
 
-  const info = useSelector((state: any) => state.profile);
 
   if (info && info.payload && info.payload.Interests && selectedTags.length === 0  && !tagsLoaded) {
     setSelectedTags(info.payload.Interests);
@@ -35,7 +35,7 @@ const UpdateUserInformation: React.FC = () => {
   const handleUpdate = (usr: UserData) => {
     setLoading(true);
     usr.interests = selectedTags;
-    dispatch(updateProfileInfo(usr, user, location));
+    updateProfileInfo(usr, user, location);
     setLoading(false);
   };
 
