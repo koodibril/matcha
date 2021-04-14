@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Form, Row, Slider, Spin } from 'antd';
+import { Form, Row, Slider } from 'antd';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useTranslation } from 'react-i18next';
-import { getSearchResult } from '../../../../ducks/search/actions/search';
 
 const Filter: React.FC = () => {
-    const [loading, setLoading] = useState(false);
     const [selectedTags, setSelectedTags] = useState<any[]>([]);
     const [ageGap, setAgeGap] = useState([18, 26]);
     const [proximity, setProximity] = useState(24);
@@ -20,12 +18,6 @@ const Filter: React.FC = () => {
         const nexSelectedTags = checked ? [...selectedTags, tag] : selectedTags.filter(t => t !== tag);
         setSelectedTags(nexSelectedTags);
       };
-
-    const handleFilterChange = (values: any) => {
-        setLoading(true);
-        dispatch(getSearchResult(values.age, values.proximity, values.popularity, selectedTags, user));
-        setLoading(false);
-    }
 
     const handleAgeGap = (values: any) => {
         setAgeGap(values);
@@ -43,7 +35,6 @@ const Filter: React.FC = () => {
     <Row justify="center" align="middle" style={{margin: '16px'}}>
         <Form
             name="filter"
-            onValuesChange={handleFilterChange}
             initialValues={{
                 age: [18,26],
                 proximity: 24,

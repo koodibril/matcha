@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Row } from 'antd';
+import { Col, Row } from 'antd';
 import UserInfoHolderComponent from '../../../Profile/components/UserInfoHolder/UserInfoHolder';
 import ImageHolder from '../../../Profile/components/ImageHolder/ImageHolder';
 
@@ -19,8 +19,10 @@ const Display: React.FC = () => {
     }
       
   return (
-    <Row justify="center" align="middle">
-    { userList.userResult ? handleUserList() : null}
+    <Row>
+      <Col>
+        { userList.userResult ? handleUserList() : null }
+      </Col>
     </Row>
   );
 };
