@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/configure';
 
 import { FilterData } from "src/components/Settings/components/Filter/Filter.d";
+import { basename } from 'path';
 
 const PORT = 3001;
 const ADDRESS = 'localhost';
@@ -38,8 +39,8 @@ const handleError = (dispatch: any, error: any) => {
     return Promise.reject();
   } 
   
-const getSearchResult = ({ ageGap, proximity, popularity, interests }: FilterData, token: any) => (dispatch: any) => axios
-    .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { ageGap, proximity, popularity, interests, token })
+const getSearchResult = (token: any) => (dispatch: any) => axios
+    .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { token })
     .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
 const updateAgeGap = (ageGap: any, token: any) => (dispatch: any) => axios
@@ -66,8 +67,8 @@ export const useSearchActions = () => {
 
   return useMemo(
     () => ({
-      getSearchResult: ({ ageGap, proximity, popularity, interests }: FilterData, token: string | null) => 
-      dispatch(getSearchResult({ ageGap, proximity, popularity, interests}, token)),
+      getSearchResult: (token: string | null) => 
+      dispatch(getSearchResult(token)),
       updateAgeGap: (ageGap: number[], token: string | null) => dispatch(updateAgeGap(ageGap, token)),
       updateProximity: (proximity: number, token: string | null) => dispatch(updateProximity(proximity, token)),
       updatePopularity: (popularity: number[], token: string) => dispatch(updatePopularity(popularity, token)),

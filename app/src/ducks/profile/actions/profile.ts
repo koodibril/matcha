@@ -14,7 +14,8 @@ const PROFILE_PICTURE_REMOVE = "/api/profile/picture/remove";
 const PROFILE_UPDATE_ENDPOINT = "/api/profile/update";
 
 const handleError = (dispatch: any, error: any) => {
-  const message = (error.response.data.message || error.response.data.errno);
+  const message = error.response.data.message.code ? 
+    error.response.data.message.code : (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
   return Promise.reject();
 };

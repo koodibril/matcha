@@ -71,11 +71,11 @@ const queryCreateChatRoom = generateQuery(['match', 'create'], ['user', 'user'],
 const queryGetChatRoom = generateQuery(['match'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], [], 'chatroom', 'c', false);
 const queryUpdateChatRoom = generateQuery(['match', 'set'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], ['messages'], 'chatroom', 'c', false);
 
-export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options))?.records.map(p => p.get(0));
+export const runQuery = async (query: string, options: UserOptions, session: Session) => await (await session.run(query, options)).records.map(p => p.get(0));
 
 export const createUser = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryCreateUser, options, session).catch(callback);
 export const getUserMatchCount = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingUser, options, session).catch(callback);
-export const getUserEmailCount = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingEmail, options, session).catch(callback)
+export const getUserEmailCount = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingEmail, options, session).catch(callback);
 export const getUserPassword = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingPassword, options, session).catch(callback);
 
 export const getUserInfoT = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoT, options, session).catch(callback);

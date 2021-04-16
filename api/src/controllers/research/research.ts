@@ -5,17 +5,15 @@ import { info, internalError } from '../../shared/utils';
 
 export const getResearchResult = async (req: any, res: any) => {
   const session = getSession();
-  const {
-      ageGap,
-      proximity,
-      popularity,
-      interests,
-      token
-  } = req.body;
+  const token = req.body.token;
 
   try {
-    console.log(req.body);
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
+    console.log(userInfo);
+    const ageGap = userInfo[0].properties.ageGap ? userInfo[0].properties.ageGap : [18, 80];
+    const proximity = userInfo[0].properties.proximity;
+    const popularity = userInfo[0].properties.popularity;
+    const interests = userInfo[0].properties.interests;
     const results = await getSearchResult({ ageGap, proximity, popularity, interests }, session, internalError(res));
     let index = 0;
     const latitudeOne = userInfo[0].properties.Latitude;
@@ -35,8 +33,8 @@ export const getResearchResult = async (req: any, res: any) => {
     return res
       .status(200)
       .json({ results })
-  } catch (e) {
-    return internalError(res)(e);
+  } catch (error) {
+    return internalError(res)(error);
   } finally {
     await session.close();
   };
