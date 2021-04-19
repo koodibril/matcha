@@ -3,9 +3,6 @@ import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/configure';
 
-import { FilterData } from "src/components/Settings/components/Filter/Filter.d";
-import { basename } from 'path';
-
 const PORT = 3001;
 const ADDRESS = 'localhost';
 const PROTOCOL = 'http';

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Row } from 'antd';
 import { useNotifications, useNotificationsActions } from '../../ducks/notification/actions/notifications';
 import { useNavigation } from 'src/ducks/navigation/navigation';
+import NotificationsDisplayComponent from './components/NotificationDisplay/NotificationDisplay';
 
 const Notifications: React.FC = () => {
     const user = localStorage.getItem('user');
@@ -15,20 +16,11 @@ const Notifications: React.FC = () => {
     useEffect(() => {
       getNotifications(user);
     }, [user, getNotifications]);
-    
-    const handleNotifications = () => {
-      const notificationList = notifications.notifications;
-      return (notificationList.map((element: any, index: number) => (
-        <Row key={index}>
-          VIEWED : {element.viewed} DATE: {element.date} TEXT: {element.text}
-        </Row>
-      )));
-    }
 
   return (
-    <Row>
-      {notifications ? handleNotifications() : "You don't have any notifications for now" }
-    </Row>
+    <>
+      {notifications ? <NotificationsDisplayComponent notifications={notifications}/> : "You don't have any notifications for now" }
+    </>
   )
 }
 
