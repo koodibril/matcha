@@ -6,6 +6,7 @@ import ProfileComponent from '../Profile/Profile';
 import { useProfile, useProfileActions } from '../../ducks/profile/actions/profile';
 import { useMessage, useMessageActions } from "src/ducks/message/actions/message";
 import { useNavigation } from 'src/ducks/navigation/navigation';
+import { useSearchActions } from 'src/ducks/search/actions/search';
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
@@ -16,6 +17,7 @@ const MainMenu: React.FC = () => {
 
     const message = useMessage();
     const { clearMessage } = useMessageActions();
+    const { clearSearch } = useSearchActions();
     const info = useProfile();
     const { getProfileInfo, clearProfile } = useProfileActions();
     const { logout } = useAuthentication();
@@ -70,6 +72,7 @@ const MainMenu: React.FC = () => {
 
     const handleClick = (key: any) => {
       clearMessage();
+      clearSearch();
       clearProfile();
         if (key.key === "logout") {
             setLogged("Login");

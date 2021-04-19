@@ -5,25 +5,22 @@ import { HeartOutlined, HeartFilled, StopOutlined } from '@ant-design/icons';
 
 import Modal from 'antd/lib/modal/Modal';
 import { useRelationshipActions } from '../../../../ducks/relationship/actions/relationship';
+import { useSearchActions } from 'src/ducks/search/actions/search';
 
 const { Title, Paragraph} = Typography;
 
 const UserInfoHolder: React.FC<{info: any}> = (props) => {
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(props.info.relationship.properties.Like);
   const [blockConfirmation, setBlockConfirmation] = useState(false);
-  const [init, setInit] = useState(false);
   const user = localStorage.getItem('user');
 
   const { blockUser, likeUser } = useRelationshipActions();
-
-  if (props.info.relationship && props.info.relationship.properties && !init) {
-    setLiked(props.info.relationship.properties.Like);
-    setInit(true);
-  }
+  const { clearSearch } = useSearchActions();
 
   const handleLike = () => {
     likeUser(user, props.info.Username);
     liked ? setLiked(false) : setLiked(true);
+    clearSearch();
   };
 
   const handleBlock = () => {

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/configure';
+import CLEAR_SEARCH from '../search'
 
 const PORT = 3001;
 const ADDRESS = 'localhost';
@@ -56,6 +57,10 @@ const updateInterests = (interests: any, token: any) => (dispatch: any) => axios
   .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { interests, token })
   .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
+const clearSearch = () => ({
+    type: CLEAR_SEARCH,
+  });
+
 export const useSearch = () =>
   useSelector((state: RootState) => state.search);
 
@@ -66,6 +71,7 @@ export const useSearchActions = () => {
     () => ({
       getSearchResult: (token: string | null) => 
       dispatch(getSearchResult(token)),
+      clearSearch: () => dispatch(clearSearch()),
       updateAgeGap: (ageGap: number[], token: string | null) => dispatch(updateAgeGap(ageGap, token)),
       updateProximity: (proximity: number, token: string | null) => dispatch(updateProximity(proximity, token)),
       updatePopularity: (popularity: number[], token: string) => dispatch(updatePopularity(popularity, token)),

@@ -9,7 +9,6 @@ export const getResearchResult = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
-    console.log(userInfo);
     const ageGap = userInfo[0].properties.ageGap ? userInfo[0].properties.ageGap : [18, 80];
     const proximity = userInfo[0].properties.proximity;
     const popularity = userInfo[0].properties.popularity;

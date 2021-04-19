@@ -9,6 +9,7 @@ const NotificationsDisplay: React.FC<{notifications: any}> = (props) => {
 
     const handleNotifications = () => {
       const notificationList = props.notifications.notifications;
+      console.log(notificationList);
       return (notificationList.map((element: any, index: number) => (
         <Timeline.Item key={index} label={element.date} color={element.viewed === 'true' ? 'green' : 'red'}>
           <Button onMouseEnter={() => handleView(index, element.viewed)} style={element.viewed === 'false' ? {color: 'red'} : {color: 'grey'}} type='text'>{element.text}</Button>
