@@ -47,7 +47,8 @@ export const likeProfile = async (req: any, res: any) => {
       : addNotifications(token, username, NOTIFICATION_LIKE);
     }
 
-    like ? info(`user liked`) : info(`user unliked`);
+    like ? info(`user ` + userInfo[0].properties.Username + ` liked ` + username) : 
+    info(`user ` + userInfo[0].properties.Username + ` unliked ` + username);
     return res
       .status(200)
       .json({ relationship });

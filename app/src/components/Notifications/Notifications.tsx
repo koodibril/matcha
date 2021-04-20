@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Row } from 'antd';
 import { useNotifications, useNotificationsActions } from '../../ducks/notification/actions/notifications';
 import { useNavigation } from 'src/ducks/navigation/navigation';
 import NotificationsDisplayComponent from './components/NotificationDisplay/NotificationDisplay';
@@ -19,7 +18,7 @@ const Notifications: React.FC = () => {
 
   return (
     <>
-      {notifications ? <NotificationsDisplayComponent notifications={notifications}/> : "You don't have any notifications for now" }
+      {notifications.notifications ? <NotificationsDisplayComponent notifications={notifications}/> : "You don't have any notifications for now" }
     </>
   )
 }

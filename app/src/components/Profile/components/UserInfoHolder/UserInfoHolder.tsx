@@ -15,17 +15,20 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   const user = localStorage.getItem('user');
 
   const { blockUser, likeUser } = useRelationshipActions();
-  const { clearSearch } = useSearchActions();
+  const { getSearchResult, clearSearch } = useSearchActions();
 
   const handleLike = () => {
     likeUser(user, props.info.Username);
     liked ? setLiked(false) : setLiked(true);
     clearSearch();
+    getSearchResult(user);
   };
 
   const handleBlock = () => {
     setBlockConfirmation(false);
     blockUser(user, props.info.Username);
+    clearSearch();
+    getSearchResult(user);
   };
 
   const showModal = () => {
@@ -41,7 +44,7 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
       { props.info ? (
       <Typography>
           <Title>
-              { props.info.Username + ' 24'}
+              { props.info.Username + ' ' + props.info.Age}
           </Title>
           <Paragraph>
               Distance: { props.info.Distance } km

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from 'src/store/configure';
+import { CLEAR_NOTIFICATION } from '../notifications'
 
 const PORT = 3001;
 const ADDRESS = 'localhost';
@@ -54,6 +55,10 @@ const updateNotification = (token: string | null, index: number) => (dispatch: a
     }
   );
 
+const clearNotifications = () => ({
+    type: CLEAR_NOTIFICATION,
+  });
+
 
 export const useNotifications = () =>
   useSelector((state: RootState) => state.notification);
@@ -64,7 +69,8 @@ export const useNotificationsActions = () => {
   return useMemo(
     () => ({
       getNotifications: (token: string | null) => dispatch(getNotifications(token)),
-      updateNotification: (token: string | null, index: number) => dispatch(updateNotification(token, index))
+      updateNotification: (token: string | null, index: number) => dispatch(updateNotification(token, index)),
+      clearNotifications: () => dispatch(clearNotifications())
     }), [dispatch]
   );
 };

@@ -7,10 +7,12 @@ import { useProfile, useProfileActions } from '../../ducks/profile/actions/profi
 import { useMessage, useMessageActions } from "src/ducks/message/actions/message";
 import { useNavigation } from 'src/ducks/navigation/navigation';
 import { useSearchActions } from 'src/ducks/search/actions/search';
+import { useNotifications, useNotificationsActions } from 'src/ducks/notification/actions/notifications';
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
     const [logged, setLogged] = useState("Login");
+    const [notif, setNotif] = useState(0);
     const user = localStorage.getItem('user');
     const [previewVisible, setPreviewVisible] = useState(false);
     const [userIsValid, setUserIsValid] = useState(true);
@@ -18,6 +20,8 @@ const MainMenu: React.FC = () => {
     const message = useMessage();
     const { clearMessage } = useMessageActions();
     const { clearSearch } = useSearchActions();
+    const { getNotifications } = useNotificationsActions();
+    const notifications = useNotifications();
     const info = useProfile();
     const { getProfileInfo, clearProfile } = useProfileActions();
     const { logout } = useAuthentication();
@@ -51,6 +55,17 @@ const MainMenu: React.FC = () => {
       setLogged("Logout");
     }
 
+    if (notifications && notifications.notifications) {
+      const notificationList = notifications.notifications;
+      let nb = 0;
+      for (const element of notificationList) {
+        if (element.viewed === 'false')
+          nb++;
+      }
+      if (nb !== notif)
+        setNotif(nb);
+    }
+
     if (info.payload && info.payload.Valid === true && !userIsValid) {
       setPreviewVisible(false);
       setUserIsValid(true);
@@ -66,9 +81,11 @@ const MainMenu: React.FC = () => {
     }
     
     useEffect(() => {
-      if (user)
+      if (user) {
         getProfileInfo(user, null);
-    }, [user, getProfileInfo]);
+        getNotifications(user);
+      }
+    }, [user, getProfileInfo, getNotifications]);
 
     const handleClick = (key: any) => {
       clearMessage();
@@ -96,7 +113,7 @@ const MainMenu: React.FC = () => {
           <Menu.Item key="home" icon={<HomeOutlined />}>Home</Menu.Item>
           <Menu.Item key="profile" icon={<UserOutlined />}>Profile</Menu.Item>
           <Menu.Item key="chat" icon={<WechatOutlined />}>Chat</Menu.Item>
-          <Menu.Item key="notifications" icon={<MailOutlined />}>Notifications</Menu.Item>
+          <Menu.Item key="notifications" icon={<MailOutlined />}>Notifications { notif !== 0 ? '(' + notif + ')' : '' }</Menu.Item>
           <Menu.Item key="settings" icon={<SettingOutlined />}>Settings</Menu.Item>
           <Menu.Item key="logout" icon={<LogoutOutlined />}> { logged } </Menu.Item>
         </Menu>

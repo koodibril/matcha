@@ -19,7 +19,7 @@ export const addNotifications = async (token: string, username: string, notifica
     notifications.push(newNotification);
     userInfo = username ? await updateUsernameNotification({username, notifications}, session, internalError) : await updateUserNotification({token, notifications}, session, internalError);
 
-    info(`notifications updated`);
+    info(`new notification added:` + notification);
     return (userInfo[0]);
   } catch (e) {
     return internalError(e);

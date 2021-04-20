@@ -34,7 +34,7 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Latitude,
     Longitude,
     Valid,
-    Distance,
+    Distance
   } = res.data.userInfo.properties;
   const info = {
     Email,
@@ -49,7 +49,7 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Distance,
     Latitude,
     Longitude,
-    Valid,
+    Valid
   };
   dispatch({ type: "LOADING_PROFILE_SUCCESS", payload: info });
   return Promise.resolve();
