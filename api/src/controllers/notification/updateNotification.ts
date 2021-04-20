@@ -13,10 +13,11 @@ export const updateNotification = async (req: any, res: any) => {
     const userInfo = await getUserInfoT({token}, session, internalError(res));
     const notifications = userInfo[0].properties.Notifications;
     const notification = notifications[index].split('false');
-    const newnotification = notification[0] + 'true' + notification[1];
-    notifications[index] = newnotification;
-
-    await updateUserNotification({token, notifications}, session, internalError);
+    if (notification[1]) {
+      const newnotification = notification[0] + 'true' + notification[1];
+      notifications[index] = newnotification;
+      await updateUserNotification({token, notifications}, session, internalError);
+    }
 
     info(`notifications updated`);
     return res

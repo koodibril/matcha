@@ -17,6 +17,7 @@ const handleError = (dispatch: any, error: any) => {
   const message = error.response.data.message.code ? 
     error.response.data.message.code : (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
+  dispatch({ type: "LOADING_PROFILE_FAILURE"});
   return Promise.reject();
 };
 

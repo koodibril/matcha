@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { Menu, Modal } from 'antd';
-import { HomeOutlined, MailOutlined, SettingOutlined, LogoutOutlined, UserOutlined, WechatOutlined } from '@ant-design/icons';
+import { HomeOutlined, MailOutlined, SettingOutlined, LogoutOutlined, UserOutlined, WechatOutlined, MailFilled } from '@ant-design/icons';
 import { useAuthentication } from '../../ducks/authentication/actions/authentication';
 import ProfileComponent from '../Profile/Profile';
 import { useProfile, useProfileActions } from '../../ducks/profile/actions/profile';
 import { useMessage, useMessageActions } from "src/ducks/message/actions/message";
 import { useNavigation } from 'src/ducks/navigation/navigation';
-import { useSearchActions } from 'src/ducks/search/actions/search';
 import { useNotifications, useNotificationsActions } from 'src/ducks/notification/actions/notifications';
 
 const MainMenu: React.FC = () => {
@@ -19,13 +18,14 @@ const MainMenu: React.FC = () => {
 
     const message = useMessage();
     const { clearMessage } = useMessageActions();
-    const { clearSearch } = useSearchActions();
     const { getNotifications } = useNotificationsActions();
     const notifications = useNotifications();
     const info = useProfile();
     const { getProfileInfo, clearProfile } = useProfileActions();
     const { logout } = useAuthentication();
     const { pushState } = useNavigation();
+
+    setTimeout(() => { getNotifications(user) }, 5000);
 
     const countDown = (text: string, error: boolean) => {
       let secondsToGo = 3;
@@ -89,7 +89,6 @@ const MainMenu: React.FC = () => {
 
     const handleClick = (key: any) => {
       clearMessage();
-      clearSearch();
       clearProfile();
         if (key.key === "logout") {
             setLogged("Login");
@@ -113,7 +112,7 @@ const MainMenu: React.FC = () => {
           <Menu.Item key="home" icon={<HomeOutlined />}>Home</Menu.Item>
           <Menu.Item key="profile" icon={<UserOutlined />}>Profile</Menu.Item>
           <Menu.Item key="chat" icon={<WechatOutlined />}>Chat</Menu.Item>
-          <Menu.Item key="notifications" icon={<MailOutlined />}>Notifications { notif !== 0 ? '(' + notif + ')' : '' }</Menu.Item>
+          <Menu.Item key="notifications" icon={notif === 0 ? <MailOutlined /> : <MailFilled />}>Notifications { notif !== 0 ? '(' + notif + ')' : '' }</Menu.Item>
           <Menu.Item key="settings" icon={<SettingOutlined />}>Settings</Menu.Item>
           <Menu.Item key="logout" icon={<LogoutOutlined />}> { logged } </Menu.Item>
         </Menu>

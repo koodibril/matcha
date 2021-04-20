@@ -10,25 +10,21 @@ import { useSearchActions } from 'src/ducks/search/actions/search';
 const { Title, Paragraph} = Typography;
 
 const UserInfoHolder: React.FC<{info: any}> = (props) => {
-  const [liked, setLiked] = useState(props.info.relationship.properties.Like);
   const [blockConfirmation, setBlockConfirmation] = useState(false);
   const user = localStorage.getItem('user');
 
   const { blockUser, likeUser } = useRelationshipActions();
-  const { getSearchResult, clearSearch } = useSearchActions();
+  const { getSearchResult } = useSearchActions();
 
   const handleLike = () => {
     likeUser(user, props.info.Username);
-    liked ? setLiked(false) : setLiked(true);
-    clearSearch();
-    getSearchResult(user);
+    setTimeout(() => { getSearchResult(user) }, 100);
   };
 
   const handleBlock = () => {
     setBlockConfirmation(false);
     blockUser(user, props.info.Username);
-    clearSearch();
-    getSearchResult(user);
+    setTimeout(() => { getSearchResult(user) }, 100);
   };
 
   const showModal = () => {
@@ -52,7 +48,7 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
           <Paragraph>
               { props.info.Bio }
           </Paragraph>
-          <Button onClick={handleLike} icon={ liked ? <HeartFilled/> : <HeartOutlined/> }>
+          <Button onClick={handleLike} icon={ props.info.relationship.properties.Like ? <HeartFilled/> : <HeartOutlined/> }>
             like
           </Button>
           <Button onClick={showModal} icon={ <StopOutlined/> }>

@@ -23,7 +23,7 @@ const Profile: React.FC = () => {
     const path = window.location.pathname.split('/');
     if (path.length === 3 && path[1] === 'profile') {
       setReading(true);
-      getProfileInfo(user, path[2]);
+      //getProfileInfo(user, path[2]);
       getRelationship(user, path[2]);
     } else if (user) getProfileInfo(user, null);
   }, [user, getProfileInfo, getRelationship]);
