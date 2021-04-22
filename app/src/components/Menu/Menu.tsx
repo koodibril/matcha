@@ -25,8 +25,6 @@ const MainMenu: React.FC = () => {
     const { logout } = useAuthentication();
     const { pushState } = useNavigation();
 
-    setTimeout(() => { getNotifications(user) }, 5000);
-
     const countDown = (text: string, error: boolean) => {
       let secondsToGo = 3;
       let modal: any;

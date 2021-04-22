@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchActions } from 'src/ducks/search/actions/search';
 import { RootState } from 'src/store/configure';
 
 const PORT = 3001;

@@ -1,39 +1,18 @@
 import React, { useState } from 'react';
 
-import { Row, Typography, Button} from 'antd';
-import { HeartOutlined, HeartFilled, StopOutlined } from '@ant-design/icons';
-
-import Modal from 'antd/lib/modal/Modal';
-import { useRelationshipActions } from '../../../../ducks/relationship/actions/relationship';
-import { useSearchActions } from 'src/ducks/search/actions/search';
+import { Row, Typography, Tag} from 'antd';
+import CheckableTag from 'antd/lib/tag/CheckableTag';
 
 const { Title, Paragraph} = Typography;
 
 const UserInfoHolder: React.FC<{info: any}> = (props) => {
-  const [blockConfirmation, setBlockConfirmation] = useState(false);
-  const user = localStorage.getItem('user');
+  const [selectedTags, setSelectedTags] = useState<any[]>([]);
 
-  const { blockUser, likeUser } = useRelationshipActions();
-  const { getSearchResult } = useSearchActions();
+  const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
 
-  const handleLike = () => {
-    likeUser(user, props.info.Username);
-    setTimeout(() => { getSearchResult(user) }, 100);
-  };
 
-  const handleBlock = () => {
-    setBlockConfirmation(false);
-    blockUser(user, props.info.Username);
-    setTimeout(() => { getSearchResult(user) }, 100);
-  };
-
-  const showModal = () => {
-    setBlockConfirmation(true);
-  }
-
-  const hideModal = () => {
-    setBlockConfirmation(false);
-  }
+  if (selectedTags !== props.info.Interests)
+    setSelectedTags(props.info.Interests);
 
   return (
     <Row>
@@ -46,24 +25,27 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
               Distance: { props.info.Distance } km
           </Paragraph>
           <Paragraph>
+              Gender: { props.info.Gender }
+          </Paragraph>
+          <Paragraph>
+              Looking for: { props.info.Sexo }
+          </Paragraph>
+          <Row>
+            Interests: 
+            <Tag>
+            {tagsData.map(tag => (
+              <CheckableTag
+                key={tag}
+                checked={selectedTags.indexOf(tag) > -1}
+              >
+                {tag}
+              </CheckableTag>
+        ))}
+            </Tag>
+          </Row>
+          <Paragraph>
               { props.info.Bio }
           </Paragraph>
-          <Button onClick={handleLike} icon={ props.info.relationship.properties.Like ? <HeartFilled/> : <HeartOutlined/> }>
-            like
-          </Button>
-          <Button onClick={showModal} icon={ <StopOutlined/> }>
-            block
-          </Button>
-          <Modal
-          visible={blockConfirmation}
-          onOk={handleBlock}
-          onCancel={hideModal}
-          title={'Are you sure you want to block ' + props.info.Username}>
-            <Paragraph>Are you sure ? If you block this user, 
-              his profile will never appear in search result, 
-              and won't create any notifications. This action is irreversible.
-            </Paragraph>
-          </Modal>
       </Typography>) : null }
     </Row>
   )

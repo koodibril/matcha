@@ -13,7 +13,6 @@ export const getProfileInfo = async (req: any, res: any) => {
 
   try {
     const userInfoU = username ? (await getUserInfoU({ username }, session, internalError(res))) : (await getUserInfoT({ token }, session, internalError(res)));
-    console.log(userInfoU);
     if (!userInfoU[0]) return conflict(res, `Profile (${username}) doesn't exist`);
 
     if (username && userInfoU[0]) {
