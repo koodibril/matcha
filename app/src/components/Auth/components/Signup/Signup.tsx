@@ -30,7 +30,6 @@ const Signup: React.FC = () => {
         style={{ margin: "16px 0" }}
         name="signup"
         onFinish={handleSignup}
-        onFinishFailed={console.error}
       >
 
         <Form.Item

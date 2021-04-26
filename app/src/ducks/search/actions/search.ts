@@ -2,8 +2,7 @@ import axios from 'axios';
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/configure';
-
-import { FilterData } from "src/components/Settings/components/Filter/Filter.d";
+import CLEAR_SEARCH from '../search'
 
 const PORT = 3001;
 const ADDRESS = 'localhost';
@@ -11,6 +10,7 @@ const PROTOCOL = 'http';
 const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 
 const SEARCH_GET_ENDPOINT = '/api/search/do';
+const UPDATE_FILTER_ENDPOINT = '/api/search/update';
 
 const setSearchResult = (dispatch: any, res: any) => {
     const data = res.data.results;
@@ -36,10 +36,30 @@ const handleError = (dispatch: any, error: any) => {
     dispatch({ type: 'ERROR_MESSAGE', payload: message});
     return Promise.reject();
   } 
+  
+const getSearchResult = (token: any) => (dispatch: any) => axios
+    .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { token })
+    .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
-const getSearchResult = ({ ageGap, proximity, popularity, interests }: FilterData, token: any) => (dispatch: any) => axios
-  .post(`${API_URL}${SEARCH_GET_ENDPOINT}`, { ageGap, proximity, popularity, interests, token })
+const updateAgeGap = (ageGap: any, token: any) => (dispatch: any) => axios
+  .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { ageGap, token })
   .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
+
+const updateProximity = (proximity: any, token: any) => (dispatch: any) => axios
+  .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { proximity, token })
+  .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
+
+const updatePopularity = (popularity: any, token: any) => (dispatch: any) => axios
+  .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { popularity, token })
+  .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
+
+const updateInterests = (interests: any, token: any) => (dispatch: any) => axios
+  .post(`${API_URL}${UPDATE_FILTER_ENDPOINT}`, { interests, token })
+  .then((res) => { setSearchResult(dispatch, res) }, (error) => { handleError(dispatch, error) });
+
+const clearSearch = () => ({
+    type: CLEAR_SEARCH,
+  });
 
 export const useSearch = () =>
   useSelector((state: RootState) => state.search);
@@ -49,8 +69,13 @@ export const useSearchActions = () => {
 
   return useMemo(
     () => ({
-      getSearchResult: ({ ageGap, proximity, popularity, interests }: FilterData, token: string | null) => 
-      dispatch(getSearchResult({ ageGap, proximity, popularity, interests}, token))
+      getSearchResult: (token: string | null) => 
+      dispatch(getSearchResult(token)),
+      clearSearch: () => dispatch(clearSearch()),
+      updateAgeGap: (ageGap: number[], token: string | null) => dispatch(updateAgeGap(ageGap, token)),
+      updateProximity: (proximity: number, token: string | null) => dispatch(updateProximity(proximity, token)),
+      updatePopularity: (popularity: number[], token: string) => dispatch(updatePopularity(popularity, token)),
+      updateInterests: (interests: string[], token: string | null) => dispatch (updateInterests(interests, token))
     }), [dispatch]
   );
 };

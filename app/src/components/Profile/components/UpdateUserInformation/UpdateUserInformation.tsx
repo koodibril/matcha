@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Row, Form, Button, Input, Select, InputNumber } from 'antd';
+import { Row, Form, Button, Input, Select, InputNumber, Tag } from 'antd';
 import { Spin } from 'antd';
 
 import { useTranslation } from 'react-i18next';
@@ -70,64 +70,78 @@ const UpdateUserInformation: React.FC = () => {
     <Row>
       { info.payload ? (
       <Form
-        initialValues= {{
-          age: info.payload.Age,
-          gender: info.payload.Gender,
-          sexo: info.payload.Sexo,
-          bio: info.payload.Bio
-        }}
-        style={{ margin: '16px 0' }}
+        style={{margin: "10px", maxWidth: "100%"}}
+        fields={[{
+          name: ['age'],
+          value: info.payload.Age
+        },
+        {
+          name: ['gender'],
+          value: info.payload.Gender
+        },
+        {
+          name: ['sexo'],
+          value: info.payload.Sexo
+        },
+        {
+          name: ['bio'],
+          value: info.payload.Bio
+        }
+        ]}
         name="update"
-        onFinish={handleUpdate}
-        onFinishFailed={console.error}>
+        onFinish={handleUpdate}>
 
         <Form.Item>{info.payload.Username}</Form.Item>
         
         <Form.Item
           label={t('age')}
-          name="age"
           rules={[{
             required: true,
             message: t('age_missing')
           }]}>
-          <InputNumber min={18} max={80}/>
+          <Form.Item name="age">
+            <InputNumber min={18} max={80}/>
+          </Form.Item>
         </Form.Item>
 
         <Form.Item
           label={t('gender')}
-          name="gender"
           rules={[{
             required: true,
             message: t('gender_missing')
           }]}>
-          <Select defaultValue="Unknow">
-            <Select.Option value="Female">Female</Select.Option>
-            <Select.Option value="Male">Male</Select.Option>
-          </Select>
+          <Form.Item name="gender">
+            <Select>
+              <Select.Option value="Female">Female</Select.Option>
+              <Select.Option value="Male">Male</Select.Option>
+            </Select>
+          </Form.Item>
         </Form.Item>
 
         <Form.Item
           label={t('sexual orientation')}
-          name="sexo"
           rules={[{
             required: true,
             message: t('sexual_orientation_missing')
           }]}>
-            <Select defaultValue="Unknow">
-              <Select.Option value="Female">Female</Select.Option>
-              <Select.Option value="Male">Male</Select.Option>
-              <Select.Option value="Both">Both</Select.Option>
-            </Select>
+            <Form.Item name="sexo">
+              <Select>
+                <Select.Option value="Female">Female</Select.Option>
+                <Select.Option value="Male">Male</Select.Option>
+                <Select.Option value="Both">Bi</Select.Option>
+              </Select>
+            </Form.Item>
         </Form.Item>
 
         <Form.Item
           label={t('bio')}
-          name="bio"
           rules={[{
             required: true,
             message: t('bio_missing')
           }]}>
-          <Input.TextArea maxLength={500}/>
+            <Form.Item name="bio">
+              <Input.TextArea maxLength={500}/>
+            </Form.Item>
         </Form.Item>
         
         <Form.Item
@@ -137,23 +151,24 @@ const UpdateUserInformation: React.FC = () => {
             validator: checkTags
           }]}>
             {tagsData.map(tag => (
-          <CheckableTag
-            key={tag}
-            checked={selectedTags.indexOf(tag) > -1}
-            onChange={checked => handleChange(tag, checked)}
-          >
-            {tag}
-          </CheckableTag>
+              <CheckableTag
+                key={tag}
+                checked={selectedTags.indexOf(tag) > -1}
+                onChange={checked => handleChange(tag, checked)}
+              >
+                {tag}
+              </CheckableTag>
         ))}
         </Form.Item>
 
         <Form.Item
           label={t('location')}
-          name="location"
           rules={[{
             validator: checkLocation
           }]}>
-            <Input disabled value={location.city}></Input>
+            <Form.Item name="location">
+              <Input disabled value={location.city}></Input>
+            </Form.Item>
             <MapHolderComponent location={location.city} latitude={location.latitude} longitude={location.longitude}></MapHolderComponent>
             <Button onClick={handleLocation}>{t('update location')}</Button>
         </Form.Item>

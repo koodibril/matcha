@@ -14,8 +14,10 @@ const PROFILE_PICTURE_REMOVE = "/api/profile/picture/remove";
 const PROFILE_UPDATE_ENDPOINT = "/api/profile/update";
 
 const handleError = (dispatch: any, error: any) => {
-  const message = (error.response.data.message || error.response.data.errno);
+  const message = error.response.data.message.code ? 
+    error.response.data.message.code : (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
+  dispatch({ type: "LOADING_PROFILE_FAILURE"});
   return Promise.reject();
 };
 
@@ -33,7 +35,7 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Latitude,
     Longitude,
     Valid,
-    Distance,
+    Distance
   } = res.data.userInfo.properties;
   const info = {
     Email,
@@ -48,7 +50,7 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Distance,
     Latitude,
     Longitude,
-    Valid,
+    Valid
   };
   dispatch({ type: "LOADING_PROFILE_SUCCESS", payload: info });
   return Promise.resolve();

@@ -17,6 +17,7 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
     const [previewImage, setPreviewImage] = useState();
     const [previewTitle, setPreviewTitle] = useState('');
     const [fileList, setFileList] = useState<any[]>([]);
+    const [reading, setReading] = useState(props.reading);
     const user = { "token": localStorage.getItem('user') as string };
     const userr = localStorage.getItem('user');
 
@@ -24,8 +25,9 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
 
     const handleCancel = () => setPreviewVisible(false);
 
-    const updateList = () => {
-      let pictures = props.pictures;
+    const updateList = (init: boolean) => {
+      let pictures: string[];
+      pictures = props.pictures;
       let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {
         if (picture !== '') {
@@ -43,10 +45,12 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
         if (picture !== '')
         i++;
       })
+      if (i === 1 && reading === false)
+        setReading(true);
       return i;
     }
 
-    if (props.pictures && fileList.length !== getFileLength()) updateList();
+    if (props.pictures && fileList.length !== getFileLength()) updateList(true);
 
     const handlePreview = async (file: any) => {
       if (!file.url && !file.preview) {
@@ -66,9 +70,9 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
     }
 
     const handleChange = (info: any) => {
-      if (info.file.status === 'done'){
+      setTimeout(() => {
         getProfileInfo(userr, null);
-      }
+      }, 2000);
     }
 
     const uploadList = ({
@@ -95,14 +99,15 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
         <Row>
           <Upload
             data={user}
-            accept="image/png,image/jpeg,.png,.jpeg"
+            accept="image/png, image/jpeg, .png, .jpeg"
             action="http://localhost:3001/api/profile/picture/upload"
             listType="picture-card"
             fileList={fileList}
-            showUploadList={ props.reading ? readingList : uploadList }
+            showUploadList={ reading ? readingList : uploadList }
             onPreview={handlePreview}
             onChange={handleChange}
             onRemove={onRemove}
+            style={{height: 100}}
           >
             {fileList.length <= 5 && !props.reading ? uploadButton : null}
           </Upload>

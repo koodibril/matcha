@@ -12,10 +12,10 @@ export const getProfileInfo = async (req: any, res: any) => {
   const username = req.body.username;
 
   try {
-    const userInfoU = username ? await getUserInfoU({ username }, session, internalError(res)) : await getUserInfoT({ token }, session, internalError(res));
+    const userInfoU = username ? (await getUserInfoU({ username }, session, internalError(res))) : (await getUserInfoT({ token }, session, internalError(res)));
     if (!userInfoU[0]) return conflict(res, `Profile (${username}) doesn't exist`);
 
-    if (username) {
+    if (username && userInfoU[0]) {
       const userone = await getUserInfoT({token}, session, internalError(res));
       const latitudeOne = userone[0].properties.Latitude;
       const longitudeOne = userone[0].properties.Longitude;

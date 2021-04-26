@@ -8,7 +8,6 @@ const ADDRESS = 'localhost';
 const PROTOCOL = 'http';
 const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 
-
 const RELATIONSHIP_LIKE_ENDPOINT = '/api/relationship/like';
 const RELATIONSHIP_BLOCK_ENDPOINT = '/api/relationship/block';
 const RELATIONSHIP_GET_ENDPOINT = '/api/relationship/get';
@@ -30,6 +29,7 @@ const setRelationship = (dispatch: any, res: any) => {
 const handleError = (dispatch: any, error: any) => {
     const message = (error.response.data.message || error.response.data.errno);
     dispatch({ type: 'ERROR_MESSAGE', payload: message});
+    dispatch({ type: 'LOADING_RELATIONSHIP_FAILURE'});
     return Promise.reject();
   } 
 

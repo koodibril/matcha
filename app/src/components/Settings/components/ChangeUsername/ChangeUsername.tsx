@@ -21,10 +21,9 @@ const ChangeUsername: React.FC = () => {
   return (
     <Row>
       <Form
-        style={{ margin: "16px 0" }}
-        name="signup"
+        style={{ margin: "16px", width: "100%" }}
+        name="changeUsername"
         onFinish={handleChangeUsername}
-        onFinishFailed={console.error}
       >
 
         <Form.Item
@@ -37,15 +36,14 @@ const ChangeUsername: React.FC = () => {
             },
           ]}
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item>
-          <Spin spinning={loading}>
-            <Button type="primary" htmlType="submit">
-              {t("update username")}
-            </Button>
-          </Spin>
+          <Row justify="start" align="middle" style={{width: "100%"}}>
+            <Input style={{width: "50%"}}/>
+              <Spin spinning={loading}>
+                <Button type="primary" htmlType="submit">
+                  {t("update username")}
+                </Button>
+              </Spin>
+          </Row>
         </Form.Item>
       </Form>
     </Row>

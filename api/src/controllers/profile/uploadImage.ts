@@ -15,6 +15,7 @@ export const uploadImage = async (req: any, res: any) => {
   try {
     let token = '';
     let fileName = '';
+    let userInfo: any;
     var busboy = new Busboy({ headers: req.headers });
     busboy.on('file', function(fieldname: any, file: any, filename: any, encoding: any, mimetype: any, object: any) {
       fileName = filename;
@@ -25,7 +26,7 @@ export const uploadImage = async (req: any, res: any) => {
       if (fieldname === 'token') {
         try {
           token = val;
-          const userInfo = await getUserInfoT({ token }, session, internalError(res));
+          userInfo = await getUserInfoT({ token }, session, internalError(res));
           let pictures = userInfo[0].properties.Pictures as string[];
           const username = userInfo[0].properties.Username;
           const userDir = './public/users/' + userInfo[0].identity;

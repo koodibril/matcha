@@ -29,7 +29,7 @@ const setChatRoom = (dispatch: any, res: any) => {
     data.forEach((element: string) => {
       const info = element.split(/User:(.*)Date:([0-9]*)Message:(.*)/);
       const username = info[1];
-      const date = info[2];
+      const date = new Date(parseInt(info[2])).toUTCString();
       const text = info[3];
       const message = {username, date, text};
       messages.push(message);

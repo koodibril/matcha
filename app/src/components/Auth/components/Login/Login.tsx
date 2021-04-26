@@ -31,7 +31,6 @@ const Login: React.FC = () => {
         style={{ margin: "16px 0" }}
         name="login"
         onFinish={handleLogin}
-        onFinishFailed={console.error}
       >
         <Form.Item
           label={t("username")}

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Row } from 'antd';
+import { Col, Row } from 'antd';
 import ChangePasswordComponent from './components/Changepassword/ChangePassword';
 import ChangeUsernameComponent from './components/ChangeUsername/ChangeUsername';
 import ChangeEmailComponent from './components/ChangeEmail/ChangeEmail';
+import FilterComponent from './components/Filter/Filter';
 import { useNavigation } from 'src/ducks/navigation/navigation';
 
 const Settings: React.FC = () => {
@@ -12,10 +13,13 @@ const Settings: React.FC = () => {
     if (!user) pushState('/auth');
     
   return (
-        <Row justify="center">
-          <ChangeUsernameComponent></ChangeUsernameComponent>
-          <ChangeEmailComponent></ChangeEmailComponent>
-          <ChangePasswordComponent></ChangePasswordComponent>
+        <Row justify="center" align="middle">
+          <Col>
+            <FilterComponent></FilterComponent>
+            <ChangeUsernameComponent></ChangeUsernameComponent>
+            <ChangeEmailComponent></ChangeEmailComponent>
+            <ChangePasswordComponent></ChangePasswordComponent>
+          </Col>
         </Row>
   )
 }

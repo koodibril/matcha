@@ -21,10 +21,9 @@ const ChangeEmail: React.FC = () => {
   return (
     <Row>
       <Form
-        style={{ margin: "16px 0" }}
-        name="signup"
+        style={{ margin: "16px", width: "100%" }}
+        name="changeEmail"
         onFinish={handleChangeEmail}
-        onFinishFailed={console.error}
       >
 
         <Form.Item
@@ -38,15 +37,14 @@ const ChangeEmail: React.FC = () => {
             },
           ]}
         >
-          <Input />
-        </Form.Item>
-
-        <Form.Item>
-          <Spin spinning={loading}>
-            <Button type="primary" htmlType="submit">
-              {t("update email")}
-            </Button>
-          </Spin>
+          <Row justify="start" align="middle" style={{width: "100%"}}>
+            <Input style={{width: "50%"}}/>
+              <Spin spinning={loading}>
+                <Button type="primary" htmlType="submit">
+                  {t("update email")}
+                </Button>
+              </Spin>
+          </Row>
         </Form.Item>
       </Form>
     </Row>

@@ -1,23 +1,25 @@
-import React from 'react';
-import { Col, Row } from 'antd';
-import FilterComponent from './components/Filter/Filter';
+import React, { useEffect } from 'react';
+import { Row } from 'antd';
 import DisplayComponent from './components/Display/Display';
 import { useNavigation } from 'src/ducks/navigation/navigation';
+import { useSearch, useSearchActions } from 'src/ducks/search/actions/search';
 
 const Home: React.FC = () => {
   const user = localStorage.getItem('user');
   const { pushState } = useNavigation();
+  const { getSearchResult } = useSearchActions();
+  const userList = useSearch();
 
   if (!user) pushState('/auth');
+  
+  useEffect(() => {
+    if (user)
+      getSearchResult(user);
+  }, [user, getSearchResult]);
 
   return (
   <Row justify="center" align="middle">
-    <Col span={6}>
-      <FilterComponent></FilterComponent>
-    </Col>
-    <Col span={16}>
-      <DisplayComponent></DisplayComponent>
-    </Col>
+      <DisplayComponent userList={userList}></DisplayComponent>
   </Row>);
 };
 

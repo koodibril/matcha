@@ -54,6 +54,13 @@ const passwordChanged = (dispatch: any, res: any) => {
   });
 };
 
+const emailSent = (dispatch: any, res: any) => {
+  dispatch({
+    type: "SET_MESSAGE",
+    payload: "An email has been sent",
+  });
+};
+
 const emailChanged = (dispatch: any, res: any) => {
   dispatch({
     type: "SET_MESSAGE",
@@ -166,7 +173,7 @@ const updateUsername = (token: string | null, username: string) => (
 const passwordRecovery = (email: string) => (dispatch: any) =>
   axios.post(`${API_URL}${RECOVER_PASSWORD_ENDPOINT}`, { email }).then(
     (res) => {
-      passwordChanged(dispatch, res);
+      emailSent(dispatch, res);
     },
     (error) => {
       handleError(dispatch, error);

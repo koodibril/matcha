@@ -5,14 +5,12 @@ import { useAuthentication } from "src/ducks/authentication/actions/authenticati
 
 const PasswordRecovery: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   const { passwordRecovery } = useAuthentication();
   const { t } = useTranslation("authentication");
 
   const handlePasswordRecovery = (info: any) => {
     setLoading(true);
-    setMessage("An email has been sent");
     passwordRecovery(info.email);
     setLoading(false);
   };
@@ -23,9 +21,7 @@ const PasswordRecovery: React.FC = () => {
         style={{ margin: "16px 0" }}
         name="signup"
         onFinish={handlePasswordRecovery}
-        onFinishFailed={console.error}
       >
-        {message}
 
         <Form.Item
           label={t("email")}
