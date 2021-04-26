@@ -51,7 +51,7 @@ const ChangePassword: React.FC = () => {
   return (
     <Row>
       <Form
-        style={{ margin: "16px 0" }}
+        style={{ margin: "16px" }}
         name="changePassword"
         onFinish={handleChangePassword}
       >
