@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Modal, Row, Typography } from 'antd';
+import { Card, Col, Divider, Modal, Row, Typography } from 'antd';
 import { HeartOutlined, HeartFilled, StopOutlined, EllipsisOutlined } from '@ant-design/icons';
 import ChatHolderComponent from './components/ChatHolder/ChatHolder';
 import { useChat, useChatActions, useChatRoom } from '../../ducks/chat/actions/chat';
@@ -64,8 +64,6 @@ const Chat: React.FC = () => {
         <Row key={index} style={{ margin: 20}}>
           <Card hoverable
             onClick={() => loadChat(element)}
-            style={{ width: 300 }}
-            cover={<img alt={element.Username} src={'http://localhost:3001/' + element.Pictures[0]}/>}
             actions={[
               element.relationship.properties.Like ? 
               <HeartFilled onClick={() => handleLike(element)} key="like"/> :
@@ -83,11 +81,12 @@ const Chat: React.FC = () => {
     }
     
   return (
-    <Row justify="center" align="middle">
+    <Row justify="center" style={{height: "600px"}}>
       <Col span={6}>
         { userList.userResult ? handleUserList() : null}
       </Col>
-      <Col span={16}>
+      <Divider type="vertical" style={{width: '3px', height: '500px', marginTop: '50px'}}/>
+      <Col span={16} style={{height: "600px", width: '100%'}}>
         <ChatHolderComponent chatRoom={chatRoom.chatRoom} user={profile}></ChatHolderComponent>
       </Col>
       <Modal
