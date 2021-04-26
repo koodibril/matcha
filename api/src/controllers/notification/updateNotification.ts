@@ -19,7 +19,7 @@ export const updateNotification = async (req: any, res: any) => {
       await updateUserNotification({token, notifications}, session, internalError);
     }
 
-    info(`notifications updated`);
+    info(`notification viewed`);
     return res
       .status(200)
       .json({ notifications })

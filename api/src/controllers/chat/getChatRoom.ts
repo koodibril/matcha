@@ -1,6 +1,6 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { info, internalError } from '../../shared/utils';
-import { createChatRoom, getChatRoom } from '../../shared/neo4j/queries';
+import { createChatRoom, getChatRoom, getUserInfoI } from '../../shared/neo4j/queries';
 
 
 
@@ -15,6 +15,14 @@ export const getChatRoomUser = async (req: any, res: any) => {
       chatRoom = await createChatRoom({token, username}, session, internalError(res));
 
     const messages = chatRoom[0].properties.Messages;
+    let index = 0;
+    for (const element of messages) {
+      const id = parseInt(element.split('Date:')[0].split('User:')[1]);
+      const User = await getUserInfoI({id}, session, internalError(res));
+      if (User[0])
+        messages[index] = 'User:' + User[0].properties.Username + 'Date:' + element.split('Date:')[1];
+      index++;
+    }
 
     info(`chatRoom collected`);
     return res

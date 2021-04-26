@@ -1,6 +1,7 @@
 import { Session } from 'neo4j-driver';
 import { generateQuery } from './querieMaker';
 interface UserOptions {
+  id?: number;
   username?: string;
   password?: string;
   email?: string;
@@ -49,6 +50,7 @@ const queryMatchingPassword = `${generateQuery(['match'], ['user'], [['username'
 const queryGetUserInfoT = generateQuery(['match'], ['user'], [['token']], [], '', 'a', false);
 const queryGetUserInfoU = generateQuery(['match'], ['user'], [['username']], [], '', 'a', false);
 const queryGetUserInfoE = generateQuery(['match'], ['user'], [['email']], [], '', 'a', false);
+const queryGetUserInfoI = generateQuery(['match', 'where'], ['user'], [[]], [], 'Id(a) = $id', 'a', false);
 
 const queryUpdateToken = `${generateQuery(['match', 'set'], ['user'], [['username']], ['token'], '', 'a', false)}.Token`;
 const queryUpdateUserPictures = generateQuery(['match', 'set'], ['user'], [['username']], ['pictures'], '', 'a', false);
@@ -81,6 +83,7 @@ export const getUserPassword = async (options: UserOptions, session: Session, ca
 export const getUserInfoT = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoT, options, session).catch(callback);
 export const getUserInfoU = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoU, options, session).catch(callback);
 export const getUserInfoE = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoE, options, session).catch(callback);
+export const getUserInfoI = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoI, options, session).catch(callback);
 
 export const updateToken = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateToken, options, session).catch(callback);
 export const updateUserPictures = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserPictures, options, session).catch(callback);

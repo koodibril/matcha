@@ -16,7 +16,7 @@ export const addNotifications = async (token: string, username: string, notifica
     const notifications = userInfo[0].properties.Notifications ? userInfo[0].properties.Notifications : [];
 
     const newNotification = 'Viewed:false' + 'Date:' + Date.now() + 'Notification:' + notification;
-    notifications.push(newNotification);
+    notifications.unshift(newNotification);
     userInfo = username ? await updateUsernameNotification({username, notifications}, session, internalError) : await updateUserNotification({token, notifications}, session, internalError);
 
     info(`new notification added:` + notification);

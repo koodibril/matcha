@@ -128,7 +128,7 @@ const UpdateUserInformation: React.FC = () => {
               <Select>
                 <Select.Option value="Female">Female</Select.Option>
                 <Select.Option value="Male">Male</Select.Option>
-                <Select.Option value="Both">Both</Select.Option>
+                <Select.Option value="Both">Bi</Select.Option>
               </Select>
             </Form.Item>
         </Form.Item>
