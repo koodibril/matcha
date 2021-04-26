@@ -25,13 +25,11 @@ export const removeImage = async (req: any, res: any) => {
             block = true;
           }
         });
-        console.log(pictures);
         let i = -1;
         while (++i < 4) {
           pictures[i] = pictures[i + 1];
           pictures[i + 1] = '';
         }
-        console.log(pictures);
         userInfoU = await updateUserPictures({ username, pictures }, session, internalError(res));
         if (fs.existsSync('./public/' + urlpic))
           fs.unlinkSync('./public/' + urlpic);
