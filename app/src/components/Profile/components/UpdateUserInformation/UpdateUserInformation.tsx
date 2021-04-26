@@ -70,6 +70,7 @@ const UpdateUserInformation: React.FC = () => {
     <Row>
       { info.payload ? (
       <Form
+        style={{margin: "10px", maxWidth: "100%"}}
         fields={[{
           name: ['age'],
           value: info.payload.Age
@@ -87,7 +88,6 @@ const UpdateUserInformation: React.FC = () => {
           value: info.payload.Bio
         }
         ]}
-        style={{ margin: '16px 0' }}
         name="update"
         onFinish={handleUpdate}>
 
@@ -150,7 +150,6 @@ const UpdateUserInformation: React.FC = () => {
           rules={[{
             validator: checkTags
           }]}>
-            <Tag>
             {tagsData.map(tag => (
               <CheckableTag
                 key={tag}
@@ -160,7 +159,6 @@ const UpdateUserInformation: React.FC = () => {
                 {tag}
               </CheckableTag>
         ))}
-            </Tag>
         </Form.Item>
 
         <Form.Item

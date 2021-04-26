@@ -32,7 +32,6 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
           </Paragraph>
           <Row>
             Interests: 
-            <Tag>
             {tagsData.map(tag => (
               <CheckableTag
                 key={tag}
@@ -41,7 +40,6 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
                 {tag}
               </CheckableTag>
         ))}
-            </Tag>
           </Row>
           <Paragraph>
               { props.info.Bio }
