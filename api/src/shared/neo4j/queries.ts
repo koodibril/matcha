@@ -66,7 +66,10 @@ const queryGetRelationship = generateQuery(['match'], ['user', 'action', 'user']
 const queryUpdateRelationship = generateQuery(['match', 'where', 'set'], ['user', 'action', 'user'], [['token'], [], ['username']], ['match', 'block', 'like'], '(a)-[r]->(b)', 'r', false);
 const queryGetMatchedRelationship = generateQuery(['match', 'where'], ['user', 'action', 'user'], [['token'], [], []], [], 'r.Match = true', 'b', false);
 
-const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 'a.Age >= $agegap[0] AND a.Age <= $agegap[1] AND a.Popularity >= $popularity[0] AND a.Popularity <= $popularity[1]', 'a', false);
+const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 
+'a.Age >= $agegap[0] AND a.Age <= $agegap[1] ' +
+'AND a.Popularity >= $popularity[0] AND a.Popularity <= $popularity[1]'
+, 'a LIMIT 25', false);
 
 const queryCreateChatRoom = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], [], 'chatroom', 'c', false);
 const queryGetChatRoom = generateQuery(['match'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], [], 'chatroom', 'c', false);
