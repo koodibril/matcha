@@ -6,9 +6,8 @@ import authentication from './authentication/authentication';
 import message from './message/message'
 import profile from './profile/profile';
 import relationship from './relationship/relationship';
-import search from './search/search';
-import { chat } from './chat/chat';
-import { chatRoom } from './chat/chat';
+import { search, filter } from './search/search';
+import { chat, chatRoom } from './chat/chat';
 import notification from './notification/notifications';
 
 const reducer = (history: History) => combineReducers({
@@ -17,6 +16,7 @@ const reducer = (history: History) => combineReducers({
   profile,
   relationship,
   search,
+  filter,
   chat,
   chatRoom,
   notification,

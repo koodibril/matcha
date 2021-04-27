@@ -49,6 +49,8 @@ const Display: React.FC<{userList: any}> = (props) => {
 
     const handleUserList = () => {
       const List = props.userList.userResult;
+      if (List.length === 0)
+        return ('no user correspond to your criteria');
       return (List.map((element: any, index: number) => (
          element.relationship.properties && element.relationship.properties.Block  ? null : (
           <Row key={index} style={{ margin: 20}}>
@@ -70,7 +72,7 @@ const Display: React.FC<{userList: any}> = (props) => {
           </Row>)
       )));
     }
-      
+
   return (
     <Row>
       <Col>
