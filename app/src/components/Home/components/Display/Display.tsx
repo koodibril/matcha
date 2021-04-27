@@ -8,34 +8,34 @@ import { useRelationshipActions } from 'src/ducks/relationship/actions/relations
 import { useSearchActions } from 'src/ducks/search/actions/search';
 
 const Display: React.FC<{userList: any}> = (props) => {
-  const [pictures, setPictures] = useState(['']);
-  const [profile, setProfile] = useState();
-  const [modal, setModal] = useState(false);
-  const [blockConfirmation, setBlockConfirmation] = useState(false);
-  const user = localStorage.getItem('user');
-  
-  const { blockUser, likeUser } = useRelationshipActions();
-  const { getSearchResult } = useSearchActions();
-  
-  const handleLike = (element: any) => {
-    likeUser(user, element.Username);
-    setTimeout(() => { getSearchResult(user) }, 100);
-  };
+    const [pictures, setPictures] = useState(['']);
+    const [profile, setProfile] = useState();
+    const [modal, setModal] = useState(false);
+    const [blockConfirmation, setBlockConfirmation] = useState(false);
+    const user = localStorage.getItem('user');
+    
+    const { blockUser, likeUser } = useRelationshipActions();
+    const { getSearchResult } = useSearchActions();
+    
+    const handleLike = (element: any) => {
+      likeUser(user, element.Username);
+      setTimeout(() => { getSearchResult(user) }, 100);
+    };
 
-  const handleBlock = (element: any) => {
-    setBlockConfirmation(false);
-    blockUser(user, element.Username);
-    setTimeout(() => { getSearchResult(user) }, 100);
-  };
+    const handleBlock = (element: any) => {
+      setBlockConfirmation(false);
+      blockUser(user, element.Username);
+      setTimeout(() => { getSearchResult(user) }, 100);
+    };
 
-  const showBlock = (element: any) => {
-    setProfile(element);
-    setBlockConfirmation(true);
-  }
+    const showBlock = (element: any) => {
+      setProfile(element);
+      setBlockConfirmation(true);
+    }
 
-  const hideBlock = () => {
-    setBlockConfirmation(false);
-  }
+    const hideBlock = () => {
+      setBlockConfirmation(false);
+    }
 
     const handleProfile = (profile: any) => {
       setPictures(profile.Pictures);
