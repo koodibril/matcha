@@ -146,7 +146,6 @@ const UpdateUserInformation: React.FC = () => {
         
         <Form.Item
           label={t('interests')}
-          name="interests"
           rules={[{
             validator: checkTags
           }]}>
