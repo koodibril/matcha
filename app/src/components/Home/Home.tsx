@@ -41,16 +41,12 @@ const Home: React.FC = () => {
     }
   };
 
-  console.log(info);
-
   const sort = (by: string, order: boolean) => {
     if (by === '') {
-      console.log('No sort');
       setListSorted(userList.userResult);
     }
     else {
       const newList = userList.userResult;
-      console.log('Sort by ' + by + ' in order ' + (order ? 'ascending' : 'descending'));
       if (by === 'Age') {
         newList.sort((a: any, b: any) => {return (order ? a.Age - b.Age : b.Age - a.Age)});
       }
