@@ -12,6 +12,18 @@ To run the Docker container using `docker-compose`:
 ```bash
 docker-compose -f ./api/neo4j.yml up
 ```
+The front use yarn.
+To run the front end:
+```bash
+cd ./app
+yarn start
+```
+The back is based on Node and is launched with nodemon for developpment purpose.
+To run the back:
+```bash
+cd ./api
+nodemon
+```
 
 ### Install dependencies
 This project is using `yarn workspaces`.
