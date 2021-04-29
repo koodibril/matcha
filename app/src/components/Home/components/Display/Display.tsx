@@ -7,7 +7,7 @@ import Modal from 'antd/lib/modal/Modal';
 import { useRelationshipActions } from 'src/ducks/relationship/actions/relationship';
 import { useSearchActions } from 'src/ducks/search/actions/search';
 
-const Display: React.FC<{userList: any}> = (props) => {
+const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
     const [pictures, setPictures] = useState(['']);
     const [profile, setProfile] = useState();
     const [modal, setModal] = useState(false);
@@ -48,7 +48,7 @@ const Display: React.FC<{userList: any}> = (props) => {
     }
 
     const handleUserList = () => {
-      const List = props.userList.userResult;
+      const List = props.sortedList.length > 0 ? props.sortedList : props.userList.userResult;
       if (List.length === 0)
         return ('no user correspond to your criteria');
       return (List.map((element: any, index: number) => (

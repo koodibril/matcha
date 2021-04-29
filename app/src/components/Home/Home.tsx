@@ -4,13 +4,16 @@ import DisplayComponent from './components/Display/Display';
 import { useNavigation } from 'src/ducks/navigation/navigation';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { useSearch, useSearchActions } from 'src/ducks/search/actions/search';
+import { useProfile } from 'src/ducks/profile/actions/profile';
 
 const Home: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<any[]>([]);
   const [double, setDouble] = useState(false);
+  const [listSorted, setListSorted] = useState<any[]>([]);
   const user = localStorage.getItem('user');
   const { pushState } = useNavigation();
   const { getSearchResult } = useSearchActions();
+  const info = useProfile();
   const userList = useSearch();
   const tagsData = ['Age', 'Distance', 'Popularity', 'Tags'];
 
@@ -22,17 +25,63 @@ const Home: React.FC = () => {
   }, [user, getSearchResult]);
 
   const handleChange = (tag: any, checked: any) => {
-    setSelectedTags([tag]);
-    if (tag !== selectedTags[0])
+    if (tag !== selectedTags[0]) {
+      setSelectedTags([tag]);
       setDouble(false);
+      sort(tag, false);
+    }
     if (checked === false && double === true) {
       setSelectedTags([]);
       setDouble(false);
+      sort('', false);
     }
     if (checked === false && double === false) {
-      setDouble(true); 
+      setDouble(true);
+      sort(tag, true);
     }
   };
+
+  console.log(info);
+
+  const sort = (by: string, order: boolean) => {
+    if (by === '') {
+      console.log('No sort');
+      setListSorted(userList.userResult);
+    }
+    else {
+      const newList = userList.userResult;
+      console.log('Sort by ' + by + ' in order ' + (order ? 'ascending' : 'descending'));
+      if (by === 'Age') {
+        newList.sort((a: any, b: any) => {return (order ? a.Age - b.Age : b.Age - a.Age)});
+      }
+      else if (by === 'Distance') {
+        newList.sort((a: any, b: any) => {return (order ? a.Distance - b.Distance : b.Distance - a.Distance)});
+      }
+      else if (by === 'Popularity') {
+        newList.sort((a: any, b: any) => {return (order ? a.Popularity - b.Popularity : b.Popularity - a.Popularity)});
+      }
+      else if (by === 'Tags') {
+        newList.sort((a: any, b: any) => {
+          let amatched = 0;
+          for (const interest of a.Interests) {
+            for (const match of info.payload.Interests) {
+              if (interest === match)
+                amatched++;
+            }
+          }
+          let bmatched = 0;
+          for (const interest of b.Interests) {
+            for (const match of info.payload.Interests) {
+              if (interest === match)
+                bmatched++;
+            }
+          }
+          return (order ? amatched - bmatched : bmatched - amatched);
+        })
+      }
+      setListSorted(newList);
+    }
+  }
 
   return (
     <>
@@ -49,7 +98,7 @@ const Home: React.FC = () => {
       </Row>
       <Divider style={{width: "80%"}}></Divider>
       <Row justify="center" align="middle">
-          <DisplayComponent userList={userList}></DisplayComponent>
+          <DisplayComponent userList={userList} sortedList={listSorted}></DisplayComponent>
       </Row>
     </>);
 };
