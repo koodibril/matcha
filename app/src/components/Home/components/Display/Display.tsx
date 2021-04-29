@@ -7,35 +7,35 @@ import Modal from 'antd/lib/modal/Modal';
 import { useRelationshipActions } from 'src/ducks/relationship/actions/relationship';
 import { useSearchActions } from 'src/ducks/search/actions/search';
 
-const Display: React.FC<{userList: any}> = (props) => {
-  const [pictures, setPictures] = useState(['']);
-  const [profile, setProfile] = useState();
-  const [modal, setModal] = useState(false);
-  const [blockConfirmation, setBlockConfirmation] = useState(false);
-  const user = localStorage.getItem('user');
-  
-  const { blockUser, likeUser } = useRelationshipActions();
-  const { getSearchResult } = useSearchActions();
-  
-  const handleLike = (element: any) => {
-    likeUser(user, element.Username);
-    setTimeout(() => { getSearchResult(user) }, 100);
-  };
+const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
+    const [pictures, setPictures] = useState(['']);
+    const [profile, setProfile] = useState();
+    const [modal, setModal] = useState(false);
+    const [blockConfirmation, setBlockConfirmation] = useState(false);
+    const user = localStorage.getItem('user');
+    
+    const { blockUser, likeUser } = useRelationshipActions();
+    const { getSearchResult } = useSearchActions();
+    
+    const handleLike = (element: any) => {
+      likeUser(user, element.Username);
+      setTimeout(() => { getSearchResult(user) }, 100);
+    };
 
-  const handleBlock = (element: any) => {
-    setBlockConfirmation(false);
-    blockUser(user, element.Username);
-    setTimeout(() => { getSearchResult(user) }, 100);
-  };
+    const handleBlock = (element: any) => {
+      setBlockConfirmation(false);
+      blockUser(user, element.Username);
+      setTimeout(() => { getSearchResult(user) }, 100);
+    };
 
-  const showBlock = (element: any) => {
-    setProfile(element);
-    setBlockConfirmation(true);
-  }
+    const showBlock = (element: any) => {
+      setProfile(element);
+      setBlockConfirmation(true);
+    }
 
-  const hideBlock = () => {
-    setBlockConfirmation(false);
-  }
+    const hideBlock = () => {
+      setBlockConfirmation(false);
+    }
 
     const handleProfile = (profile: any) => {
       setPictures(profile.Pictures);
@@ -48,7 +48,9 @@ const Display: React.FC<{userList: any}> = (props) => {
     }
 
     const handleUserList = () => {
-      const List = props.userList.userResult;
+      const List = props.sortedList.length > 0 ? props.sortedList : props.userList.userResult;
+      if (List.length === 0)
+        return ('no user correspond to your criteria');
       return (List.map((element: any, index: number) => (
          element.relationship.properties && element.relationship.properties.Block  ? null : (
           <Row key={index} style={{ margin: 20}}>
@@ -70,7 +72,7 @@ const Display: React.FC<{userList: any}> = (props) => {
           </Row>)
       )));
     }
-      
+
   return (
     <Row>
       <Col>

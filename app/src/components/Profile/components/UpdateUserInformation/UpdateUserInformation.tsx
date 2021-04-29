@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Row, Form, Button, Input, Select, InputNumber, Tag } from 'antd';
+import { Row, Form, Button, Input, Select, InputNumber } from 'antd';
 import { Spin } from 'antd';
 
 import { useTranslation } from 'react-i18next';
@@ -146,7 +146,6 @@ const UpdateUserInformation: React.FC = () => {
         
         <Form.Item
           label={t('interests')}
-          name="interests"
           rules={[{
             validator: checkTags
           }]}>

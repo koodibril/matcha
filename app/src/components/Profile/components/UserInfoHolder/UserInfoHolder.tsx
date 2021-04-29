@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Row, Typography, Tag} from 'antd';
+import { Row, Typography} from 'antd';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 
 const { Title, Paragraph} = Typography;

@@ -68,8 +68,8 @@ export const generateQuery = (actions: string[], models: string[], params: strin
         }
     }
     querie = querie + 'RETURN ' 
-    + (getCount ? 'COUNT(' : '(') 
-    + toreturn + ')';
+    + (getCount ? 'COUNT(' : '') 
+    + toreturn + (getCount ? ')' : '');
     return querie;    
 }
 

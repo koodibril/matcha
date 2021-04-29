@@ -96,6 +96,7 @@ const updateProfileInfo = (
     .then(
       (res) => {
         setProfileInfo(dispatch, res);
+        dispatch({ type: 'SET_MESSAGE', payload: 'Profile successfuly updated'});
       },
       (error) => {
         handleError(dispatch, error);

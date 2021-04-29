@@ -26,20 +26,20 @@ const ChatHolder: React.FC<{chatRoom: any, user: any}> = (props) => {
   }
 
   const handleChatRoom = () => {
-    const messages = props.chatRoom;
-    return (messages.map((element: any, index: number) => (
-      <Row key={index} justify={info.payload.Username === element.username ? "end" : "start"} style={{width: '100%'}}>
-        <Card style={{padding: 10, marginTop: 10, marginBottom: 10, maxWidth: "80%"}} actions={[<Row>{element.date}</Row>]}>
-          <Card.Meta style={{marginBottom: 20}}
-            avatar={element.username === info.payload.Username ? 
-            <Avatar src={'http://localhost:3001/' + info.payload.Pictures[0]}/> :
-            <Avatar src={'http://localhost:3001/' + props.user.Pictures[0]}/>}
-            title={element.username}>
-          </Card.Meta>
-            <p>{element.text}</p>
-        </Card>
-      </Row>
-    )));
+      const chat = props.chatRoom;
+      return (chat.map((element: any, index: number) => (
+        <Row key={index} justify={info.payload.Username === element.username ? "end" : "start"} style={{width: '100%'}}>
+          <Card style={{padding: 10, marginTop: 10, marginBottom: 10, maxWidth: "80%"}} actions={[<Row>{element.date}</Row>]}>
+            <Card.Meta style={{marginBottom: 20}}
+              avatar={element.username === info.payload.Username ? 
+              <Avatar src={'http://localhost:3001/' + info.payload.Pictures[0]}/> :
+              <Avatar src={'http://localhost:3001/' + props.user.Pictures[0]}/>}
+              title={element.username}>
+            </Card.Meta>
+              <p>{element.text}</p>
+          </Card>
+        </Row>
+      )));
   }
 
   return (
