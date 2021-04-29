@@ -5,6 +5,7 @@ import { useNavigation } from 'src/ducks/navigation/navigation';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { useSearch, useSearchActions } from 'src/ducks/search/actions/search';
 import { useProfile } from 'src/ducks/profile/actions/profile';
+import { socket } from '../../App';
 
 const Home: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<any[]>([]);
@@ -18,6 +19,10 @@ const Home: React.FC = () => {
   const tagsData = ['Age', 'Distance', 'Popularity', 'Tags'];
 
   if (!user) pushState('/auth');
+
+  socket.on('connection', () => {
+    console.log('YOLOOOOOOOO');
+  });
   
   useEffect(() => {
     if (user)

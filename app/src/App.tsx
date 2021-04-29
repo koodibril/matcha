@@ -8,7 +8,11 @@ import i18n from './utils/i18n/i18n';
 import Routes from './App.route';
 import './App.css';
 
+import socketClient  from "socket.io-client";
+const SERVER = "localhost:3001"
+
 export const store = configure();
+export const socket = socketClient(SERVER);
 
 const App: React.FC = () => (
   <I18nextProvider i18n={i18n}>

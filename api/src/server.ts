@@ -3,6 +3,12 @@ import app from './app';
 import { config as dotenvConfig } from 'dotenv';
 
 const server = http.createServer(app);
+export const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"]
+  }
+});
 
 const normalizePort = (val: string | number) => {
   const normalizedPort = parseInt((val as string), 10) || (val as number);
