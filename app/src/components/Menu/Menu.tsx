@@ -7,6 +7,7 @@ import { useProfile, useProfileActions } from '../../ducks/profile/actions/profi
 import { useMessage, useMessageActions } from "src/ducks/message/actions/message";
 import { useNavigation } from 'src/ducks/navigation/navigation';
 import { useNotifications, useNotificationsActions } from 'src/ducks/notification/actions/notifications';
+import { socket } from '../../App';
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
@@ -24,6 +25,15 @@ const MainMenu: React.FC = () => {
     const { getProfileInfo, clearProfile } = useProfileActions();
     const { logout } = useAuthentication();
     const { pushState } = useNavigation();
+
+    socket.on('connection', () => {
+      socket.on("yolo", () => {
+        console.log("it works!");
+      })
+      socket.on("notification", () => {
+        getNotifications(user);
+      });
+    });
 
     const countDown = (text: string, error: boolean) => {
       let secondsToGo = 3;

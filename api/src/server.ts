@@ -1,6 +1,7 @@
 import http from 'http';
 import app from './app';
 import { config as dotenvConfig } from 'dotenv';
+import { info } from './shared/utils';
 
 const server = http.createServer(app);
 export const io = require("socket.io")(server, {
@@ -9,6 +10,8 @@ export const io = require("socket.io")(server, {
     methods: ["GET", "POST"]
   }
 });
+
+const test = require("./shared/socket/socket");
 
 const normalizePort = (val: string | number) => {
   const normalizedPort = parseInt((val as string), 10) || (val as number);
@@ -41,6 +44,13 @@ const errorHandler = (error: any) => {
       throw error;
   }
 };
+
+const onConnection = (socket: any) => {
+  info("New client connected with id : " + socket.id);
+  socket.emit('connection', null);
+  test(io, socket);
+};
+io.on("connection", onConnection);
 
 server.on('error', errorHandler);
 server.on('listening', () => console.log(`Listening on ${getBind()}`));

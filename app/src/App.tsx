@@ -9,7 +9,7 @@ import Routes from './App.route';
 import './App.css';
 
 import socketClient  from "socket.io-client";
-const SERVER = "localhost:3001"
+const SERVER = "http://localhost:3001"
 
 export const store = configure();
 export const socket = socketClient(SERVER);

@@ -1,10 +1,6 @@
-import { io } from '../../server';
-//const STATIC_CHANNELS = ['global_notifications', 'global_chat'];
-
-io.on("connection", (socket: any) => {
-    console.log("New client connected");
-    socket.emit('connection', null);
-  });
-  io.on("disconnect", (reason: any) => {
-    console.log(reason); // "ping timeout"
-  });
+module.exports = (io: any, socket: any) => {
+  const test = function (payload: any) {
+    console.log("hghghghghgh");
+  };
+  socket.on("order:test", test);
+}
