@@ -26,15 +26,6 @@ const MainMenu: React.FC = () => {
     const { logout } = useAuthentication();
     const { pushState } = useNavigation();
 
-    socket.on('connection', () => {
-      socket.on("yolo", () => {
-        console.log("it works!");
-      })
-      socket.on("notification", () => {
-        getNotifications(user);
-      });
-    });
-
     const countDown = (text: string, error: boolean) => {
       let secondsToGo = 3;
       let modal: any;
@@ -93,6 +84,12 @@ const MainMenu: React.FC = () => {
         getProfileInfo(user, null);
         getNotifications(user);
       }
+      socket.on('connection', () => {
+        socket.emit("order:update", user);
+        socket.on("notification", () => {
+          getNotifications(user);
+        });
+      });
     }, [user, getProfileInfo, getNotifications]);
 
     const handleClick = (key: any) => {

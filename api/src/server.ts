@@ -11,7 +11,7 @@ export const io = require("socket.io")(server, {
   }
 });
 
-const test = require("./shared/socket/socket");
+const sockets = require("./shared/socket/socket");
 
 const normalizePort = (val: string | number) => {
   const normalizedPort = parseInt((val as string), 10) || (val as number);
@@ -45,10 +45,13 @@ const errorHandler = (error: any) => {
   }
 };
 
+export function getSocketIo() {
+  return io;
+}
 const onConnection = (socket: any) => {
   info("New client connected with id : " + socket.id);
   socket.emit('connection', null);
-  test(io, socket);
+  sockets(io, socket);
 };
 io.on("connection", onConnection);
 

@@ -23,6 +23,7 @@ interface UserOptions {
   location?: string;
   latitude?: number;
   longitude?: number;
+  socket?: string;
 }
 
 interface RelationshipOptions {
@@ -51,6 +52,7 @@ const queryGetUserInfoE = generateQuery(['match'], ['user'], [['email']], [], ''
 const queryGetUserInfoI = generateQuery(['match', 'where'], ['user'], [[]], [], 'Id(a) = $id', 'a', false);
 
 const queryUpdateToken = `${generateQuery(['match', 'set'], ['user'], [['username']], ['token'], '', 'a', false)}.Token`;
+const queryUpdateSocket = `${generateQuery(['match', 'set'], ['user'], [['token']], ['socket'], '', 'a', false)}.Socket`;
 const queryUpdateUserPictures = generateQuery(['match', 'set'], ['user'], [['username']], ['pictures'], '', 'a', false);
 const queryUpdateUserInfo = generateQuery(['match', 'set'], ['user'], [['token']], ['username', 'email', 'active'], '', 'a', false);;
 const queryUpdateUserFilter = generateQuery(['match', 'set'], ['user'], [['token']], ['ageGap', 'proximity', 'LFpopularity', 'LFinterests'], '', 'a', false);;
@@ -88,6 +90,7 @@ export const getUserInfoE = async (options: UserOptions, session: Session, callb
 export const getUserInfoI = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoI, options, session).catch(callback);
 
 export const updateToken = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateToken, options, session).catch(callback);
+export const updateSocket = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateSocket, options, session).catch(callback);
 export const updateUserPictures = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserPictures, options, session).catch(callback);
 export const updateUserInfo = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserInfo, options, session).catch(callback);
 export const updateUserFilter = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserFilter, options, session).catch(callback);
