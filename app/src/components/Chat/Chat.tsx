@@ -87,7 +87,7 @@ const Chat: React.FC = () => {
       </Col>
       <Divider type="vertical" style={{width: '3px', height: '500px', marginTop: '50px'}}/>
       <Col span={16} style={{height: "600px", width: '100%'}}>
-        <ChatHolderComponent chatRoom={chatRoom.chatRoom} user={profile}></ChatHolderComponent>
+        { profile ? <ChatHolderComponent chatRoom={chatRoom.chatRoom} user={profile}></ChatHolderComponent> : null }
       </Col>
       <Modal
         closable={true}

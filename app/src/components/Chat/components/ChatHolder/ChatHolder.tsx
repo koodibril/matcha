@@ -1,17 +1,18 @@
 import { Row, Input, Card } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
-import React, { MutableRefObject, useRef, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useProfile } from 'src/ducks/profile/actions/profile';
 import './ChatHolder.css';
 
 import { useChatActions } from '../../../../ducks/chat/actions/chat';
+import { socket } from 'src/App';
 
 const ChatHolder: React.FC<{chatRoom: any, user: any}> = (props) => {
   const [message, setMessage] = useState('');
   const bottom = useRef() as MutableRefObject<HTMLDivElement>;
   const user = localStorage.getItem('user');
 
-  const { updateChatRoom } = useChatActions();
+  const { updateChatRoom, getChatRoom } = useChatActions();
   const info = useProfile();
 
   const handleUpdate = (message: string) => {
@@ -24,6 +25,13 @@ const ChatHolder: React.FC<{chatRoom: any, user: any}> = (props) => {
     handleUpdate(message);
     setMessage('');
   }
+
+  useEffect(() => {
+      socket.on("newmessage", () => {
+        getChatRoom(user, props.user.Username);
+      setTimeout(() => {bottom.current.scrollIntoView()}, 100);
+      });
+  }, [props.user.Username]);
 
   const handleChatRoom = () => {
       const chat = props.chatRoom;

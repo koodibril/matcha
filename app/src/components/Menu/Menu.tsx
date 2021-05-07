@@ -7,6 +7,7 @@ import { useProfile, useProfileActions } from '../../ducks/profile/actions/profi
 import { useMessage, useMessageActions } from "src/ducks/message/actions/message";
 import { useNavigation } from 'src/ducks/navigation/navigation';
 import { useNotifications, useNotificationsActions } from 'src/ducks/notification/actions/notifications';
+import { socket } from '../../App';
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
@@ -83,6 +84,12 @@ const MainMenu: React.FC = () => {
         getProfileInfo(user, null);
         getNotifications(user);
       }
+      socket.on('connection', () => {
+        socket.emit("order:update", user);
+        socket.on("notification", () => {
+          getNotifications(user);
+        });
+      });
     }, [user, getProfileInfo, getNotifications]);
 
     const handleClick = (key: any) => {
