@@ -1,7 +1,8 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { info, internalError } from '../../shared/utils';
-import { getChatRoom, getUserInfoI, getUserInfoT, updateChatRoom } from '../../shared/neo4j/queries';
+import { getChatRoom, getUserInfoI, getUserInfoT, getUserInfoU, updateChatRoom } from '../../shared/neo4j/queries';
 import { addNotifications, NOTIFICATION_MESSAGE } from '../notification/addNotification';
+import { getSocketIo } from '../../server';
 
 
 
@@ -14,12 +15,16 @@ export const updateChatRoomUser = async (req: any, res: any) => {
   try {
     let chatRoom = await getChatRoom({token, username}, session, internalError(res));
     const userOne = await getUserInfoT({token}, session, internalError(res));
+    const userTwo = await getUserInfoU({username}, session, internalError(res));
     let messages = chatRoom[0].properties.Messages ? chatRoom[0].properties.Messages : [];
 
     const newMessage = "User:" + userOne[0].identity + "Date:" + Date.now() + "Message:" + message;
     messages.push(newMessage);
     chatRoom = await updateChatRoom({token, username, messages}, session, internalError(res));
     addNotifications(token, username, NOTIFICATION_MESSAGE);
+    const io = getSocketIo();
+    io.to(userOne[0].properties.Socket).emit('newmessage', null);
+    io.to(userTwo[0].properties.Socket).emit('newmessage', null);
     
     messages = chatRoom[0].properties.Messages;
     let index = 0;
