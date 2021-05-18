@@ -27,8 +27,10 @@ const Chat: React.FC = () => {
     if (!user) pushState('/auth');
 
     useEffect(() => {
-      getMatchedProfiles(user);
-      getProfileInfo(user, null);
+      if (user) {
+        getMatchedProfiles(user);
+        getProfileInfo(user, null);
+      }
     }, [user, getMatchedProfiles, getProfileInfo]);
 
     const loadChat = (element: any) => {

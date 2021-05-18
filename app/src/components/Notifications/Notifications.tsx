@@ -13,7 +13,9 @@ const Notifications: React.FC = () => {
     if (!user) pushState('/auth');
     
     useEffect(() => {
-      getNotifications(user);
+      if (user) {
+        getNotifications(user);
+      }
     }, [user, getNotifications]);
 
   return (

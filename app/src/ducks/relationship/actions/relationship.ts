@@ -23,14 +23,12 @@ const setRelationship = (dispatch: any, res: any) => {
   }
     const info = { Block, Like, Match}
     dispatch({ type: 'LOADING_RELATIONSHIP_SUCCESS', payload: info });
-    return Promise.resolve();
   }
 
 const handleError = (dispatch: any, error: any) => {
     const message = (error.response.data.message || error.response.data.errno);
     dispatch({ type: 'ERROR_MESSAGE', payload: message});
     dispatch({ type: 'LOADING_RELATIONSHIP_FAILURE'});
-    return Promise.reject();
   } 
 
 const getRelationship = (token: string | null, user: string) => (dispatch: any) => axios

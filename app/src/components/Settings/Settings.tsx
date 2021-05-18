@@ -17,7 +17,9 @@ const Settings: React.FC = () => {
     const { getFilter } = useSearchActions();
 
     useEffect(() => {
+      if (user) {
         getFilter(user);
+      }
       }, [user, getFilter]);
     
   return (

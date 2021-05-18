@@ -21,7 +21,6 @@ const handleError = (dispatch: any, error: any) => {
   const message = (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'LOGIN_FAILURE' });
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
-  return Promise.reject();
 };
 
 const setUser = (dispatch: any, res: any) => {
@@ -29,7 +28,6 @@ const setUser = (dispatch: any, res: any) => {
   localStorage.setItem("user", token);
   dispatch({ type: "LOGIN_SUCCESS", payload: token });
   dispatch(pushState("/"));
-  return Promise.resolve();
 };
 
 const userRegistrated = (dispatch: any, res: any) => {

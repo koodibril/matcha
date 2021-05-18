@@ -56,7 +56,7 @@ const Filter: React.FC<{filter: any}> = (props) => {
                     defaultValue={ageGap}/>
             </Form.Item>
             <Form.Item
-                label={t('proximity') + ':   ' + proximity}
+                label={t('proximity') + ':   ' + proximity + (proximity === 24 ? '+' : '')}
                 >
                 <Slider
                     onChange={handleProximity}

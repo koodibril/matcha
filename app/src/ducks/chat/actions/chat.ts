@@ -19,7 +19,6 @@ const setMatchedProfiles = (dispatch: any, res: any) => {
     userList.push(element.properties);
   });
   dispatch({ type: 'LOADING_MATCH_SUCCESS', payload: userList });
-  return Promise.resolve();
 }
 
 const setChatRoom = (dispatch: any, res: any) => {
@@ -36,13 +35,11 @@ const setChatRoom = (dispatch: any, res: any) => {
     });
   }
   dispatch({ type: 'LOADING_CHATROOM_SUCCESS', payload: messages });
-  return Promise.resolve();
 }
 
 const handleError = (dispatch: any, error: any) => {
   const message = (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
-  return Promise.reject();
 } 
 
 const getMatchedProfiles = (token: string | null) => (dispatch: any) => axios

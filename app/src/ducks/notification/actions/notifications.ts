@@ -15,7 +15,6 @@ const NOTIFICATION_UPDATE_ENDPOINT = '/api/notifications/update';
 const handleError = (dispatch: any, error: any) => {
     const message = (error.response.data.message || error.response.data.errno);
     dispatch({ type: 'ERROR_MESSAGE', payload: message});
-    return Promise.reject();
 }; 
 
 const setNotifications = (dispatch: any, res: any) => {
@@ -32,7 +31,6 @@ const setNotifications = (dispatch: any, res: any) => {
         });
     }
     dispatch({ type: 'LOADING_NOTIFICATION_SUCCESS', payload: notifications });
-    return Promise.resolve();
 };
 
 const getNotifications = (token: string | null) => (dispatch: any) =>
