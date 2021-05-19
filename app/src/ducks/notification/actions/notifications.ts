@@ -20,7 +20,6 @@ const handleError = (dispatch: any, error: any) => {
 
 const setNotifications = (dispatch: any, res: any) => {
     const data = res.data.notifications;
-    console.log(data);
     if (data && data[0] !== '') {
       const notifications: any[]=[];
         data.forEach((element: string) => {
