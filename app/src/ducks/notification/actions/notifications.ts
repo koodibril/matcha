@@ -11,6 +11,7 @@ const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
 
 const NOTIFICATION_GET_ENDPOINT = '/api/notifications/get';
 const NOTIFICATION_UPDATE_ENDPOINT = '/api/notifications/update';
+const NOTIFICATION_CLEAR_ENDPOINT = '/api/notifications/clear';
 
 const handleError = (dispatch: any, error: any) => {
     const message = (error.response.data.message || error.response.data.errno);
@@ -19,8 +20,9 @@ const handleError = (dispatch: any, error: any) => {
 
 const setNotifications = (dispatch: any, res: any) => {
     const data = res.data.notifications;
-    const notifications: any[]=[];
-    if (data) {
+    console.log(data);
+    if (data && data[0] !== '') {
+      const notifications: any[]=[];
         data.forEach((element: string) => {
             const info = element.split(/Viewed:(.*)Date:([0-9]*)Notification:(.*)/);
             const viewed = info[1];
@@ -29,8 +31,9 @@ const setNotifications = (dispatch: any, res: any) => {
             const notification = {viewed, date, text};
             notifications.push(notification)
         });
+        dispatch({ type: 'LOADING_NOTIFICATION_SUCCESS', payload: notifications });
     }
-    dispatch({ type: 'LOADING_NOTIFICATION_SUCCESS', payload: notifications });
+    dispatch({ type: 'LOADING_NOTIFICATION_SUCCESS', payload: null });
 };
 
 const getNotifications = (token: string | null) => (dispatch: any) =>
@@ -53,9 +56,15 @@ const updateNotification = (token: string | null, index: number) => (dispatch: a
     }
   );
 
-const clearNotifications = () => ({
-    type: CLEAR_NOTIFICATION,
-  });
+  const clearNotifications = (token: string | null) => (dispatch: any) =>
+  axios.post(`${API_URL}${NOTIFICATION_CLEAR_ENDPOINT}`, { token }).then(
+    (res) => {
+      setNotifications(dispatch, res)
+    },
+    (error) => {
+      handleError(dispatch, error)
+    }
+  );
 
 
 export const useNotifications = () =>
@@ -68,7 +77,7 @@ export const useNotificationsActions = () => {
     () => ({
       getNotifications: (token: string | null) => dispatch(getNotifications(token)),
       updateNotification: (token: string | null, index: number) => dispatch(updateNotification(token, index)),
-      clearNotifications: () => dispatch(clearNotifications())
+      clearNotifications: (token: string | null) => dispatch(clearNotifications(token))
     }), [dispatch]
   );
 };
