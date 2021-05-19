@@ -25,6 +25,9 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
               Distance: { props.info.Distance } km
           </Paragraph>
           <Paragraph>
+              Last connection: { props.info.Online ? new Date(props.info.Online) : 'Never' }
+          </Paragraph>
+          <Paragraph>
               Gender: { props.info.Gender }
           </Paragraph>
           <Paragraph>

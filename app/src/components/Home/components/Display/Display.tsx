@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Card, Col, Row, Typography } from 'antd';
+import { Avatar, Badge, Card, Col, Row, Typography } from 'antd';
 import { HeartOutlined, HeartFilled, StopOutlined, EllipsisOutlined } from '@ant-design/icons';
 import UserInfoHolderComponent from '../../../Profile/components/UserInfoHolder/UserInfoHolder';
 import ImageHolder from '../../../Profile/components/ImageHolder/ImageHolder';
@@ -65,7 +65,7 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
                   <EllipsisOutlined key="ellipsis" onClick={() => {handleProfile(element)}}/>
                   ]}>
                   <Card.Meta
-                    avatar={<Avatar src={'http://localhost:3001/' + element.Pictures[0]}/>}
+                    avatar={element.Online === 0 ? <Badge dot color='green'><Avatar src={'http://localhost:3001/' + element.Pictures[0]}/></Badge> : <Badge dot color='red'><Avatar src={'http://localhost:3001/' + element.Pictures[0]}/></Badge>}
                     title={element.Username}
                     description={element.Bio}/>
               </Card>
