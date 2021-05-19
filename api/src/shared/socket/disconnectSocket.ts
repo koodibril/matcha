@@ -10,7 +10,7 @@ export const disconnectSocket = async (socket: string) => {
       const user = await getUserInfoS({ socket }, session, internalError);
       const token = user[0].properties.Token;
       const update = await updateOnline({ token, online }, session, internalError);
-      info(`socket destroyed for user ` + update[0].properties.Username + ` last connection on: ` + update[0].properties.Online);
+      info(`socket ` + socket + ` destroyed for user ` + update[0].properties.Username + ` last connection on: ` + update[0].properties.Online);
 
     return (socket);
   } catch (e) {

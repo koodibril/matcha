@@ -4,6 +4,7 @@ import { push as pushState } from "connected-react-router";
 import axios from "axios";
 
 import { SignupData } from "src/components/Auth/components/Signup/Signup.d";
+import { socket } from "src/hooks/useSocket";
 
 const PORT = 3001;
 const ADDRESS = "localhost";
@@ -27,6 +28,7 @@ const setUser = (dispatch: any, res: any) => {
   const token = res.data.token;
   localStorage.setItem("user", token);
   dispatch({ type: "LOGIN_SUCCESS", payload: token });
+  socket.emit("order:update", token);
   dispatch(pushState("/"));
 };
 

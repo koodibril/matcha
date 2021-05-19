@@ -10,4 +10,5 @@ module.exports = (io: any, socket: any) => {
   }
   socket.on("order:update", update);
   socket.on("disconnect", disconnect);
+  socket.on("logout", disconnect);
 }

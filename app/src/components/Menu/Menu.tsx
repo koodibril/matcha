@@ -99,6 +99,7 @@ const MainMenu: React.FC = () => {
       clearMessage();
       clearProfile();
         if (key.key === "logout") {
+            socket.emit("logout", user);
             setLogged("Login");
             setCurrent(['auth']);
             logout();
