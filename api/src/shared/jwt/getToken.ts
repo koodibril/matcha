@@ -9,5 +9,5 @@ interface JwtArgs {
 
 export const getToken = (args: JwtArgs) => jwt.sign(args, JWT_SECRET_KEY, {
   algorithm: 'HS512',
-  expiresIn: JWT_EXPIRATION_TIME
+  expiresIn: Date.now() + JWT_EXPIRATION_TIME
 });

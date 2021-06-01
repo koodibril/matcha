@@ -53,7 +53,12 @@ const onConnection = (socket: any) => {
   socket.emit('connection', null);
   sockets(io, socket);
 };
+const onDisconnect = (socket: any) => {
+  info("Client Disocnnected with id : " + socket.id);
+  socket.emit('disconnect', null);
+};
 io.on("connection", onConnection);
+io.on("disconnect", onDisconnect);
 
 server.on('error', errorHandler);
 server.on('listening', () => console.log(`Listening on ${getBind()}`));

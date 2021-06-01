@@ -4,6 +4,7 @@ import { push as pushState } from "connected-react-router";
 import axios from "axios";
 
 import { SignupData } from "src/components/Auth/components/Signup/Signup.d";
+import { socket } from "src/hooks/useSocket";
 
 const PORT = 3001;
 const ADDRESS = "localhost";
@@ -21,15 +22,14 @@ const handleError = (dispatch: any, error: any) => {
   const message = (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'LOGIN_FAILURE' });
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
-  return Promise.reject();
 };
 
 const setUser = (dispatch: any, res: any) => {
   const token = res.data.token;
   localStorage.setItem("user", token);
   dispatch({ type: "LOGIN_SUCCESS", payload: token });
+  socket.emit("order:update", token);
   dispatch(pushState("/"));
-  return Promise.resolve();
 };
 
 const userRegistrated = (dispatch: any, res: any) => {

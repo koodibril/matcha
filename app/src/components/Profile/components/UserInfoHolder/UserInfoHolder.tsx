@@ -14,6 +14,31 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
   if (selectedTags !== props.info.Interests)
     setSelectedTags(props.info.Interests);
 
+  const ago = (date: number) => {
+    const diff = Date.now() - date;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const mins = Math.ceil(diff / (1000 * 60));
+    if (days === 1)
+      return ("one day ago");
+    else if (days >= 1)
+      return (days + " days ago");
+    else if (days === 0) {
+      if (hours === 1)
+        return ("one hour ago");
+      else if (hours >= 1)
+        return (hours + " hours ago");
+      else if (hours === 0) {
+        if (mins === 1)
+          return ("one minute ago");
+        else
+          return (mins + " minutes ago");
+      }
+    }
+
+  }
+
+
   return (
     <Row>
       { props.info ? (
@@ -23,6 +48,9 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
           </Title>
           <Paragraph>
               Distance: { props.info.Distance } km
+          </Paragraph>
+          <Paragraph>
+              Last connection: { props.info.Online ? ago(props.info.Online) : 'Never' }
           </Paragraph>
           <Paragraph>
               Gender: { props.info.Gender }

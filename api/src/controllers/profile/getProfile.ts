@@ -26,7 +26,6 @@ export const getProfileInfo = async (req: any, res: any) => {
       await addNotifications(token, username, NOTIFICATION_VISIT);
     }
     const userInfo = userInfoU[0];
-
     info(`informations collected`);
     return res
       .status(200)

@@ -4,7 +4,7 @@ import DisplayComponent from './components/Display/Display';
 import { useNavigation } from 'src/ducks/navigation/navigation';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { useSearch, useSearchActions } from 'src/ducks/search/actions/search';
-import { useProfile } from 'src/ducks/profile/actions/profile';
+import { useProfile, useProfileActions } from 'src/ducks/profile/actions/profile';
 
 const Home: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<any[]>([]);
@@ -13,16 +13,19 @@ const Home: React.FC = () => {
   const user = localStorage.getItem('user');
   const { pushState } = useNavigation();
   const { getSearchResult } = useSearchActions();
+  const { getProfileInfo } = useProfileActions();
   const info = useProfile();
   const userList = useSearch();
   const tagsData = ['Age', 'Distance', 'Popularity', 'Tags'];
 
-  if (!user) pushState('/auth');
+  if (user == null) pushState('/auth');
   
   useEffect(() => {
-    if (user)
+    if (user) {
+      getProfileInfo(user, null);
       getSearchResult(user);
-  }, [user, getSearchResult]);
+    }
+  }, [user, getSearchResult, getProfileInfo]);
 
   const handleChange = (tag: any, checked: any) => {
     if (tag !== selectedTags[0]) {

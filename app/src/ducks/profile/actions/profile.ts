@@ -18,7 +18,6 @@ const handleError = (dispatch: any, error: any) => {
     error.response.data.message.code : (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
   dispatch({ type: "LOADING_PROFILE_FAILURE"});
-  return Promise.reject();
 };
 
 const setProfileInfo = (dispatch: any, res: any) => {
@@ -35,7 +34,8 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Latitude,
     Longitude,
     Valid,
-    Distance
+    Distance,
+    Online
   } = res.data.userInfo.properties;
   const info = {
     Email,
@@ -50,10 +50,10 @@ const setProfileInfo = (dispatch: any, res: any) => {
     Distance,
     Latitude,
     Longitude,
-    Valid
+    Valid,
+    Online
   };
   dispatch({ type: "LOADING_PROFILE_SUCCESS", payload: info });
-  return Promise.resolve();
 };
 
 const getProfileInfo = (token: string | null, username: string | null) => (dispatch: any) =>

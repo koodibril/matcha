@@ -61,9 +61,13 @@ const UpdateUserInformation: React.FC = () => {
   }
 
   const handleLocation = () => {
-    fetch('https://geolocation-db.com/json/').then(res => res.json().then(res => {
-      setLocation(res);
-    }));
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLocation({city: "Unknow", latitude: position.coords.latitude, longitude: position.coords.longitude});
+    }, (error) => {
+      fetch('https://geolocation-db.com/json/').then(res => res.json().then(res => {
+        setLocation(res);
+      }));
+    });
   }
 
   return (
@@ -86,6 +90,10 @@ const UpdateUserInformation: React.FC = () => {
         {
           name: ['bio'],
           value: info.payload.Bio
+        },
+        {
+          name: ['location'],
+          value: location.city
         }
         ]}
         name="update"
@@ -161,7 +169,7 @@ const UpdateUserInformation: React.FC = () => {
         </Form.Item>
 
         <Form.Item
-          label={t('location')}
+          label={t('city')}
           rules={[{
             validator: checkLocation
           }]}>

@@ -13,8 +13,9 @@ export const getResearchResult = async (req: any, res: any) => {
     const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
     const popularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];
     const interests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
-    const results = await getSearchResult({ agegap, popularity }, session, internalError(res));
+    let results = await getSearchResult({ agegap, popularity, token }, session, internalError(res));
     let index = 0;
+    let remove = [];
     const latitudeOne = userInfo[0].properties.Latitude;
     const longitudeOne = userInfo[0].properties.Longitude;
     for (const element of results) {
@@ -22,11 +23,11 @@ export const getResearchResult = async (req: any, res: any) => {
       const latitudeTwo = element.properties.Latitude;
       const longitudeTwo = element.properties.Longitude;
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
-      const relationship = await getRelationship({ token, username}, session, internalError(res));
+      const relationship = await getRelationship({ token, username }, session, internalError(res));
       results[index].properties.relationship = relationship[0] && relationship[0].start === userInfo[0].identity ? relationship[0] : relationship[1];
       results[index].properties.Distance = distance;
       let matched = 0;
-      if (interests.length !== 1 &&  interests[1] !== ['']) {
+      if (interests.length !== 1 &&  interests[0] !== ['']) {
         for (const interest of element.properties.Interests) {
           for (const match of interests) {
             if (interest === match)
@@ -34,9 +35,12 @@ export const getResearchResult = async (req: any, res: any) => {
           }
         }
       }
-      if (distance > proximity || (matched === 0 && (interests.length !== 1 &&  interests[1] !== [''])))
-        results.splice(index, 1);
+      if ((distance > proximity && proximity != 24) || (matched === 0 && (interests.length !== 1 &&  interests[0] !== [''])))
+        remove.push(index);
       index++;
+    }
+    for (const nb of remove) {
+      results.splice(nb, 1);
     }
 
     info(`userlist collected`);

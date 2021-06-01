@@ -29,18 +29,15 @@ const setSearchResult = (dispatch: any, res: any) => {
       userList.push(element.properties);
     });
     dispatch({ type: 'LOADING_SEARCH_SUCCESS', payload: userList });
-    return Promise.resolve();
   }
 
 const setFilter = (dispatch: any, res: any) => {
   dispatch({ type: 'LOADING_FILTER_SUCCESS', payload: res.data.filter});
-  return Promise.resolve();
 }
 
 const handleError = (dispatch: any, error: any) => {
     const message = (error.response.data.message || error.response.data.errno);
     dispatch({ type: 'ERROR_MESSAGE', payload: message});
-    return Promise.reject();
   } 
   
 const getSearchResult = (token: string | null) => (dispatch: any) => axios

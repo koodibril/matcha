@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Divider, Modal, Row, Typography } from 'antd';
+import { Badge, Card, Col, Divider, Modal, Row, Typography } from 'antd';
 import { HeartOutlined, HeartFilled, StopOutlined, EllipsisOutlined } from '@ant-design/icons';
 import ChatHolderComponent from './components/ChatHolder/ChatHolder';
 import { useChat, useChatActions, useChatRoom } from '../../ducks/chat/actions/chat';
@@ -27,8 +27,10 @@ const Chat: React.FC = () => {
     if (!user) pushState('/auth');
 
     useEffect(() => {
-      getMatchedProfiles(user);
-      getProfileInfo(user, null);
+      if (user) {
+        getMatchedProfiles(user);
+        getProfileInfo(user, null);
+      }
     }, [user, getMatchedProfiles, getProfileInfo]);
 
     const loadChat = (element: any) => {
@@ -72,7 +74,7 @@ const Chat: React.FC = () => {
               <EllipsisOutlined key="ellipsis" onClick={() => {handleProfile(element)}}/>
               ]}>
               <Card.Meta
-                avatar={<Avatar src={'http://localhost:3001/' + element.Pictures[0]}/>}
+                avatar={element.Online === 0 ? <Badge dot color='green'><Avatar src={'http://localhost:3001/' + element.Pictures[0]}/></Badge> : <Badge dot color='red'><Avatar src={'http://localhost:3001/' + element.Pictures[0]}/></Badge>}
                 title={element.Username}
                 description={element.Bio}/>
           </Card>

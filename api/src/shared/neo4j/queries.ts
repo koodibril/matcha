@@ -24,6 +24,7 @@ interface UserOptions {
   latitude?: number;
   longitude?: number;
   socket?: string;
+  online?: number;
 }
 
 interface RelationshipOptions {
@@ -50,6 +51,7 @@ const queryGetUserInfoT = generateQuery(['match'], ['user'], [['token']], [], ''
 const queryGetUserInfoU = generateQuery(['match'], ['user'], [['username']], [], '', 'a', false);
 const queryGetUserInfoE = generateQuery(['match'], ['user'], [['email']], [], '', 'a', false);
 const queryGetUserInfoI = generateQuery(['match', 'where'], ['user'], [[]], [], 'Id(a) = $id', 'a', false);
+const queryGetUserInfoS = generateQuery(['match'], ['user'], [['socket']], [], '', 'a', false);
 
 const queryUpdateToken = `${generateQuery(['match', 'set'], ['user'], [['username']], ['token'], '', 'a', false)}.Token`;
 const queryUpdateSocket = `${generateQuery(['match', 'set'], ['user'], [['token']], ['socket'], '', 'a', false)}.Socket`;
@@ -59,6 +61,7 @@ const queryUpdateUserFilter = generateQuery(['match', 'set'], ['user'], [['token
 const queryUpdateUserData = generateQuery(['match', 'set'], ['user'], [['token']], ['age', 'gender', 'sexo', 'bio', 'interests', 'location', 'latitude', 'longitude', 'valid', 'popularity'], '', 'a', false);;
 const queryUpdatePassword = generateQuery(['match', 'set'], ['user'], [['token']], ['password'], '', 'a', false);
 const queryUpdateEmail = generateQuery(['match', 'set'], ['user'], [['token']], ['email'], '', 'a', false);
+const queryUpdateOnline = generateQuery(['match', 'set'], ['user'], [['token']], ['online'], '', 'a', false);
 const queryUpdateUsername = generateQuery(['match', 'set'], ['user'], [['token']], ['username'], '', 'a', false);
 const queryUpdateUserNotification = generateQuery(['match', 'set'], ['user'], [['token']], ['notifications'], '', 'a', false);
 const queryUpdateUsernameNotification = generateQuery(['match', 'set'], ['user'], [['username']], ['notifications'], '', 'a', false);
@@ -66,11 +69,11 @@ const queryUpdateUsernameNotification = generateQuery(['match', 'set'], ['user']
 const queryCreateRelationship = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], ['action'], '', 'r', false);
 const queryGetRelationship = generateQuery(['match'], ['user', 'action', 'user'], [['token'], [], ['username']], [], '', 'r', false);
 const queryUpdateRelationship = generateQuery(['match', 'where', 'set'], ['user', 'action', 'user'], [['token'], [], ['username']], ['match', 'block', 'like'], '(a)-[r]->(b)', 'r', false);
-const queryGetMatchedRelationship = generateQuery(['match', 'where'], ['user', 'action', 'user'], [['token'], [], []], [], 'r.Match = true', 'b', false);
+const queryGetMatchedRelationship = generateQuery(['match', 'where'], ['user', 'action', 'user'], [['token'], [], []], [], 'r.Match = true', 'DISTINCT b', false);
 
 const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 
 'a.Age >= $agegap[0] AND a.Age <= $agegap[1] ' +
-'AND a.Popularity >= $popularity[0] AND a.Popularity <= $popularity[1]'
+'AND a.Popularity >= $popularity[0] AND a.Popularity <= $popularity[1] AND a.Token <> $token'
 , 'a LIMIT 25', false);
 
 const queryCreateChatRoom = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], [], 'chatroom', 'c', false);
@@ -88,6 +91,7 @@ export const getUserInfoT = async (options: UserOptions, session: Session, callb
 export const getUserInfoU = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoU, options, session).catch(callback);
 export const getUserInfoE = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoE, options, session).catch(callback);
 export const getUserInfoI = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoI, options, session).catch(callback);
+export const getUserInfoS = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoS, options, session).catch(callback);
 
 export const updateToken = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateToken, options, session).catch(callback);
 export const updateSocket = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateSocket, options, session).catch(callback);
@@ -97,6 +101,7 @@ export const updateUserFilter = async (options: UserOptions, session: Session, c
 export const updateUserData = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserData, options, session).catch(callback);
 export const updatePassword = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdatePassword, options, session).catch(callback);
 export const updateEmail = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateEmail, options, session).catch(callback);
+export const updateOnline = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateOnline, options, session).catch(callback);
 export const updateUsername = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUsername, options, session).catch(callback);
 export const updateUserNotification = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUserNotification, options, session).catch(callback);
 export const updateUsernameNotification = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUpdateUsernameNotification, options, session).catch(callback);
