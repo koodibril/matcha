@@ -97,7 +97,6 @@ const MainMenu: React.FC = () => {
 
     const handleClick = (key: any) => {
       clearMessage();
-      clearProfile();
         if (key.key === "logout") {
             socket.emit("logout", user);
             setLogged("Login");

@@ -18,6 +18,8 @@ const Profile: React.FC = () => {
   const { getRelationship } = useRelationshipActions();
 
   if (!user) pushState('/auth');
+
+  console.log(info);
   
   useEffect(() => {
     const path = window.location.pathname.split('/');
