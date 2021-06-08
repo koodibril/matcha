@@ -23,6 +23,8 @@ const Notifications: React.FC = () => {
       clearNotifications(user);
     } 
 
+    console.log(notifications);
+
   return (
     <>
     <Row justify='center'>

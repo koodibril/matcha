@@ -24,7 +24,7 @@ export const relaseTheKraken = async (res: any) => {
       const match = true;
       const block = true;
       const like = true;
-      const ageGap = [0, 100];
+      const agegap = [0, 100];
       const messages = ['kuku'];
 
     try {
@@ -69,7 +69,7 @@ export const relaseTheKraken = async (res: any) => {
         console.log( await getMatchedRelationship({token}, session, internalError(res)));
 
         console.log('GET SEARCH RESULT WITH AGE GAP');
-        console.log( await getSearchResult({ageGap}, session, internalError(res)));
+        console.log( await getSearchResult({agegap}, session, internalError(res)));
 
         console.log('CREATE CHATROOM');
         console.log( await createChatRoom({token, username}, session, internalError(res)));

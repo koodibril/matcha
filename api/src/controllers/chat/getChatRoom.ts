@@ -16,12 +16,14 @@ export const getChatRoomUser = async (req: any, res: any) => {
 
     const messages = chatRoom[0].properties.Messages;
     let index = 0;
-    for (const element of messages) {
-      const id = parseInt(element.split('Date:')[0].split('User:')[1]);
-      const User = await getUserInfoI({id}, session, internalError(res));
-      if (User[0])
-        messages[index] = 'User:' + User[0].properties.Username + 'Date:' + element.split('Date:')[1];
-      index++;
+    if (messages) {
+        for (const element of messages) {
+          const id = parseInt(element.split('Date:')[0].split('User:')[1]);
+          const User = await getUserInfoI({id}, session, internalError(res));
+          if (User[0])
+            messages[index] = 'User:' + User[0].properties.Username + 'Date:' + element.split('Date:')[1];
+          index++;
+      }
     }
 
     info(`chatRoom collected`);

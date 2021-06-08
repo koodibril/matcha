@@ -18,8 +18,6 @@ const Profile: React.FC = () => {
   const { getRelationship } = useRelationshipActions();
 
   if (!user) pushState('/auth');
-
-  console.log(info);
   
   useEffect(() => {
     const path = window.location.pathname.split('/');
@@ -32,7 +30,7 @@ const Profile: React.FC = () => {
 
   const updateInfo = (
     <Row justify="center" align="middle">
-        <UpdateUserInformationComponent></UpdateUserInformationComponent>
+        { info && info.payload ? <UpdateUserInformationComponent info={info.payload}></UpdateUserInformationComponent> : null}
     </Row>);
 
   const readInfo = (
