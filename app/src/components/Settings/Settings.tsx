@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Col, Divider, Row } from 'antd';
 import ChangePasswordComponent from './components/Changepassword/ChangePassword';
 import ChangeUsernameComponent from './components/ChangeUsername/ChangeUsername';
+import ChangeSurnameComponent from './components/ChangeSurname/ChangeSurname';
+import ChangeNameComponent from './components/ChangeName/ChangeName';
 import ChangeEmailComponent from './components/ChangeEmail/ChangeEmail';
 import FilterComponent from './components/Filter/Filter';
 import { useNavigation } from 'src/ducks/navigation/navigation';
@@ -29,6 +31,8 @@ const Settings: React.FC = () => {
             { filter.filter ? <FilterComponent filter={filter.filter}></FilterComponent> : null }
             <Divider plain></Divider>
             <ChangeUsernameComponent></ChangeUsernameComponent>
+            <ChangeNameComponent></ChangeNameComponent>
+            <ChangeSurnameComponent></ChangeSurnameComponent>
             <ChangeEmailComponent></ChangeEmailComponent>
             <ChangePasswordComponent></ChangePasswordComponent>
           </Col>
