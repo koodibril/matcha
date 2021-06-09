@@ -23,7 +23,7 @@ const MainMenu: React.FC = () => {
     const { getNotifications } = useNotificationsActions();
     const notifications = useNotifications();
     const info = useProfile();
-    const { getProfileInfo, clearProfile } = useProfileActions();
+    const { getProfileInfo } = useProfileActions();
     const { logout } = useAuthentication();
     const { pushState } = useNavigation();
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from 'src/store/configure';
-import { CLEAR_NOTIFICATION } from '../notifications'
+import { push as pushState } from "connected-react-router";
 
 const PORT = 3001;
 const ADDRESS = 'localhost';
@@ -15,6 +15,11 @@ const NOTIFICATION_CLEAR_ENDPOINT = '/api/notifications/clear';
 
 const handleError = (dispatch: any, error: any) => {
     const message = (error.response.data.message || error.response.data.errno);
+    if (message === "Profile (null) doesn't exist") {
+      dispatch({ type: "LOGOUT" });
+      localStorage.removeItem("user");
+      dispatch(pushState('/'));
+    }
     dispatch({ type: 'ERROR_MESSAGE', payload: message});
 }; 
 

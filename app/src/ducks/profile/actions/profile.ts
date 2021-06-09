@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { push as pushState } from "connected-react-router";
 import { RootState } from "src/store/configure";
 
 import { UserData } from "../../../components/Profile/components/UpdateUserInformation/UpdateUserInformation.d";
@@ -17,6 +18,11 @@ const handleError = (dispatch: any, error: any) => {
   const message = error.response.data.message.code ? 
     error.response.data.message.code : (error.response.data.message || error.response.data.errno);
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
+  if (message === "Profile (null) doesn't exist") {
+    dispatch({ type: "LOGOUT" });
+    localStorage.removeItem("user");
+    dispatch(pushState('/'));
+  }
   dispatch({ type: "LOADING_PROFILE_FAILURE"});
 };
 

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useMemo } from 'react';
+import { push as pushState } from "connected-react-router";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/configure';
 
@@ -39,6 +40,11 @@ const setChatRoom = (dispatch: any, res: any) => {
 
 const handleError = (dispatch: any, error: any) => {
   const message = (error.response.data.message || error.response.data.errno);
+  if (message === "Profile (null) doesn't exist") {
+    dispatch({ type: "LOGOUT" });
+    localStorage.removeItem("user");
+    dispatch(pushState('/'));
+  }
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
 } 
 

@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
 import { Row, Form, Button, Input, Select, InputNumber } from 'antd';
-import { Spin } from 'antd';
 
 import { useTranslation } from 'react-i18next';
 
-import { useProfile, useProfileActions } from '../../../../ducks/profile/actions/profile';
+import { useProfileActions } from '../../../../ducks/profile/actions/profile';
 import { UserData } from '../../../Profile/components/UpdateUserInformation/UpdateUserInformation.d';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import MapHolderComponent from '../MapHolder/MapHolder';
-import { format } from 'path';
 
 
 const UpdateUserInformation: React.FC<{info: any}> = (props) => {
@@ -20,8 +18,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
   const { updateProfileInfo } = useProfileActions(); 
   const { t } = useTranslation('profile');
-
-  console.log(props.info);
 
   const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
 
