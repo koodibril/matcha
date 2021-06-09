@@ -16,6 +16,8 @@ const ACTIVATE_ENDPOINT = "/api/auth/activate";
 const CHANGE_PASSWORD_ENDPOINT = "/api/auth/password";
 const UPDATE_EMAIL_ENDPOINT = "/api/auth/email";
 const UPDATE_USERNAME_ENDPOINT = "/api/auth/username";
+const UPDATE_SURNAME_ENDPOINT = "/api/auth/surname";
+const UPDATE_NAME_ENDPOINT = "/api/auth/name";
 const RECOVER_PASSWORD_ENDPOINT = "/api/auth/recovery";
 
 const handleError = (dispatch: any, error: any) => {
@@ -72,6 +74,20 @@ const usernameChanged = (dispatch: any, res: any) => {
   dispatch({
     type: "SET_MESSAGE",
     payload: "Your username was updated",
+  });
+};
+
+const surnameChanged = (dispatch: any, res: any) => {
+  dispatch({
+    type: "SET_MESSAGE",
+    payload: "Your surname was updated",
+  });
+};
+
+const nameChanged = (dispatch: any, res: any) => {
+  dispatch({
+    type: "SET_MESSAGE",
+    payload: "Your name was updated",
   });
 };
 
@@ -170,6 +186,30 @@ const updateUsername = (token: string | null, username: string) => (
         }
       );
 
+const updateSurname = (token: string | null, surname: string) => (
+        dispatch: any
+      ) =>
+        axios.post(`${API_URL}${UPDATE_SURNAME_ENDPOINT}`, { token, surname }).then(
+          (res) => {
+            surnameChanged(dispatch, res);
+          },
+          (error) => {
+            handleError(dispatch, error);
+          }
+        );
+
+const updateName = (token: string | null, name: string) => (
+  dispatch: any
+) =>
+  axios.post(`${API_URL}${UPDATE_NAME_ENDPOINT}`, { token, name }).then(
+    (res) => {
+      nameChanged(dispatch, res);
+    },
+    (error) => {
+      handleError(dispatch, error);
+    }
+  );
+
 const passwordRecovery = (email: string) => (dispatch: any) =>
   axios.post(`${API_URL}${RECOVER_PASSWORD_ENDPOINT}`, { email }).then(
     (res) => {
@@ -195,6 +235,10 @@ export const useAuthentication = () => {
       dispatch((updateEmail(token, email))),
       updateUsername: (token: string | null, username: string) => 
       dispatch((updateUsername(token, username))),
+      updateSurname: (token: string | null, surname: string) => 
+      dispatch((updateSurname(token, surname))),
+      updateName: (token: string | null, name: string) => 
+      dispatch((updateName(token, name))),
       login: (username: string, password: string) =>
         dispatch(login(username, password)),
       signup: (data: SignupData) => dispatch(signup(data)),
