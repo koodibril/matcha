@@ -12,7 +12,7 @@ export const zergRush = async (res: any) => {
     const genders = ['Male', 'Female'];
     const sexos = ['Male', 'Female', 'Bi'];
     const bios = ['jaime les poireaux', 'moi c les courges'];
-    const interests = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
+    const interestss = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
     const pictures = ['', '', '', '', ''];
     const active = true;
     const valid = true;
@@ -30,6 +30,12 @@ export const zergRush = async (res: any) => {
             pictures[0] = gender === 'Male' ? 'Male.jpg' : 'Female.png';
             const sexo = sexos[Math.round(Math.random() * (2 - 0) + 0)];
             const bio = bios[Math.round(Math.random() * (1 - 0) + 0)];
+            let nbOfInterests = Math.round(Math.random() * (5 - 0) + 0);
+            const interests = [''];
+            while (nbOfInterests > 0) {
+                interests.push(interestss[Math.round(Math.random() * (9 - 0) + 0)]);
+                nbOfInterests--;
+            }
             const token = getToken({ username });
             const popularity = Math.round(Math.random() * (10 - 0) + 0);
             const online = Date.now();
