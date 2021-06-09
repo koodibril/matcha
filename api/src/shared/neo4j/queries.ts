@@ -46,6 +46,7 @@ const queryCreateUser = generateQuery(['create'], ['user'], [['username', 'passw
 const queryMatchingUser = generateQuery(['match'], ['user'], [['username']], [], '', 'a', true);
 const queryMatchingEmail = generateQuery(['match'], ['user'], [['email']], [], '', 'a', true);
 const queryMatchingPassword = `${generateQuery(['match'], ['user'], [['username']], [], '', 'a', false)}.Password`;
+const queryUserNumber = generateQuery(['match'], ['user'], [[]], [], '', 'a', true);
 
 const queryGetUserInfoT = generateQuery(['match'], ['user'], [['token']], [], '', 'a', false);
 const queryGetUserInfoU = generateQuery(['match'], ['user'], [['username']], [], '', 'a', false);
@@ -86,6 +87,7 @@ export const createUser = async (options: UserOptions, session: Session, callbac
 export const getUserMatchCount = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingUser, options, session).catch(callback);
 export const getUserEmailCount = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingEmail, options, session).catch(callback);
 export const getUserPassword = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryMatchingPassword, options, session).catch(callback);
+export const getUserNumber = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryUserNumber, options, session).catch(callback);
 
 export const getUserInfoT = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoT, options, session).catch(callback);
 export const getUserInfoU = async (options: UserOptions, session: Session, callback: any) => await runQuery(queryGetUserInfoU, options, session).catch(callback);
