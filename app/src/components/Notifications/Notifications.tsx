@@ -21,7 +21,7 @@ const Notifications: React.FC = () => {
 
     const handleClick = () => {
       clearNotifications(user);
-    } 
+    }
 
   return (
     <>

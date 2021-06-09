@@ -37,7 +37,8 @@ const setNotifications = (dispatch: any, res: any) => {
         });
         dispatch({ type: 'LOADING_NOTIFICATION_SUCCESS', payload: notifications });
     }
-    dispatch({ type: 'LOADING_NOTIFICATION_SUCCESS', payload: null });
+    else
+      dispatch({ type: 'LOADING_NOTIFICATION_SUCCESS', payload: null });
 };
 
 const getNotifications = (token: string | null) => (dispatch: any) =>
