@@ -39,6 +39,30 @@ yarn workspace api install
 yarn workspace app install
 ```
 
+## Run the project (for rode)
+open 3 new terminal
+terminal 1
+```bash
+cd api
+npm install (uniquement si tu ne las pas encore fait)
+nodemon
+```
+terminal 2
+```
+cd app
+yarn install
+yarn start
+```
+terminal 3
+```
+cd api
+docker-machine start matcha
+docker-machine env matcha -> verifier si l'ip est bien la meme que dans le .env, sinon mettre a jour le .env
+eval $(docker-machine env matcha)
+docker-compose -f neo4j.yml up 
+```
+
 ## Authors
 fldoucet
 edjubert
+roddavid
