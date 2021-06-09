@@ -50,7 +50,7 @@ nodemon
 terminal 2
 ```
 cd app
-yarn install
+yarn install (uniquement si tu ne las pas encore fait)
 yarn start
 ```
 terminal 3
