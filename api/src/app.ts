@@ -5,6 +5,7 @@ import relationshipRoutes from './routes/relationship';
 import searchRoutes from './routes/research';
 import chatRoutes from './routes/chat';
 import notificationRoutes from './routes/notification';
+import seedRoutes from './routes/seed';
 //import { relaseTheKraken } from './shared/neo4j/querytester';
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/api/relationship', relationshipRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/zerg', seedRoutes);
 //relaseTheKraken('coucou');
 
 export default app;
