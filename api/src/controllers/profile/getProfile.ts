@@ -12,7 +12,7 @@ export const getProfileInfo = async (req: any, res: any) => {
   const username = req.body.username;
 
   try {
-    const userInfoU = username ? (await getUserInfoU({ username }, session, internalError(res))) : (await getUserInfoT({ token }, session, internalError(res)));
+    const userInfoU = username ? await getUserInfoU({ username }, session, internalError(res)) : await getUserInfoT({ token }, session, internalError(res));
     if (!userInfoU[0]) return conflict(res, `Profile (${username}) doesn't exist`);
 
     if (username && userInfoU[0]) {
@@ -24,6 +24,7 @@ export const getProfileInfo = async (req: any, res: any) => {
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
       userInfoU[0].properties.Distance = distance;
       await addNotifications(token, username, NOTIFICATION_VISIT);
+      console.log('ajout de visite a ' + username);
     }
     const userInfo = userInfoU[0];
     info(`informations collected`);

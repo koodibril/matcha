@@ -1,5 +1,5 @@
 import { getSession } from '../../shared/neo4j/neo4j'
-import { info, internalError } from '../../shared/utils';
+import { conflict, info, internalError } from '../../shared/utils';
 import { getUserInfoT } from '../../shared/neo4j/queries';
 
 
@@ -10,6 +10,7 @@ export const getNotifications = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUserInfoT({token}, session, internalError(res));
+    if (!userInfo[0]) return conflict(res, "User doesn't exist");
     const notifications = userInfo[0].properties.Notifications;
 
     info(`notifications collected`);
