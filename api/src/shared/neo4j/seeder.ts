@@ -17,8 +17,8 @@ export const zergRush = async (res: any) => {
     const active = true;
     const valid = true;
     const location = 'Paris';
-    const longitude = 45;
-    const latitude = 123;
+    const longitude = 2;
+    const latitude = 48;
     const password = await hashPassword('12345678');
 
     const check = await getUserNumber({}, session, internalError(res));
