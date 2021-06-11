@@ -35,9 +35,7 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
           return (mins + " minutes ago");
       }
     }
-
   }
-
 
   return (
     <Row>
@@ -46,6 +44,9 @@ const UserInfoHolder: React.FC<{info: any}> = (props) => {
           <Title>
               { props.info.Username + ' ' + props.info.Age}
           </Title>
+          <Paragraph>
+              Popularity: { props.info.Popularity }
+          </Paragraph>
           <Paragraph>
               Distance: { props.info.Distance } km
           </Paragraph>

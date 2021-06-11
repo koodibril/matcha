@@ -1,6 +1,6 @@
 import { getSession } from '../../shared/neo4j/neo4j'
 import { getUserInfoT } from '../../shared/neo4j/queries';
-import { info, internalError } from '../../shared/utils';
+import { conflict, info, internalError } from '../../shared/utils';
 
 export const getFilter = async (req: any, res: any) => {
   const session = getSession();
@@ -8,6 +8,7 @@ export const getFilter = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
+    if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     let agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     let proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
     let lfpopularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];

@@ -1,7 +1,7 @@
 import { compareLocations } from '../../shared/location/location';
 import { getSession } from '../../shared/neo4j/neo4j'
 import { getRelationship, getSearchResult, getUserInfoT } from '../../shared/neo4j/queries';
-import { info, internalError } from '../../shared/utils';
+import { conflict, info, internalError } from '../../shared/utils';
 
 export const getResearchResult = async (req: any, res: any) => {
   const session = getSession();
@@ -9,6 +9,7 @@ export const getResearchResult = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
+    if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
     const popularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];
@@ -24,7 +25,7 @@ export const getResearchResult = async (req: any, res: any) => {
       const longitudeTwo = element.properties.Longitude;
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
       const relationship = await getRelationship({ token, username }, session, internalError(res));
-      results[index].properties.relationship = relationship[0] && relationship[0].start === userInfo[0].identity ? relationship[0] : relationship[1];
+      results[index].properties.relationship = relationship;
       results[index].properties.Distance = distance;
       let matched = 0;
       if (interests.length !== 1 &&  interests[0] !== ['']) {

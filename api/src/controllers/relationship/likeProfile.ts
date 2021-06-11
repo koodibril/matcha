@@ -1,5 +1,5 @@
 import { getSession } from '../../shared/neo4j/neo4j'
-import { info, internalError } from '../../shared/utils';
+import { conflict, info, internalError } from '../../shared/utils';
 import { createRelationship, getRelationship, getUserInfoT, updateRelationship } from '../../shared/neo4j/queries';
 import { addNotifications, NOTIFICATION_LIKE, NOTIFICATION_LOST_MATCH, NOTIFICATION_NEW_MATCH } from '../notification/addNotification';
 
@@ -18,7 +18,7 @@ export const likeProfile = async (req: any, res: any) => {
     let relationship;
     let likedback;
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
-
+    if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     for (const element of relationships) {
       if (element.start === userInfo[0].identity)
         relationship = element;
@@ -30,10 +30,13 @@ export const likeProfile = async (req: any, res: any) => {
       match = true;
     if (!relationship) {
       relationship = await createRelationship({ token, username, match, block, like}, session, internalError(res));
+      console.log('created relationship'); 
+      console.log(relationship);
       match ? addNotifications(token, username, NOTIFICATION_NEW_MATCH) 
       && addNotifications(token, '', NOTIFICATION_LIKE) 
       && addNotifications(token, username, NOTIFICATION_LIKE)
       : addNotifications(token, username, NOTIFICATION_LIKE);
+      relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
     } else if (relationship.properties.Like === true){
         like = false;
         match = false;

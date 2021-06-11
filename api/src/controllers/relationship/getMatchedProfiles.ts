@@ -1,5 +1,5 @@
 import { getSession } from '../../shared/neo4j/neo4j'
-import { info, internalError } from '../../shared/utils';
+import { conflict, info, internalError } from '../../shared/utils';
 import { getMatchedRelationship, getRelationship, getUserInfoT } from '../../shared/neo4j/queries';
 import { compareLocations } from '../../shared/location/location';
 
@@ -11,6 +11,7 @@ export const getMatchedProfiles = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
+    if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     const results = await getMatchedRelationship({ token }, session, internalError(res));
     let index = 0;
     const latitudeOne = userInfo[0].properties.Latitude;

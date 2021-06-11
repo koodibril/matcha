@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Avatar, Badge, Card, Col, Row, Typography } from 'antd';
-import { HeartOutlined, HeartFilled, StopOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled, StopOutlined, EllipsisOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import UserInfoHolderComponent from '../../../Profile/components/UserInfoHolder/UserInfoHolder';
 import ImageHolder from '../../../Profile/components/ImageHolder/ImageHolder';
 import Modal from 'antd/lib/modal/Modal';
 import { useRelationshipActions } from 'src/ducks/relationship/actions/relationship';
 import { useSearchActions } from 'src/ducks/search/actions/search';
+import { useNotificationsActions } from 'src/ducks/notification/actions/notifications';
+import { useMessageActions } from 'src/ducks/message/actions/message';
 
 const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
     const [pictures, setPictures] = useState(['']);
@@ -16,6 +18,8 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
     
     const { blockUser, likeUser } = useRelationshipActions();
     const { getSearchResult } = useSearchActions();
+    const { addNotification } = useNotificationsActions();
+    const { setMessage } = useMessageActions();
     
     const handleLike = (element: any) => {
       likeUser(user, element.Username);
@@ -41,27 +45,37 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
       setPictures(profile.Pictures);
       setProfile(profile);
       setModal(true);
+      addNotification(user, profile.Username, 'A User checked your profile !');
     }
 
     const handleCancel = () => {
       setModal(false);
     }
 
+    const handleReport = (element: any) => {
+      setMessage('Report is sent for user ' + element.Username + ', we will look into it.');
+      blockUser(user, element.Username);
+      element.relationship[0].properties.Block = true;
+      setTimeout(() => { getSearchResult(user) }, 100);
+    }
+
     const handleUserList = () => {
       const List = props.sortedList.length > 0 ? props.sortedList : props.userList.userResult;
+      console.log(List);
       if (List.length === 0)
         return ('no user correspond to your criteria');
       return (List.map((element: any, index: number) => (
-         element.relationship.properties && element.relationship.properties.Block  ? null : (
+         element.relationship[0].properties && element.relationship[0].properties.Block  ? null : (
           <Row key={index} style={{ margin: 20}}>
               <Card hoverable
-                style={{ width: 300 }}
+                style={{ width: 300, border: element.relationship[1].properties.Like ? 'solid red 2px' : '',}}
                 cover={<img alt={element.Username} src={'http://localhost:3001/' + element.Pictures[0]}/>}
                 actions={[
-                  element.relationship.properties.Like ? 
+                  element.relationship[0].properties.Like ? 
                   <HeartFilled onClick={() => handleLike(element)} key="like"/> :
                   <HeartOutlined onClick={() => handleLike(element)} key="like"/>,
                   <StopOutlined onClick={() => showBlock(element)}key="block"/>, 
+                  <ExclamationCircleOutlined onClick={() => handleReport(element)}/>,
                   <EllipsisOutlined key="ellipsis" onClick={() => {handleProfile(element)}}/>
                   ]}>
                   <Card.Meta
