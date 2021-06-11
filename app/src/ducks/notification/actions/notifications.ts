@@ -26,11 +26,10 @@ const handleError = (dispatch: any, error: any) => {
 
 const setNotifications = (dispatch: any, res: any) => {
     const data = res.data.notifications;
-    console.log(data);
     if (data && data[0] !== '') {
       const notifications: any[]=[];
         data.forEach((element: string) => {
-            const info = element.split(/Viewed:(.*)Id:([0-9]*)Date:([0-9]*)Notification:(.*)/);
+            const info = element.split(/Viewed:(.*)Id:(.*)Date:([0-9]*)Notification:(.*)/);
             const viewed = info[1];
             const id = info[2]
             const date = new Date(parseInt(info[3])).toUTCString();

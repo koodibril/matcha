@@ -24,7 +24,6 @@ export const getProfileInfo = async (req: any, res: any) => {
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
       userInfoU[0].properties.Distance = distance;
       await addNotifications(token, username, NOTIFICATION_VISIT);
-      console.log('ajout de visite a ' + username);
     }
     const userInfo = userInfoU[0];
     info(`informations collected`);

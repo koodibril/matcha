@@ -26,11 +26,15 @@ const ChatHolder: React.FC<{chatRoom: any, user: any}> = (props) => {
     setMessage('');
   }
 
+  const scrollbot = () => {
+    bottom.current.scrollIntoView();
+  }
+
   useEffect(() => {
     if (user) {
       socket.on("newmessage", () => {
         getChatRoom(user, props.user.Username);
-      setTimeout(() => {bottom.current.scrollIntoView()}, 100);
+      setTimeout(() => {scrollbot()}, 100);
       });
     }
   }, [user, getChatRoom, props.user.Username, bottom]);
