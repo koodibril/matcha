@@ -1,5 +1,5 @@
 import { getSession } from '../../shared/neo4j/neo4j'
-import { info, internalError } from '../../shared/utils';
+import { conflict, info, internalError } from '../../shared/utils';
 import { getChatRoom, getUserInfoI, getUserInfoT, getUserInfoU, updateChatRoom } from '../../shared/neo4j/queries';
 import { addNotifications, NOTIFICATION_MESSAGE } from '../notification/addNotification';
 import { getSocketIo } from '../../server';
@@ -14,6 +14,7 @@ export const updateChatRoomUser = async (req: any, res: any) => {
 
   try {
     let chatRoom = await getChatRoom({token, username}, session, internalError(res));
+    if (!chatRoom[0]) return conflict(res, "Chatroom doesn't exist");
     const userOne = await getUserInfoT({token}, session, internalError(res));
     const userTwo = await getUserInfoU({username}, session, internalError(res));
     let messages = chatRoom[0].properties.Messages ? chatRoom[0].properties.Messages : [];

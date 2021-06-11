@@ -86,12 +86,12 @@ const MainMenu: React.FC = () => {
       if (user) {
         getProfileInfo(user, null);
         getNotifications(user);
-      }
-      socket.on('connection', () => {
-        socket.emit("order:update", user);
         socket.on("notification", () => {
           getNotifications(user);
         });
+      }
+      socket.on('connection', () => {
+        socket.emit("order:update", user);
       });
     }, [user, getProfileInfo, getNotifications]);
 

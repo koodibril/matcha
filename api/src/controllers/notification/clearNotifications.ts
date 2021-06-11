@@ -7,7 +7,7 @@ export const clearNotification = async (req: any, res: any) => {
   const token = req.body.token;
 
   try {
-    const notifications = [''];
+    const notifications = <string[]>[];
     await updateUserNotification({token, notifications}, session, internalError);
 
     info(`notification viewed`);

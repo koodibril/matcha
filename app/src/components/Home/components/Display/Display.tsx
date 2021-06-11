@@ -6,6 +6,7 @@ import ImageHolder from '../../../Profile/components/ImageHolder/ImageHolder';
 import Modal from 'antd/lib/modal/Modal';
 import { useRelationshipActions } from 'src/ducks/relationship/actions/relationship';
 import { useSearchActions } from 'src/ducks/search/actions/search';
+import { useNotificationsActions } from 'src/ducks/notification/actions/notifications';
 
 const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
     const [pictures, setPictures] = useState(['']);
@@ -16,6 +17,7 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
     
     const { blockUser, likeUser } = useRelationshipActions();
     const { getSearchResult } = useSearchActions();
+    const { addNotification } = useNotificationsActions();
     
     const handleLike = (element: any) => {
       likeUser(user, element.Username);
@@ -41,6 +43,7 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
       setPictures(profile.Pictures);
       setProfile(profile);
       setModal(true);
+      addNotification(user, profile.Username, 'A User checked your profile !');
     }
 
     const handleCancel = () => {

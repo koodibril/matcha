@@ -13,10 +13,11 @@ export const addNotifications = async (token: string, username: string, notifica
   const session = getSession();
 
   try {
-    let userInfo = username ? await getUserInfoU({username}, session, internalError) : await getUserInfoT({token}, session, internalError);
+    const userInfoT = await getUserInfoT({token}, session, internalError);
+    let userInfo = await getUserInfoU({username}, session, internalError);
     const notifications = userInfo[0].properties.Notifications ? userInfo[0].properties.Notifications : [];
 
-    const newNotification = 'Viewed:false' + 'Date:' + Date.now() + 'Notification:' + notification;
+    const newNotification = 'Viewed:false' + 'Id:' + userInfoT[0].identity + 'Date:' + Date.now() + 'Notification:' + notification;
     notifications.unshift(newNotification);
     userInfo = username ? await updateUsernameNotification({username, notifications}, session, internalError) : await updateUserNotification({token, notifications}, session, internalError);
     const io = getSocketIo();
@@ -26,6 +27,32 @@ export const addNotifications = async (token: string, username: string, notifica
     return (userInfo[0]);
   } catch (e) {
     return internalError(e);
+  } finally {
+    await session.close();
+  };
+}
+
+export const addNotification = async (req: any, res: any) => {
+  const session = getSession();
+  const token = req.body.token;
+  const username = req.body.username;
+  const notification = req.body.notification;
+
+  try {
+    const userInfoT = await getUserInfoT({token}, session, internalError);
+    let userInfo = await getUserInfoU({username}, session, internalError);
+    const notifications = userInfo[0].properties.Notifications ? userInfo[0].properties.Notifications : [];
+
+    const newNotification = 'Viewed:false' + 'Id:' + userInfoT[0].identity + 'Date:' + Date.now() + 'Notification:' + notification;
+    notifications.unshift(newNotification);
+    userInfo = username ? await updateUsernameNotification({username, notifications}, session, internalError) : await updateUserNotification({token, notifications}, session, internalError);
+
+    info(`notifications collected`);
+    return res
+      .status(200)
+      .json({ notifications })
+  } catch (e) {
+    return internalError(res)(e);
   } finally {
     await session.close();
   };
