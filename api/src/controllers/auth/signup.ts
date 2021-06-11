@@ -10,13 +10,15 @@ export const signup = async (req: any, res: any) => {
   const {
     username,
     email,
-    password
+    password,
+    name,
+    surname
   } = req.body;
   const pictures = ['', '', '', '', ''];
   const active = false;
   const valid = false;
   const token = getToken({ username });
-  const userParams = { username, email, password, token, pictures, active, valid };
+  const userParams = { username, email, password, token, pictures, active, valid, name, surname };
   userParams.password = await hashPassword(password);
 
   try {
