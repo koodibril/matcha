@@ -44,7 +44,7 @@ interface ChatRoom {
   messages?: string[];
 }
 
-const queryCreateUser = generateQuery(['create'], ['user'], [['username', 'password', 'email', 'active', 'valid', 'token', 'pictures']], [], '', 'a', false);
+const queryCreateUser = generateQuery(['create'], ['user'], [['username', 'password', 'email', 'name', 'surname', 'active', 'valid', 'token', 'pictures']], [], '', 'a', false);
 const queryMatchingUser = generateQuery(['match'], ['user'], [['username']], [], '', 'a', true);
 const queryMatchingEmail = generateQuery(['match'], ['user'], [['email']], [], '', 'a', true);
 const queryMatchingPassword = `${generateQuery(['match'], ['user'], [['username']], [], '', 'a', false)}.Password`;

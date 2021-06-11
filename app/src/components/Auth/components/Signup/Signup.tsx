@@ -46,6 +46,32 @@ const Signup: React.FC = () => {
         </Form.Item>
 
         <Form.Item
+          label={t("name")}
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: t("name_missing"),
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label={t("surname")}
+          name="surname"
+          rules={[
+            {
+              required: true,
+              message: t("surname_missing"),
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
           label={t("email")}
           name="email"
           rules={[

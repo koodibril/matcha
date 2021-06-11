@@ -114,11 +114,11 @@ const logout = () => (dispatch: any) => {
   dispatch(pushState('/'));
 };
 
-const signup = ({ email, username, password }: SignupData) => (
+const signup = ({ email, username, password, name, surname }: SignupData) => (
   dispatch: any
 ) =>
   axios
-    .post(`${API_URL}${SIGNUP_ENDPOINT}`, { email, username, password })
+    .post(`${API_URL}${SIGNUP_ENDPOINT}`, { email, username, password, name, surname })
     .then(
       (res) => {
         userRegistrated(dispatch, res);

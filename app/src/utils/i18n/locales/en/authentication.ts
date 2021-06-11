@@ -6,6 +6,8 @@ export default {
   "firstname": "Firstname",
   "lastname": "Lastname",
   "username": "Username",
+  "name": "Name",
+  "surname": "Surname",
   "go_to_login": "Already have an account? Go to login!",
   "go_to_signup": "Don't have an account? Register!",
   "email_missing": "Please enter a valid email",
