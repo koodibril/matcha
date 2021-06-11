@@ -96,6 +96,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         
         <Form.Item
           label={t('age')}
+          name='age'
           rules={[{
             required: true,
             message: t('age_missing')
@@ -107,6 +108,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
         <Form.Item
           label={t('gender')}
+          name='gender'
           rules={[{
             required: true,
             message: t('gender_missing')
@@ -121,6 +123,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
         <Form.Item
           label={t('sexual orientation')}
+          name='sexo'
           rules={[{
             required: true,
             message: t('sexual_orientation_missing')
@@ -136,6 +139,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
         <Form.Item
           label={t('bio')}
+          name='bio'
           rules={[{
             required: true,
             message: t('bio_missing')
@@ -147,6 +151,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         
         <Form.Item
           label={t('interests')}
+          name='interests'
           rules={[{
             validator: checkTags
           }]}>
@@ -163,6 +168,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
         <Form.Item
           label={t('city')}
+          name='location'
           rules={[{
             validator: checkLocation
           }]}>
