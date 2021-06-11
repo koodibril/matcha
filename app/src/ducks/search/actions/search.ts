@@ -18,14 +18,14 @@ const setSearchResult = (dispatch: any, res: any) => {
     const data = res.data.results;
     const userList: any[]= [];
     data.forEach((element: any) => {
-      if (!element.properties.relationship)
-      {
+      if (!element.properties.relationship[1]) {
         const Block = false;
         const Like = false;
         const Match = false;
         const properties = {Block, Like, Match};
         const relationship = {properties};
-        element.properties.relationship = relationship;
+        element.properties.relationship[0] = element.properties.relationship[0] ? element.properties.relationship[0] : relationship;
+        element.properties.relationship[1] = element.properties.relationship[1] ? element.properties.relationship[1] : relationship;
       }
       userList.push(element.properties);
     });

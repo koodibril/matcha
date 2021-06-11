@@ -30,10 +30,13 @@ export const likeProfile = async (req: any, res: any) => {
       match = true;
     if (!relationship) {
       relationship = await createRelationship({ token, username, match, block, like}, session, internalError(res));
+      console.log('created relationship'); 
+      console.log(relationship);
       match ? addNotifications(token, username, NOTIFICATION_NEW_MATCH) 
       && addNotifications(token, '', NOTIFICATION_LIKE) 
       && addNotifications(token, username, NOTIFICATION_LIKE)
       : addNotifications(token, username, NOTIFICATION_LIKE);
+      relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
     } else if (relationship.properties.Like === true){
         like = false;
         match = false;

@@ -16,8 +16,9 @@ export const blockProfile = async (req: any, res: any) => {
     let relationship = await getRelationship({ token, username }, session, internalError(res));
     if (!relationship[0]) {
       relationship = await createRelationship({ token, username, match, block, like}, session, internalError(res));
+      relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
     } else if (relationship[0].properties.Block !== true){
-        relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
+      relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
     }
     relationship = relationship[0];
 

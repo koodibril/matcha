@@ -25,7 +25,7 @@ export const getResearchResult = async (req: any, res: any) => {
       const longitudeTwo = element.properties.Longitude;
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
       const relationship = await getRelationship({ token, username }, session, internalError(res));
-      results[index].properties.relationship = relationship[0] && relationship[0].start === userInfo[0].identity ? relationship[0] : relationship[1];
+      results[index].properties.relationship = relationship;
       results[index].properties.Distance = distance;
       let matched = 0;
       if (interests.length !== 1 &&  interests[0] !== ['']) {
