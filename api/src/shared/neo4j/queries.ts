@@ -78,8 +78,11 @@ const queryGetMatchedRelationship = generateQuery(['match', 'where'], ['user', '
 
 const querySearch = generateQuery(['match', 'where'], ['user'], [[]], [], 
 'a.Age >= $agegap[0] AND a.Age <= $agegap[1] ' +
-'AND a.Popularity >= $popularity[0] AND a.Popularity <= $popularity[1] AND a.Token <> $token'
-, 'a LIMIT 25', false);
+'AND a.Popularity >= $popularity[0] AND a.Popularity <= $popularity[1] ' + 
+'AND a.Token <> $token '
+, 'a ORDER BY (6371e3 * (2 * atan2(sqrt(sin(((a.Latitude-$latitude) * pi()/180)/2) * sin(((a.Latitude-$latitude) * pi()/180)/2) + cos(($latitude * pi()/180)) * cos((a.Latitude * pi()/180)) * sin(((a.Longitude-$longitude) * pi()/180)/2) * sin(((a.Longitude-$longitude) * pi()/180)/2)), sqrt(1-(sin(((a.Latitude-$latitude) * pi()/180)/2) * sin(((a.Latitude-$latitude) * pi()/180)/2) + cos(($latitude * pi()/180)) * cos((a.Latitude * pi()/180)) * sin(((a.Longitude-$longitude) * pi()/180)/2) * sin(((a.Longitude-$longitude) * pi()/180)/2)))))), size(a.Interests) DESC, a.Popularity DESC', false);
+
+//6371e3 * (2 * atan2(sqrt(sin(((a.Latitude-$latitude) * pi()/180)/2) * sin(((a.Latitude-$latitude) * pi()/180)/2) + cos(($latitude * pi()/180)) * cos((a.Latitude * pi()/180)) * sin(((a.Longitude-$longitude) * pi()/180)/2) * sin(((a.Longitude-$longitude) * pi()/180)/2)), sqrt(1-(sin(((a.Latitude-$latitude) * pi()/180)/2) * sin(((a.Latitude-$latitude) * pi()/180)/2) + cos(($latitude * pi()/180)) * cos((a.Latitude * pi()/180)) * sin(((a.Longitude-$longitude) * pi()/180)/2) * sin(((a.Longitude-$longitude) * pi()/180)/2)))));
 
 const queryCreateChatRoom = generateQuery(['match', 'create'], ['user', 'user'], [['token'], ['username']], [], 'chatroom', 'c', false);
 const queryGetChatRoom = generateQuery(['match'], ['user', 'chat', 'chatroom', 'chat', 'user'], [['token'], ['username']], [], 'chatroom', 'c', false);

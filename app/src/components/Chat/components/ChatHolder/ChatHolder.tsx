@@ -37,7 +37,7 @@ const ChatHolder: React.FC<{chatRoom: any, user: any}> = (props) => {
       setTimeout(() => {scrollbot()}, 100);
       });
     }
-  }, [user, getChatRoom, props.user.Username, bottom]);
+  }, [user, getChatRoom, props.user.Username]);
 
   const handleChatRoom = () => {
       const chat = props.chatRoom;

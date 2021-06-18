@@ -11,12 +11,14 @@ export const getResearchResult = async (req: any, res: any) => {
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
-    const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
     const popularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];
-    const interests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
-    let results = await getSearchResult({ agegap, popularity, token }, session, internalError(res));
+    const sexo = userInfo[0].properties.Sexo;
+    const latitude = userInfo[0].properties.Latitude;
+    const longitude = userInfo[0].properties.Longitude;
+    info('starting query');
+    let results = await getSearchResult({ agegap, popularity, token, sexo, latitude, longitude }, session, internalError(res));
+    info('query finished');
     let index = 0;
-    let remove = [];
     const latitudeOne = userInfo[0].properties.Latitude;
     const longitudeOne = userInfo[0].properties.Longitude;
     for (const element of results) {
@@ -27,21 +29,7 @@ export const getResearchResult = async (req: any, res: any) => {
       const relationship = await getRelationship({ token, username }, session, internalError(res));
       results[index].properties.relationship = relationship;
       results[index].properties.Distance = distance;
-      let matched = 0;
-      if (interests.length !== 1 &&  interests[0] !== ['']) {
-        for (const interest of element.properties.Interests) {
-          for (const match of interests) {
-            if (interest === match)
-              matched = 1;
-          }
-        }
-      }
-      if ((distance > proximity && proximity != 24) || (matched === 0 && (interests.length !== 1 &&  interests[0] !== [''])))
-        remove.push(index);
       index++;
-    }
-    for (const nb of remove) {
-      results.splice(nb, 1);
     }
 
     info(`userlist collected`);

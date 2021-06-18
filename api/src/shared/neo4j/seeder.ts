@@ -8,6 +8,8 @@ export const zergRush = async (res: any) => {
     const session = getSession();
 
     const usernames = ['tatie', 'toto'];
+    const names = ['hiha', 'hiho'];
+    const surnames = ['hahi', 'hohi'];
     const email = 'dummy@dummy.dummy';
     const genders = ['Male', 'Female'];
     const sexos = ['Male', 'Female', 'Bi'];
@@ -25,12 +27,14 @@ export const zergRush = async (res: any) => {
     if (check[0] <= 500) {
         for(let i = 0; i < 750; i++) {
             const username = usernames[Math.round(Math.random() * (1 - 0) + 0)] + i;
+            const name = names[Math.round(Math.random() * (1 - 0) + 0)];
+            const surname = surnames[Math.round(Math.random() * (1 - 0) + 0)];
             const age = Math.round(Math.random() * (80 - 18) + 18);
             const gender = genders[Math.round(Math.random() * (1 - 0) + 0)];
             pictures[0] = gender === 'Male' ? 'Male.jpg' : 'Female.png';
             const sexo = sexos[Math.round(Math.random() * (2 - 0) + 0)];
             const bio = bios[Math.round(Math.random() * (1 - 0) + 0)];
-            let nbOfInterests = Math.round(Math.random() * (5 - 0) + 0);
+            let nbOfInterests = Math.round(Math.random() * (5 - 3) + 3);
             const interests = [''];
             while (nbOfInterests > 0) {
                 interests.push(interestss[Math.round(Math.random() * (9 - 0) + 0)]);
@@ -39,7 +43,7 @@ export const zergRush = async (res: any) => {
             const token = getToken({ username });
             const popularity = Math.round(Math.random() * (10 - 0) + 0);
             const online = Date.now();
-            await createUser({username, password, email, active, valid, token, pictures}, session, internalError(res));
+            await createUser({username, password, name, surname, email, active, valid, token, pictures}, session, internalError(res));
             await updateUserInfo({token, username, email, active}, session, internalError(res));
             await updateUserData({token, age, gender, sexo, bio, interests, location, latitude, longitude, valid, popularity}, session, internalError(res));
             await updateOnline({token, online}, session, internalError(res));
