@@ -96,17 +96,20 @@ const MainMenu: React.FC = () => {
     }, [user, getProfileInfo, getNotifications]);
 
     const handleClick = (key: any) => {
-      clearMessage();
-        if (key.key === "logout") {
-            socket.emit("logout", user);
-            setLogged("Login");
-            setCurrent(['auth']);
-            logout();
-        }
-        else {
-            setCurrent(key.key);
-            pushState('/' + key.key);
-        }
+      console.log(key);
+      if (user) {
+        clearMessage();
+          if (key.key === "logout") {
+              socket.emit("logout", user);
+              setLogged("Login");
+              setCurrent(['auth']);
+              logout();
+          }
+          else {
+              setCurrent(key.key);
+              pushState('/' + key.key);
+          }
+      }
     };
 
     return (
