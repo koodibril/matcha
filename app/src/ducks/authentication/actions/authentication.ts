@@ -111,7 +111,6 @@ const login = (username: string, password: string) => (dispatch: any) =>
 const logout = () => (dispatch: any) => {
   dispatch({ type: "LOGOUT" });
   localStorage.removeItem("user");
-  dispatch(pushState('/'));
 };
 
 const signup = ({ email, username, password, name, surname }: SignupData) => (

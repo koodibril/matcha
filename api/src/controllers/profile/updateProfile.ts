@@ -1,6 +1,6 @@
 import { getSession } from '../../shared/neo4j/neo4j';
 import { info, internalError } from '../../shared/utils';
-import { updateUserData } from '../../shared/neo4j/queries';
+import { getUserInfoT, updateUserData } from '../../shared/neo4j/queries';
 
 export const updateProfile = async (req: any, res: any) => {
   const session = getSession();
@@ -15,11 +15,18 @@ export const updateProfile = async (req: any, res: any) => {
   const location = req.body.location.city;
   const latitude = req.body.location.latitude;
   const longitude = req.body.location.longitude;
-  const valid = true;
+  let valid = false;
   const popularity = 5;
-  const userParams = { age, gender, sexo, bio, interests, token, location, latitude, longitude, valid, popularity };
-
+  
   try {
+    const userinfoT = await getUserInfoT({token}, session, internalError(res));
+    if (userinfoT[0] && userinfoT[0].properties.Pictures) {
+      for(const picture in userinfoT[0].properties.Pictures) {
+        if (picture !== '')
+        valid = true; 
+      }
+    }
+    const userParams = { age, gender, sexo, bio, interests, token, location, latitude, longitude, valid, popularity };
     const userInfoU = await updateUserData(userParams, session, internalError(res));
     const userInfo = userInfoU[0];
 

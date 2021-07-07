@@ -10,6 +10,7 @@ export const getResearchResult = async (req: any, res: any) => {
   try {
     const userInfo = await getUserInfoT({ token }, session, internalError(res));
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
+    if (!userInfo[0].properties.Valid) return conflict(res, "You need to upload one picture at least");
     const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     const popularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];
     const sexo = userInfo[0].properties.Sexo;

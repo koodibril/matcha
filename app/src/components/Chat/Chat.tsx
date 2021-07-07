@@ -3,12 +3,12 @@ import { Badge, Card, Col, Divider, Modal, Row, Typography } from 'antd';
 import { HeartOutlined, HeartFilled, StopOutlined, EllipsisOutlined } from '@ant-design/icons';
 import ChatHolderComponent from './components/ChatHolder/ChatHolder';
 import { useChat, useChatActions, useChatRoom } from '../../ducks/chat/actions/chat';
-import { useNavigation } from 'src/ducks/navigation/navigation';
 import Avatar from 'antd/lib/avatar/avatar';
 import UserInfoHolderComponent from '../Profile/components/UserInfoHolder/UserInfoHolder';
 import ImageHolder from '../Profile/components/ImageHolder/ImageHolder';
 import { useRelationshipActions } from 'src/ducks/relationship/actions/relationship';
 import { useProfileActions } from 'src/ducks/profile/actions/profile';
+import { Redirect } from 'react-router';
 
 const Chat: React.FC = () => {
     const [pictures, setPictures] = useState(['']);
@@ -19,12 +19,10 @@ const Chat: React.FC = () => {
 
     const userList = useChat();
     const chatRoom = useChatRoom();
-    const { pushState } = useNavigation();
+    console.log(userList);
     const { getMatchedProfiles, getChatRoom } = useChatActions();
     const { blockUser, likeUser } = useRelationshipActions();
     const { getProfileInfo } = useProfileActions();
-  
-    if (!user) pushState('/auth');
 
     useEffect(() => {
       if (user) {
@@ -81,9 +79,12 @@ const Chat: React.FC = () => {
         </Row>
       )));
     }
+
+  if (user == null) return (<Redirect to="/auth"></Redirect>);
     
-  return (
+  return (  
     <Row justify="center" style={{height: "600px"}}>
+      { userList.userResult && userList.userResult.length !== 0 ? <>
       <Col span={6}>
         { userList.userResult ? handleUserList() : null}
       </Col>
@@ -112,6 +113,8 @@ const Chat: React.FC = () => {
               </Typography.Paragraph>
             </Typography>
       </Modal>
+      </>
+     : "You don't have any match for now" }
     </Row>
   )
 }

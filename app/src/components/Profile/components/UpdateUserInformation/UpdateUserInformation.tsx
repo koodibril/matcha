@@ -29,7 +29,8 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
   const handleUpdate = (usr: UserData) => {
     usr.interests = selectedTags;
-    updateProfileInfo(usr, user, location);
+    console.log(location);
+    //updateProfileInfo(usr, user, location);
   };
 
   const handleChange = (tag: any, checked: any) => {
@@ -68,52 +69,35 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
       { props.info ? (
       <Form
         style={{margin: "10px", maxWidth: "100%"}}
-        fields={[ props.info.Age ? {
-          name: ['age'],
-          value: props.info.Age
-        } : { name: ['age']},
-        props.info.Gender ? {
-          name: ['gender'],
-          value: props.info.Gender
-        } : { name: ['gender']},
-         props.info.Sexo ? {
-          name: ['sexo'],
-          value: props.info.Sexo
-        } : { name: ['sexo']},
-        props.info.Bio ? {
-          name: ['bio'],
-          value: props.info.Bio
-        } : { name: ['bio']},
-        props.info.Location ? {
-          name: ['location'],
-          value: location.city
-        } : {name :['location']}
-        ]}
-        name="update"
+        initialValues={{
+          age: props.info.Age,
+          gender: props.info.Gender,
+          sexo: props.info.Sexo,
+          bio: props.info.Bio,
+          location: props.info.Location,
+        }}
         onFinish={handleUpdate}>
 
         <Form.Item>{props.info.Username}</Form.Item>
         
-        <Form.Item
-          label={t('age')}
-          name='age'
-          rules={[{
+        <Form.Item label={t('age')}>
+          <Form.Item 
+            name="age" 
+            rules={[{
             required: true,
             message: t('age_missing')
           }]}>
-          <Form.Item name="age">
             <InputNumber min={18} max={80}/>
           </Form.Item>
         </Form.Item>
 
-        <Form.Item
-          label={t('gender')}
-          name='gender'
-          rules={[{
-            required: true,
-            message: t('gender_missing')
-          }]}>
-          <Form.Item name="gender">
+        <Form.Item label={t('gender')}>
+          <Form.Item
+            name="gender"
+            rules={[{
+              required: true,
+              message: t('gender_missing')
+            }]}>
             <Select>
               <Select.Option value="Female">Female</Select.Option>
               <Select.Option value="Male">Male</Select.Option>
@@ -121,14 +105,13 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
           </Form.Item>
         </Form.Item>
 
-        <Form.Item
-          label={t('sexual orientation')}
-          name='sexo'
-          rules={[{
-            required: true,
-            message: t('sexual_orientation_missing')
-          }]}>
-            <Form.Item name="sexo">
+        <Form.Item label={t('sexual orientation')}>
+            <Form.Item
+              name="sexo"
+              rules={[{
+                required: true,
+                message: t('sexual_orientation_missing')
+              }]}>
               <Select>
                 <Select.Option value="Female">Female</Select.Option>
                 <Select.Option value="Male">Male</Select.Option>
@@ -137,43 +120,44 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
             </Form.Item>
         </Form.Item>
 
-        <Form.Item
-          label={t('bio')}
-          name='bio'
-          rules={[{
-            required: true,
-            message: t('bio_missing')
-          }]}>
-            <Form.Item name="bio">
+        <Form.Item label={t('bio')}>
+            <Form.Item
+              name="bio"
+              rules={[{
+                required: true,
+                message: t('bio_missing')
+              }]}>
               <Input.TextArea maxLength={500}/>
             </Form.Item>
         </Form.Item>
         
-        <Form.Item
-          label={t('interests')}
-          name='interests'
-          rules={[{
-            validator: checkTags
-          }]}>
-            {tagsData.map(tag => (
-              <CheckableTag
-                key={tag}
-                checked={selectedTags.indexOf(tag) > -1}
-                onChange={checked => handleChange(tag, checked)}
-              >
-                {tag}
-              </CheckableTag>
-        ))}
+        <Form.Item label={t('interests')}>
+          <Form.Item
+            name="interests"
+            rules={[{
+              required: true,
+              validator: checkTags
+            }]}>
+              {tagsData.map(tag => (
+                <CheckableTag
+                  key={tag}
+                  checked={selectedTags.indexOf(tag) > -1}
+                  onChange={checked => handleChange(tag, checked)}
+                >
+                  {tag}
+                </CheckableTag>
+          ))}
+          </Form.Item>
         </Form.Item>
 
-        <Form.Item
-          label={t('city')}
-          name='location'
-          rules={[{
-            validator: checkLocation
-          }]}>
-            <Form.Item name="location">
-              <Input disabled value={location.city}></Input>
+        <Form.Item label={t('city')}>
+            <Form.Item
+              name="location"
+              rules={[{
+                required: true,
+                validator: checkLocation
+              }]}>
+              <Input></Input>
             </Form.Item>
             <MapHolderComponent location={location.city} latitude={location.latitude} longitude={location.longitude}></MapHolderComponent>
             <Button onClick={handleLocation}>{t('update location')}</Button>

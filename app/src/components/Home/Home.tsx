@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Divider, Row, Tag } from 'antd';
 import DisplayComponent from './components/Display/Display';
-import { useNavigation } from 'src/ducks/navigation/navigation';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { useSearch, useSearchActions } from 'src/ducks/search/actions/search';
 import { useProfile, useProfileActions } from 'src/ducks/profile/actions/profile';
+
+import { Redirect } from 'react-router';
 
 const Home: React.FC = () => {
   const [selectedTags, setSelectedTags] = useState<any[]>([]);
   const [double, setDouble] = useState(false);
   const [listSorted, setListSorted] = useState<any[]>([]);
   const user = localStorage.getItem('user');
-  const { pushState } = useNavigation();
   const { getSearchResult } = useSearchActions();
   const { getProfileInfo } = useProfileActions();
   const info = useProfile();
   const userList = useSearch();
   const tagsData = ['Age', 'Distance', 'Popularity', 'Tags'];
-
-  if (user == null) pushState('/auth');
   
   useEffect(() => {
     if (user) {
       getProfileInfo(user, null);
       getSearchResult(user);
     }
-  }, [user, getSearchResult, getProfileInfo]);
-
+  }, [user, getProfileInfo, getSearchResult]);
+  
   const handleChange = (tag: any, checked: any) => {
     if (tag !== selectedTags[0]) {
       setSelectedTags([tag]);
@@ -43,7 +41,7 @@ const Home: React.FC = () => {
       sort(tag, true);
     }
   };
-
+  
   const sort = (by: string, order: boolean) => {
     if (by === '') {
       setListSorted(userList.userResult);
@@ -65,14 +63,14 @@ const Home: React.FC = () => {
           for (const interest of a.Interests) {
             for (const match of info.payload.Interests) {
               if (interest === match)
-                amatched++;
+              amatched++;
             }
           }
           let bmatched = 0;
           for (const interest of b.Interests) {
             for (const match of info.payload.Interests) {
               if (interest === match)
-                bmatched++;
+              bmatched++;
             }
           }
           return (order ? amatched - bmatched : bmatched - amatched);
@@ -81,6 +79,8 @@ const Home: React.FC = () => {
       setListSorted(newList);
     }
   }
+  
+  if (user == null) return (<Redirect to="/auth"></Redirect>);
 
   return (
     <>
@@ -88,9 +88,9 @@ const Home: React.FC = () => {
         <Divider plain style={{width: "80%"}}>Sort</Divider>
         {tagsData.map(tag => (
           <Tag.CheckableTag
-            key={tag}
-            checked={selectedTags.indexOf(tag) > -1}
-            onChange={checked => handleChange(tag, checked)}>
+          key={tag}
+          checked={selectedTags.indexOf(tag) > -1}
+          onChange={(checked) => handleChange(tag, checked)}>
               {tag} {double && selectedTags.indexOf(tag) > -1 ? <UpOutlined></UpOutlined> : <DownOutlined></DownOutlined>}
           </Tag.CheckableTag>
         ))}

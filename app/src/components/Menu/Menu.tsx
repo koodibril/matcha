@@ -9,6 +9,7 @@ import { useNavigation } from 'src/ducks/navigation/navigation';
 import { useNotifications, useNotificationsActions } from 'src/ducks/notification/actions/notifications';
 import { socket } from '../../hooks/useSocket';
 import useToken from 'src/hooks/useToken';
+import { Redirect } from 'react-router';
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
@@ -96,20 +97,18 @@ const MainMenu: React.FC = () => {
     }, [user, getProfileInfo, getNotifications]);
 
     const handleClick = (key: any) => {
-      console.log(key);
-      if (user) {
         clearMessage();
           if (key.key === "logout") {
               socket.emit("logout", user);
               setLogged("Login");
               setCurrent(['auth']);
               logout();
+              return (<Redirect to="/auth"></Redirect>);
           }
           else {
               setCurrent(key.key);
               pushState('/' + key.key);
           }
-      }
     };
 
     return (

@@ -1132,6 +1132,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.9.2":
+  version "7.14.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
+  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/template@^7.12.13", "@babel/template@^7.4.0", "@babel/template@^7.8.6":
   version "7.12.13"
   resolved "https://registry.npmjs.org/@babel/template/-/template-7.12.13.tgz"
@@ -1841,6 +1848,16 @@
     "@types/history" "*"
     "@types/react" "*"
     "@types/react-router" "*"
+
+"@types/react-router-redux@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.yarnpkg.com/@types/react-router-redux/-/react-router-redux-5.0.18.tgz#5f28d5f7387fa71e33f602ccf9269e1609d47b8b"
+  integrity sha512-5SI69Virpmo+5HXWXKIzSt5hsnV7TTidL3Ddmbi+PH1CIdi40wthJwjFoqiE+gRQANur5WhjEtfyPorJ4zymHA==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+    redux ">= 3.7.2"
 
 "@types/react-router@*":
   version "5.1.13"
@@ -10091,7 +10108,7 @@ react-dev-utils@^10.2.1:
 
 react-dom@^17.0.2:
   version "17.0.2"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
+  resolved "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   integrity sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==
   dependencies:
     loose-envify "^1.1.0"
@@ -10145,6 +10162,11 @@ react-router-dom@^5.2.0:
     react-router "5.2.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
+
+react-router-redux@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/react-router-redux/-/react-router-redux-4.0.8.tgz#227403596b5151e182377dab835b5d45f0f8054e"
+  integrity sha1-InQDWWtRUeGCN32rg1tdRfD4BU4=
 
 react-router@5.2.0, react-router@^5.2.0:
   version "5.2.0"
@@ -10224,7 +10246,7 @@ react-scripts@3.4.3:
 
 react@^17.0.2:
   version "17.0.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
+  resolved "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
   dependencies:
     loose-envify "^1.1.0"
@@ -10337,6 +10359,13 @@ redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/redux-thunk/-/redux-thunk-2.3.0.tgz"
   integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
+
+"redux@>= 3.7.2":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.1.0.tgz#eb049679f2f523c379f1aff345c8612f294c88d4"
+  integrity sha512-uI2dQN43zqLWCt6B/BMGRMY6db7TTY4qeHHfGeKb3EOhmOKjU3KdWvNLJyqaHRksv/ErdNH7cFZWg9jXtewy4g==
+  dependencies:
+    "@babel/runtime" "^7.9.2"
 
 redux@^4.0.0, redux@^4.0.5:
   version "4.0.5"
@@ -10768,7 +10797,7 @@ saxes@^3.1.9:
 
 scheduler@^0.20.2:
   version "0.20.2"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.20.2.tgz#4baee39436e34aa93b4874bddcbf0fe8b8b50e91"
+  resolved "https://registry.npmjs.org/scheduler/-/scheduler-0.20.2.tgz"
   integrity sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==
   dependencies:
     loose-envify "^1.1.0"

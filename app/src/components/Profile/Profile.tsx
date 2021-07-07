@@ -6,18 +6,16 @@ import UserInfoHolderComponent from './components/UserInfoHolder/UserInfoHolder'
 import { useProfile, useProfileActions } from '../../ducks/profile/actions/profile';
 import { Row } from 'antd';
 import { useRelationshipActions } from '../../ducks/relationship/actions/relationship';
-import { useNavigation } from 'src/ducks/navigation/navigation';
+import { Redirect } from 'react-router';
 
 const Profile: React.FC = () => {
   const [reading, setReading] = useState(false);
   const user = localStorage.getItem('user');
   
-  const { pushState } = useNavigation();
   const info = useProfile();
   const { getProfileInfo } = useProfileActions();
   const { getRelationship } = useRelationshipActions();
 
-  if (!user) pushState('/auth');
   
   useEffect(() => {
     const path = window.location.pathname.split('/');
@@ -37,6 +35,8 @@ const Profile: React.FC = () => {
     <Row justify="center" align="middle">
         { info && info.payload ? <UserInfoHolderComponent info={info.payload}></UserInfoHolderComponent> : null}
     </Row>);
+
+  if (user == null) return (<Redirect to="/auth"></Redirect>);
 
   return ( info && info.payload ?
     <> 

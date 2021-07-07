@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNotifications, useNotificationsActions } from '../../ducks/notification/actions/notifications';
-import { useNavigation } from 'src/ducks/navigation/navigation';
 import NotificationsDisplayComponent from './components/NotificationDisplay/NotificationDisplay';
 import { Button, Row } from 'antd';
+import { Redirect } from 'react-router';
 
 const Notifications: React.FC = () => {
     const user = localStorage.getItem('user');
     
     const notifications = useNotifications();
     const { getNotifications, clearNotifications } = useNotificationsActions();
-    const { pushState } = useNavigation();
-  
-    if (!user) pushState('/auth');
     
     useEffect(() => {
       if (user) {
@@ -22,6 +19,8 @@ const Notifications: React.FC = () => {
     const handleClick = () => {
       clearNotifications(user);
     }
+
+  if (user == null) return (<Redirect to="/auth"></Redirect>);
 
   return (
     <>
