@@ -19,6 +19,8 @@ const allowCrossDomain = (req: any, res: any, next: any) => {
 app.use(allowCrossDomain);
 
 app.use(express.json({ limit: '1mb' }));
+
+app.use('/api/user/*', user);
 app.use('/api/auth', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/relationship', relationshipRoutes);
