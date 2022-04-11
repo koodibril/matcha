@@ -1,11 +1,12 @@
 import express from 'express';
-import userRoutes from './routes/user';
-import profileRoutes from './routes/profile';
-import relationshipRoutes from './routes/relationship';
-import searchRoutes from './routes/research';
-import chatRoutes from './routes/chat';
-import notificationRoutes from './routes/notification';
-import seedRoutes from './routes/seed';
+
+import user from './modules/user/user';
+import chat from './modules/chat/chat';
+import notifications from './modules/notifications/notifications';
+import profile from './modules/profile/profile';
+import relationship from './modules/relationship/relationship';
+import research from './modules/research/research';
+import { zergRush } from './shared/neo4j/seeder';
 //import { relaseTheKraken } from './shared/neo4j/querytester';
 
 const app = express();
@@ -20,14 +21,14 @@ app.use(allowCrossDomain);
 
 app.use(express.json({ limit: '1mb' }));
 
-app.use('/api/user/*', user);
-app.use('/api/auth', userRoutes);
-app.use('/api/profile', profileRoutes);
-app.use('/api/relationship', relationshipRoutes);
-app.use('/api/search', searchRoutes);
-app.use('/api/chat', chatRoutes);
-app.use('/api/notifications', notificationRoutes);
-app.use('/api/zerg', seedRoutes);
+app.use('/api/auth/*', user);
+app.use('/api/chat/*', chat);
+app.use('/api/notifications/*', notifications);
+app.use('/api/profile', profile);
+app.use('/api/relationship', relationship);
+app.use('/api/search', research);
+
+app.use('/api/zerg', zergRush);
 //relaseTheKraken('coucou');
 
 export default app;
