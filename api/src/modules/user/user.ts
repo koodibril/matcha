@@ -1,4 +1,4 @@
-
+import { Router } from 'express';
 import { login } from './handlers/login';
 import { signup } from './handlers/signup';
 import { activateUser } from './handlers/activate';
@@ -9,49 +9,16 @@ import { changeUsername } from './handlers/updateUsername';
 import { changeSurname } from './handlers/updateSurname';
 import { changeName } from './handlers/updateName';
 
-export default (req: any, res: any) => {
-    const { path } = req;
+const router = Router();
 
-    switch (path) {
-        case 'signup':
-            signup(req, res);
-            break;
+router.post('/signup', signup);
+router.post('/login', login);
+router.post('/activate', activateUser);
+router.post('/password', changePassword);
+router.post('/email', changeEmail);
+router.post('/username', changeUsername);
+router.post('/surname', changeSurname);
+router.post('/name', changeName);
+router.post('/recovery', recoverPassword);
 
-        case 'login':
-            login(req, res);
-            break;
-
-        case 'activate':
-            activateUser(req, res);
-            break;
-
-        case 'password':
-            changePassword(req, res);
-            break;
-        
-        case 'email':
-            changeEmail(req, res);
-            break;
-
-        
-        case 'username':
-            changeUsername(req, res);
-            break;
-
-        case 'surname':
-            changeSurname(req, res);
-            break;
-
-        case 'name':
-            changeName(req, res);
-            break;
-
-        case 'recovery':
-            recoverPassword(req, res);
-            break;
-
-        default:
-            res.sendStatus(500);
-            break;
-    }
-}
+export default router;

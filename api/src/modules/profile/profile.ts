@@ -1,26 +1,14 @@
+import { Router } from 'express';
 import { getProfileInfo } from './handlers/getProfile';
 import { uploadImage } from './handlers/uploadImage';
 import { removeImage } from './handlers/removeImage';
 import { updateProfile } from './handlers/updateProfile';
 
-export default (req: any, res: any) => {
-    const { path } = req;
+const router = Router();
 
-    switch (path) {
-        case 'info':
-            getProfileInfo(req, res);
-            break
+router.post('/info', getProfileInfo);
+router.post('/update', updateProfile);
+router.post('/picture/upload', uploadImage);
+router.post('/picture/remove', removeImage);
 
-        case 'update':
-            updateProfile(req, res);
-            break
-
-        case 'picture/upload':
-            uploadImage(req, res);
-            break
-
-        case 'picture/remove':
-            removeImage(req, res);
-            break
-    }
-}
+export default router;

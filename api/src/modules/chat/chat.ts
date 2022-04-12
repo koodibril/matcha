@@ -1,15 +1,10 @@
+import { Router } from 'express';
 import { getChatRoomUser } from './handlers/getChatRoom';
 import { updateChatRoomUser } from './handlers/updateChatRoom';
 
-export default (req: any, res: any) => {
-    const { path } = req;
+const router = Router();
 
-    switch (path) {
-        case 'update':
-            updateChatRoomUser(req, res);
-            break
-        case 'get':
-            getChatRoomUser(req, res);
-            break;
-    }
-}
+router.post('/get', getChatRoomUser);
+router.post('/update', updateChatRoomUser);
+
+export default router;

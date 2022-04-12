@@ -27,3 +27,6 @@ export const unauthorized = (res: any, message: string) => resWarn(res, 401, mes
 export const conflict = (res: any, message: string) => resWarn(res, 409, message);
 export const badRequest = (res: any, message: string) => resWarn(res, 400, message);
 export const internalError = (res: any) => (e: any) => resError(res, 500, e)
+export const toUpper = (str: string) => `${str.charAt(0).toUpperCase()}${str.slice(1).toLowerCase()}`;
+export const generateParams = (params: (string)[], alias: string, update: boolean) => 
+    params.map(p => `${update ? alias + '.' : ''}${toUpper(p)}${update ? ' =' : ':'} $${p.toLowerCase()}`);

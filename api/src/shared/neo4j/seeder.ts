@@ -1,4 +1,4 @@
-import { hashPassword } from '../../controllers/auth/hashPassword';
+import { hashPassword } from '../../modules/user/utils/hashPassword';
 import { getSession } from '../../shared/neo4j/neo4j'
 import { getToken } from '../jwt/getToken';
 import { info, internalError } from "../utils";

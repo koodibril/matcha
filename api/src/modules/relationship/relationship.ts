@@ -1,26 +1,14 @@
+import { Router } from 'express';
 import { likeProfile } from './handlers/likeProfile';
 import { blockProfile } from './handlers/blockProfile';
 import { getRelationshipInfo } from './handlers/getRelationship';
 import { getMatchedProfiles } from './handlers/getMatchedProfiles';
 
-export default (req: any, res: any) => {
-    const { path } = req;
+const router = Router();
 
-    switch (path) {
-        case 'like':
-            likeProfile(req, res);
-            break
+router.post('/like', likeProfile);
+router.post('/block', blockProfile);
+router.post('/get', getRelationshipInfo);
+router.post('/matched', getMatchedProfiles);
 
-        case 'block':
-            blockProfile(req, res);
-            break
-
-        case 'get':
-            getRelationshipInfo(req, res);
-            break
-
-        case 'matched':
-            getMatchedProfiles(req, res);
-            break
-    }
-}
+export default router;

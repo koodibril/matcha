@@ -1,21 +1,12 @@
+import { Router } from 'express';
 import { getFilter } from './handlers/getFilter';
 import { getResearchResult } from './handlers/research';
 import { updateFilter } from './handlers/updateFilter';
 
-export default (req: any, res: any) => {
-    const { path } = req;
+const router = Router();
 
-    switch (path) {
-        case 'do':
-            getResearchResult(req, res);
-            break
+router.post('/do', getResearchResult);
+router.post('/update', updateFilter);
+router.post('/get', getFilter);
 
-        case 'update':
-            updateFilter(req, res);
-            break
-
-        case 'get':
-            getFilter(req, res);
-            break
-    }
-}
+export default router;

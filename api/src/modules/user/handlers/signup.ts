@@ -1,9 +1,10 @@
 import { getSession } from '../../../shared/neo4j/neo4j';
 import { getToken } from '../../../shared/jwt/getToken';
 import { info, internalError, conflict } from '../../../shared/utils';
-import { getUserMatchCount, getUserEmailCount, createUser } from '../../../shared/neo4j/queries';
-import { hashPassword } from './hashPassword';
+import { hashPassword } from '../utils/hashPassword';
 import { ACTIVATION_EMAIL, sendMail } from '../../../shared/mail/mailer';
+import { createUser } from '../utils/createUser';
+import { countUsers } from '../utils/countUser';
 
 export const signup = async (req: any, res: any) => {
   const session = getSession();
@@ -22,13 +23,13 @@ export const signup = async (req: any, res: any) => {
   userParams.password = await hashPassword(password);
 
   try {
-    const userMatch = await getUserMatchCount({ username }, session, internalError(res));
+    const userMatch = await countUsers(session, {username}, internalError(res));
     if (userMatch[0] > 0) return conflict(res, `Username (${username}) already in use`);
 
-    const emailMatch = await getUserEmailCount({ email }, session, internalError(res));
+    const emailMatch = await countUsers(session, {email}, internalError(res));
     if (emailMatch[0] > 0) return conflict(res, `Email (${email}) already in use`);
 
-    await createUser(userParams, session, internalError(res));
+    await createUser(session, userParams, internalError(res));
     sendMail(email, token, username, ACTIVATION_EMAIL);
 
     info(`New user account, welcome to ${username}`);

@@ -21,9 +21,9 @@ app.use(allowCrossDomain);
 
 app.use(express.json({ limit: '1mb' }));
 
-app.use('/api/auth/*', user);
-app.use('/api/chat/*', chat);
-app.use('/api/notifications/*', notifications);
+app.use('/api/auth', user);
+app.use('/api/chat', chat);
+app.use('/api/notifications', notifications);
 app.use('/api/profile', profile);
 app.use('/api/relationship', relationship);
 app.use('/api/search', research);

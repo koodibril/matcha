@@ -1,6 +1,7 @@
 import { getSession } from '../../../shared/neo4j/neo4j'
 import { info, internalError } from '../../../shared/utils';
-import { createChatRoom, getChatRoom, getUserInfoI } from '../../../shared/neo4j/queries';
+import { createChatRoom, getUserInfoI } from '../../../shared/neo4j/queries';
+import { getChatRoom } from '../utils/getChatRoom';
 
 
 
@@ -10,7 +11,7 @@ export const getChatRoomUser = async (req: any, res: any) => {
   const username = req.body.user;
 
   try {
-    let chatRoom = await getChatRoom({token, username}, session, internalError(res));
+    let chatRoom = await getChatRoom(session, token, username, internalError(res));
     if (!chatRoom[0])
       chatRoom = await createChatRoom({token, username}, session, internalError(res));
 
