@@ -1,7 +1,8 @@
 import { getSession } from '../../../shared/neo4j/neo4j'
 import { internalError } from '../../../shared/utils';
-import { getUserInfoT, updateUserPictures } from '../../../shared/neo4j/queries';
 import fs from 'fs';
+import { getUser } from '../../user/utils/getUser';
+import { updateUser } from '../../user/utils/updateUser';
 
 const uploadDir = './public/users/tmp';
 if (!fs.existsSync(uploadDir)) {
@@ -26,9 +27,8 @@ export const uploadImage = async (req: any, res: any) => {
       if (fieldname === 'token') {
         try {
           token = val;
-          userInfo = await getUserInfoT({ token }, session, internalError(res));
+          userInfo = await getUser(session, { token }, internalError(res));
           let pictures = userInfo[0].properties.Pictures as string[];
-          const username = userInfo[0].properties.Username;
           const userDir = './public/users/' + userInfo[0].identity;
           if (!fs.existsSync(userDir)) {
               fs.mkdirSync(userDir);
@@ -50,7 +50,7 @@ export const uploadImage = async (req: any, res: any) => {
               block = true;
             }
           });
-          await updateUserPictures({ username, pictures }, session, internalError(res));
+          await updateUser(session, { pictures }, token, internalError(res));
         } catch (e) {
           return internalError(res)(e);
         } finally {

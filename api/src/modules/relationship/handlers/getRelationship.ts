@@ -1,6 +1,6 @@
 import { getSession } from '../../../shared/neo4j/neo4j'
 import { conflict, info, internalError } from '../../../shared/utils';
-import { getRelationship } from '../../../shared/neo4j/queries';
+import { getRelationships } from '../utils/getRelationship';
 
 
 
@@ -10,7 +10,7 @@ export const getRelationshipInfo = async (req: any, res: any) => {
   const username = req.body.user;
 
   try {
-    const relationship = await getRelationship({ token, username }, session, internalError(res));
+    const relationship = await getRelationships(session, token, username, internalError(res));
     console.log(relationship);
     if (!relationship[0]) return conflict(res, `Relationship with (${username}) doesn't exist`);
 

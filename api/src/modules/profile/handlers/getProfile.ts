@@ -1,8 +1,8 @@
 import { getSession } from '../../../shared/neo4j/neo4j'
 import { conflict, info, internalError } from '../../../shared/utils';
-import { getUserInfoT, getUserInfoU } from '../../../shared/neo4j/queries';
 import { addNotifications, NOTIFICATION_VISIT } from '../../notifications/handlers/addNotification';
-import { compareLocations } from '../../../shared/location/location';
+import { compareLocations } from '../../research/utils/location';
+import { getUser } from '../../user/utils/getUser';
 
 
 
@@ -12,11 +12,11 @@ export const getProfileInfo = async (req: any, res: any) => {
   const username = req.body.username;
 
   try {
-    const userInfoU = username ? await getUserInfoU({ username }, session, internalError(res)) : await getUserInfoT({ token }, session, internalError(res));
+    const userInfoU = username ? await getUser(session, { username }, internalError(res)) : await getUser(session, { token }, internalError(res));
     if (!userInfoU[0]) return conflict(res, `Profile (${username}) doesn't exist`);
 
     if (username && userInfoU[0]) {
-      const userone = await getUserInfoT({token}, session, internalError(res));
+      const userone = await getUser(session, { token }, internalError(res));
       const latitudeOne = userone[0].properties.Latitude;
       const longitudeOne = userone[0].properties.Longitude;
       const latitudeTwo = userInfoU[0].properties.Latitude;

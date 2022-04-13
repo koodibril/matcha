@@ -1,7 +1,10 @@
 import { getSession } from '../../../shared/neo4j/neo4j'
 import { conflict, info, internalError } from '../../../shared/utils';
-import { createRelationship, getRelationship, getUserInfoT, updateRelationship } from '../../../shared/neo4j/queries';
 import { addNotifications, NOTIFICATION_LIKE, NOTIFICATION_LOST_MATCH, NOTIFICATION_NEW_MATCH } from '../../notifications/handlers/addNotification';
+import { getRelationships } from '../utils/getRelationship';
+import { getUser } from '../../user/utils/getUser';
+import { createRelationship } from '../utils/createRelationship';
+import { updateRelationship } from '../utils/updateRelationship';
 
 
 
@@ -14,10 +17,10 @@ export const likeProfile = async (req: any, res: any) => {
     let match = false;
     const block = false;
     let like = true;
-    let relationships = await getRelationship({ token, username }, session, internalError(res));
+    let relationships = await getRelationships(session, token, username, internalError(res));
     let relationship;
     let likedback;
-    const userInfo = await getUserInfoT({ token }, session, internalError(res));
+    const userInfo = await getUser(session, { token }, internalError(res));
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     for (const element of relationships) {
       if (element.start === userInfo[0].identity)
@@ -29,25 +32,31 @@ export const likeProfile = async (req: any, res: any) => {
     if (likedback && likedback.properties.Like === true)
       match = true;
     if (!relationship) {
-      relationship = await createRelationship({ token, username, match, block, like}, session, internalError(res));
+      relationship = await createRelationship(session, { match, block, like}, token, username, internalError(res));
       console.log('created relationship'); 
       console.log(relationship);
-      match ? addNotifications(token, username, NOTIFICATION_NEW_MATCH) 
-      && addNotifications(token, '', NOTIFICATION_LIKE) 
-      && addNotifications(token, username, NOTIFICATION_LIKE)
-      : addNotifications(token, username, NOTIFICATION_LIKE);
-      relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
+      if (match) {
+        addNotifications(token, username, NOTIFICATION_NEW_MATCH);
+        addNotifications(token, '', NOTIFICATION_LIKE);
+        addNotifications(token, username, NOTIFICATION_LIKE);
+      } else {
+        addNotifications(token, username, NOTIFICATION_LIKE);
+      }
+      relationship = await updateRelationship(session, { match, block, like}, token, username, internalError(res));
     } else if (relationship.properties.Like === true){
         like = false;
         match = false;
-        relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
+        relationship = await updateRelationship(session, { match, block, like}, token, username, internalError(res));
         addNotifications(token, username, NOTIFICATION_LOST_MATCH);
     } else {
-      relationship = await updateRelationship({ token, username, match, block, like}, session, internalError(res));
-      match ? addNotifications(token, username, NOTIFICATION_NEW_MATCH) 
-      && addNotifications(token, '', NOTIFICATION_LIKE) 
-      && addNotifications(token, username, NOTIFICATION_LIKE)
-      : addNotifications(token, username, NOTIFICATION_LIKE);
+      relationship = await updateRelationship(session, { match, block, like}, token, username, internalError(res));
+      if (match) {
+        addNotifications(token, username, NOTIFICATION_NEW_MATCH);
+        addNotifications(token, '', NOTIFICATION_LIKE);
+        addNotifications(token, username, NOTIFICATION_LIKE);
+      } else {
+        addNotifications(token, username, NOTIFICATION_LIKE);
+      }
     }
 
     like ? info(`user ` + userInfo[0].properties.Username + ` liked ` + username) : 

@@ -1,6 +1,6 @@
 import { getSession } from '../../../shared/neo4j/neo4j';
 import { info, internalError } from '../../../shared/utils';
-import { updateUserData } from '../../../shared/neo4j/queries';
+import { updateUser } from '../../user/utils/updateUser';
 
 export const updateProfile = async (req: any, res: any) => {
   const session = getSession();
@@ -17,10 +17,10 @@ export const updateProfile = async (req: any, res: any) => {
   const longitude = req.body.location.longitude;
   const valid = true;
   const popularity = 5;
-  const userParams = { age, gender, sexo, bio, interests, token, location, latitude, longitude, valid, popularity };
+  const userParams = { age, gender, sexo, bio, interests, location, latitude, longitude, valid, popularity };
 
   try {
-    const userInfoU = await updateUserData(userParams, session, internalError(res));
+    const userInfoU = await updateUser(session, userParams, token, internalError(res));
     const userInfo = userInfoU[0];
 
     info(`Your information have been updated`);

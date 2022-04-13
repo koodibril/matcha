@@ -4,7 +4,7 @@ import { info, internalError, conflict } from '../../../shared/utils';
 import { hashPassword } from '../utils/hashPassword';
 import { ACTIVATION_EMAIL, sendMail } from '../../../shared/mail/mailer';
 import { createUser } from '../utils/createUser';
-import { countUsers } from '../utils/countUser';
+import { countSimilarUsers } from '../utils/countUser';
 
 export const signup = async (req: any, res: any) => {
   const session = getSession();
@@ -23,10 +23,10 @@ export const signup = async (req: any, res: any) => {
   userParams.password = await hashPassword(password);
 
   try {
-    const userMatch = await countUsers(session, {username}, internalError(res));
+    const userMatch = await countSimilarUsers(session, {username}, internalError(res));
     if (userMatch[0] > 0) return conflict(res, `Username (${username}) already in use`);
 
-    const emailMatch = await countUsers(session, {email}, internalError(res));
+    const emailMatch = await countSimilarUsers(session, {email}, internalError(res));
     if (emailMatch[0] > 0) return conflict(res, `Email (${email}) already in use`);
 
     await createUser(session, userParams, internalError(res));

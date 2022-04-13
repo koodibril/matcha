@@ -2,7 +2,7 @@ import { getSession } from '../../../shared/neo4j/neo4j'
 import { conflict, info, internalError } from '../../../shared/utils';
 import { hashPassword } from '../utils/hashPassword';
 import { getToken } from '../../../shared/jwt/getToken';
-import { getUserWithToken } from '../utils/getUserWithToken';
+import { getUser } from '../utils/getUser';
 import { updateUser } from '../utils/updateUser';
 
 
@@ -13,7 +13,7 @@ export const changePassword = async (req: any, res: any) => {
   const password = await hashPassword(req.body.password);
 
   try {
-    const userInfo = await getUserWithToken(session, token, internalError(res));
+    const userInfo = await getUser(session, { token }, internalError(res));
     if (!userInfo[0]) {
         return conflict(res, `Your token is invalid`);
     } else {

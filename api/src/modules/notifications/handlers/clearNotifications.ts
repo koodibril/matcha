@@ -1,6 +1,6 @@
 import { getSession } from '../../../shared/neo4j/neo4j'
 import { info, internalError } from '../../../shared/utils';
-import { updateUserNotification } from '../../../shared/neo4j/queries';
+import { updateUser } from '../../user/utils/updateUser';
 
 export const clearNotification = async (req: any, res: any) => {
   const session = getSession();
@@ -8,7 +8,7 @@ export const clearNotification = async (req: any, res: any) => {
 
   try {
     const notifications = <string[]>[];
-    await updateUserNotification({token, notifications}, session, internalError);
+    await updateUser(session, {notifications}, token, internalError);
 
     info(`notification viewed`);
     return res

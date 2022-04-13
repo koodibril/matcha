@@ -1,8 +1,11 @@
 import { getSession } from '../../../shared/neo4j/neo4j'
 import { conflict, info, internalError } from '../../../shared/utils';
-import { getChatRoom, getUserInfoI, getUserInfoT, getUserInfoU, updateChatRoom } from '../../../shared/neo4j/queries';
 import { addNotifications, NOTIFICATION_MESSAGE } from '../../notifications/handlers/addNotification';
 import { getSocketIo } from '../../../server';
+import { getUser } from '../../user/utils/getUser';
+import { updateChatRoom } from '../utils/updateChatRoom';
+import { getUserWithId } from '../../user/utils/getUserWithId';
+import { getChatRoom } from '../utils/getChatRoom';
 
 
 
@@ -13,15 +16,15 @@ export const updateChatRoomUser = async (req: any, res: any) => {
   const message = req.body.message;
 
   try {
-    let chatRoom = await getChatRoom({token, username}, session, internalError(res));
+    let chatRoom = await getChatRoom(session, token, username, internalError(res));
     if (!chatRoom[0]) return conflict(res, "Chatroom doesn't exist");
-    const userOne = await getUserInfoT({token}, session, internalError(res));
-    const userTwo = await getUserInfoU({username}, session, internalError(res));
+    const userOne = await getUser(session, {token}, internalError(res));
+    const userTwo = await getUser(session, {username}, internalError(res));
     let messages = chatRoom[0].properties.Messages ? chatRoom[0].properties.Messages : [];
 
     const newMessage = "User:" + userOne[0].identity + "Date:" + Date.now() + "Message:" + message;
     messages.push(newMessage);
-    chatRoom = await updateChatRoom({token, username, messages}, session, internalError(res));
+    chatRoom = await updateChatRoom(session, {messages}, token, username, internalError(res));
     addNotifications(token, username, NOTIFICATION_MESSAGE);
     const io = getSocketIo();
     io.to(userOne[0].properties.Socket).emit('newmessage', null);
@@ -31,7 +34,7 @@ export const updateChatRoomUser = async (req: any, res: any) => {
     let index = 0;
     for (const element of messages) {
       const id = parseInt(element.split('Date:')[0].split('User:')[1]);
-      const User = await getUserInfoI({id}, session, internalError(res));
+      const User = await getUserWithId(session, id, internalError(res));
       if (User[0])
         messages[index] = 'User:' + User[0].properties.Username + 'Date:' + element.split('Date:')[1];
       index++;

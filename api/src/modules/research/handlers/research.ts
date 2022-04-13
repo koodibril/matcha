@@ -1,20 +1,22 @@
-import { compareLocations } from '../../../shared/location/location';
+import { compareLocations } from '../utils/location';
 import { getSession } from '../../../shared/neo4j/neo4j'
-import { getRelationship, getSearchResult, getUserInfoT } from '../../../shared/neo4j/queries';
 import { conflict, info, internalError } from '../../../shared/utils';
+import { getUser } from '../../user/utils/getUser';
+import { searchUsers } from '../utils/search';
+import { getRelationships } from '../../relationship/utils/getRelationship';
 
 export const getResearchResult = async (req: any, res: any) => {
   const session = getSession();
   const token = req.body.token;
 
   try {
-    const userInfo = await getUserInfoT({ token }, session, internalError(res));
+    const userInfo = await getUser(session, { token }, internalError(res));
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
-    const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
+    const ageGap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
     const popularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];
     const interests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
-    let results = await getSearchResult({ agegap, popularity, token }, session, internalError(res));
+    let results = await searchUsers(session, {ageGap, proximity, popularity, interests}, token, internalError(res));
     let index = 0;
     let remove = [];
     const latitudeOne = userInfo[0].properties.Latitude;
@@ -24,7 +26,7 @@ export const getResearchResult = async (req: any, res: any) => {
       const latitudeTwo = element.properties.Latitude;
       const longitudeTwo = element.properties.Longitude;
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
-      const relationship = await getRelationship({ token, username }, session, internalError(res));
+      const relationship = await getRelationships(session, token, username, internalError(res));
       results[index].properties.relationship = relationship;
       results[index].properties.Distance = distance;
       let matched = 0;
