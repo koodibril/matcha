@@ -26,8 +26,8 @@ export const signup = async (req: any, res: any) => {
     const userMatch = await countSimilarUsers(session, {username}, internalError(res));
     if (userMatch[0] > 0) return conflict(res, `Username (${username}) already in use`);
 
-    const emailMatch = await countSimilarUsers(session, {email}, internalError(res));
-    if (emailMatch[0] > 0) return conflict(res, `Email (${email}) already in use`);
+    // const emailMatch = await countSimilarUsers(session, {email}, internalError(res));
+    // if (emailMatch[0] > 0) return conflict(res, `Email (${email}) already in use`);
 
     await createUser(session, userParams, internalError(res));
     sendMail(email, token, username, ACTIVATION_EMAIL);

@@ -14,10 +14,7 @@ const LOGIN_ENDPOINT = "/api/auth/login";
 const SIGNUP_ENDPOINT = "/api/auth/signup";
 const ACTIVATE_ENDPOINT = "/api/auth/activate";
 const CHANGE_PASSWORD_ENDPOINT = "/api/auth/password";
-const UPDATE_EMAIL_ENDPOINT = "/api/auth/email";
-const UPDATE_USERNAME_ENDPOINT = "/api/auth/username";
-const UPDATE_SURNAME_ENDPOINT = "/api/auth/surname";
-const UPDATE_NAME_ENDPOINT = "/api/auth/name";
+const UPDATE_USER_ENDPOINT = "/api/auth/update";
 const RECOVER_PASSWORD_ENDPOINT = "/api/auth/recovery";
 
 const handleError = (dispatch: any, error: any) => {
@@ -63,31 +60,10 @@ const emailSent = (dispatch: any, res: any) => {
   });
 };
 
-const emailChanged = (dispatch: any, res: any) => {
+const userChanged = (dispatch: any, res: any) => {
   dispatch({
     type: "SET_MESSAGE",
-    payload: "Your email was updated",
-  });
-};
-
-const usernameChanged = (dispatch: any, res: any) => {
-  dispatch({
-    type: "SET_MESSAGE",
-    payload: "Your username was updated",
-  });
-};
-
-const surnameChanged = (dispatch: any, res: any) => {
-  dispatch({
-    type: "SET_MESSAGE",
-    payload: "Your surname was updated",
-  });
-};
-
-const nameChanged = (dispatch: any, res: any) => {
-  dispatch({
-    type: "SET_MESSAGE",
-    payload: "Your name was updated",
+    payload: "User updated",
   });
 };
 
@@ -162,53 +138,17 @@ const updatePassword = (token: string | null, password: string) => (
     }
   );
   
-const updateEmail = (token: string | null, email: string) => (
+const updateUserInfo = (token: string | null, userData: any) => (
     dispatch: any
   ) =>
-    axios.post(`${API_URL}${UPDATE_EMAIL_ENDPOINT}`, { token, email }).then(
+    axios.post(`${API_URL}${UPDATE_USER_ENDPOINT}`, { token, userData }).then(
       (res) => {
-        emailChanged(dispatch, res);
+        userChanged(dispatch, res);
       },
       (error) => {
         handleError(dispatch, error);
       }
     );
-  
-const updateUsername = (token: string | null, username: string) => (
-      dispatch: any
-    ) =>
-      axios.post(`${API_URL}${UPDATE_USERNAME_ENDPOINT}`, { token, username }).then(
-        (res) => {
-          usernameChanged(dispatch, res);
-        },
-        (error) => {
-          handleError(dispatch, error);
-        }
-      );
-
-const updateSurname = (token: string | null, surname: string) => (
-        dispatch: any
-      ) =>
-        axios.post(`${API_URL}${UPDATE_SURNAME_ENDPOINT}`, { token, surname }).then(
-          (res) => {
-            surnameChanged(dispatch, res);
-          },
-          (error) => {
-            handleError(dispatch, error);
-          }
-        );
-
-const updateName = (token: string | null, name: string) => (
-  dispatch: any
-) =>
-  axios.post(`${API_URL}${UPDATE_NAME_ENDPOINT}`, { token, name }).then(
-    (res) => {
-      nameChanged(dispatch, res);
-    },
-    (error) => {
-      handleError(dispatch, error);
-    }
-  );
 
 const passwordRecovery = (email: string) => (dispatch: any) =>
   axios.post(`${API_URL}${RECOVER_PASSWORD_ENDPOINT}`, { email }).then(
@@ -231,14 +171,8 @@ export const useAuthentication = () => {
         dispatch(changePassword(token, password)),
       updatePassword: (token: string | null, password: string) => 
       dispatch((updatePassword(token, password))),
-      updateEmail: (token: string | null, email: string) => 
-      dispatch((updateEmail(token, email))),
-      updateUsername: (token: string | null, username: string) => 
-      dispatch((updateUsername(token, username))),
-      updateSurname: (token: string | null, surname: string) => 
-      dispatch((updateSurname(token, surname))),
-      updateName: (token: string | null, name: string) => 
-      dispatch((updateName(token, name))),
+      updateUserInfo: (token: string | null, email: string) => 
+      dispatch((updateUserInfo(token, email))),
       login: (username: string, password: string) =>
         dispatch(login(username, password)),
       signup: (data: SignupData) => dispatch(signup(data)),

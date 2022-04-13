@@ -12,7 +12,7 @@ export const updateUserInfo = async (req: any, res: any) => {
     email,
     name,
     surname
-  } = req.body;
+  } = req.body.userData;
   const userParams = { username, email, name, surname };
 
   try {

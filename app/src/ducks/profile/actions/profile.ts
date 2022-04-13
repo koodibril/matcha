@@ -30,6 +30,8 @@ const setProfileInfo = (dispatch: any, res: any) => {
   const {
     Email,
     Username,
+    Name,
+    Surname,
     Age,
     Bio,
     Gender,
@@ -46,6 +48,8 @@ const setProfileInfo = (dispatch: any, res: any) => {
   const info = {
     Email,
     Username,
+    Name,
+    Surname,
     Age,
     Bio,
     Gender,

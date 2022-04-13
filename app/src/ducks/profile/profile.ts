@@ -20,6 +20,8 @@ export interface ProfileType {
   Longitude: any;
   Valid: any;
   payload: any;
+  Name: any;
+  Surname: any;
 }
 
 const profile = (

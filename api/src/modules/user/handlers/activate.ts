@@ -19,8 +19,8 @@ export const activateUser = async (req: any, res: any) => {
         const email = userInfo[0].properties.Email;
         const username = userInfo[0].properties.Username;
         token = getToken({ username });
-        const updated = await updateUser(session, { token, email, username, active }, userInfo.Token, internalError(res));
-        if (!updated[0] || token !== updated[0]) return conflict(res, `Error when generating new token for (${username})`);
+        const updated = await updateUser(session, { token, email, username, active }, req.body.token, internalError(res));
+        if (!updated[0] || token !== updated[0].properties.Token) return conflict(res, `Error when generating new token for (${username})`);
     }
 
     info(`User activated !`);

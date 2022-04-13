@@ -12,11 +12,11 @@ export const getResearchResult = async (req: any, res: any) => {
   try {
     const userInfo = await getUser(session, { token }, internalError(res));
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
-    const ageGap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
+    const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
     const popularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];
     const interests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
-    let results = await searchUsers(session, {ageGap, proximity, popularity, interests}, token, internalError(res));
+    let results = await searchUsers(session, {agegap, proximity, popularity, interests}, token, internalError(res));
     let index = 0;
     let remove = [];
     const latitudeOne = userInfo[0].properties.Latitude;
