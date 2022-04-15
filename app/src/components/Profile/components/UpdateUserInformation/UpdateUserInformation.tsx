@@ -28,7 +28,7 @@ interface Infos {
   Valid: boolean;
 }
 
-const UpdateUserInformation: React.FC<Partial<Infos>> = ({ info: { Interests, Location, Latitude, Longitude } }) => {
+const UpdateUserInformation: React.FC<Partial<Infos>> = ({ info: { Age, Gender, Sexo, Bio, Interests, Username, Surname, Location, Latitude, Longitude } }) => {
   const [location, setLocation] = useState({Location: 'Unknow', Latitude: 0, Longitude: 0});
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
@@ -45,7 +45,7 @@ const UpdateUserInformation: React.FC<Partial<Infos>> = ({ info: { Interests, Lo
     setTagsLoaded(true);
   }
 
-  const handleUpdate = ({ interests }: UserData) => {
+  const handleUpdate = (usr: UserData) => {
     usr.interests = selectedTags;
     updateProfileInfo(usr, user, location);
   };
@@ -81,36 +81,39 @@ const UpdateUserInformation: React.FC<Partial<Infos>> = ({ info: { Interests, Lo
     });
   }
 
+  const fields = [
+    {
+      name: ['age'],
+      value: Age || ''
+    },
+    {
+      name: ['gender'],
+      value: Gender || ''
+    },
+    {
+      name: ['sexo'],
+      value: Sexo || ''
+    },
+    {
+      name: ['bio'],
+      value: Bio || ''
+    },
+    {
+      name: ['location'],
+      value: Location || location.Location
+    },
+  ]
+
   return (
     <Row>
-      { info ? (
+      {
       <Form
         style={{margin: "10px", maxWidth: "100%"}}
-        fields={[ info.Age ? {
-          name: ['age'],
-          value: info.Age
-        } : { name: ['age']},
-        info.Gender ? {
-          name: ['gender'],
-          value: info.Gender
-        } : { name: ['gender']},
-         info.Sexo ? {
-          name: ['sexo'],
-          value: info.Sexo
-        } : { name: ['sexo']},
-        info.Bio ? {
-          name: ['bio'],
-          value: info.Bio
-        } : { name: ['bio']},
-        info.Location ? {
-          name: ['location'],
-          value: location.city
-        } : {name :['location']}
-        ]}
+        fields={fields}
         name="update"
         onFinish={handleUpdate}>
 
-        <Form.Item>{info.Username}</Form.Item>
+        <Form.Item>{Username}</Form.Item>
         
         <Form.Item
           label={t('age')}
@@ -202,7 +205,8 @@ const UpdateUserInformation: React.FC<Partial<Infos>> = ({ info: { Interests, Lo
               {t('update information')}
             </Button>
         </Form.Item>
-      </Form>) : null }
+      </Form>
+      }
     </Row>
   )
 }
