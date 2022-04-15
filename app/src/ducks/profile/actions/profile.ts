@@ -27,43 +27,7 @@ const handleError = (dispatch: any, error: any) => {
 };
 
 const setProfileInfo = (dispatch: any, res: any) => {
-  const {
-    Email,
-    Username,
-    Name,
-    Surname,
-    Age,
-    Bio,
-    Gender,
-    Sexo,
-    Interests,
-    Pictures,
-    Location,
-    Latitude,
-    Longitude,
-    Valid,
-    Distance,
-    Online
-  } = res.data.userInfo.properties;
-  const info = {
-    Email,
-    Username,
-    Name,
-    Surname,
-    Age,
-    Bio,
-    Gender,
-    Sexo,
-    Interests,
-    Pictures,
-    Location,
-    Distance,
-    Latitude,
-    Longitude,
-    Valid,
-    Online
-  };
-  dispatch({ type: "LOADING_PROFILE_SUCCESS", payload: info });
+  dispatch({ type: "LOADING_PROFILE_SUCCESS", payload: { ...res.data.userInfo.properties } });
 };
 
 const getProfileInfo = (token: string | null, username: string | null) => (dispatch: any) =>
