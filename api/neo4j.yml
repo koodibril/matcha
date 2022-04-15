@@ -2,8 +2,6 @@ version: '2'
 services:
   matcha-neo4j:
     image: neo4j
-    volumes:
-      - ./data:/data
     environment:
       - NEO4J_AUTH=neo4j/matcha
     ports:

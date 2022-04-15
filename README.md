@@ -56,13 +56,13 @@ yarn start
 terminal 3
 ```
 cd api
-docker-machine start matcha
-docker-machine env matcha -> verifier si l'ip est bien la meme que dans le .env, sinon mettre a jour le .env
-eval $(docker-machine env matcha)
+echo "NEO4J_LOGIN=neo4j" > .env
+echo "NEO4J_PASSWORD=matcha" >> .env
+echo "NEO4J_ADDRESS=0.0.0.0" >> .env
+echo "NEO4J_PORT=7687" >> .env
 docker-compose -f neo4j.yml up 
 ```
 
 ## Authors
 fldoucet
 edjubert
-roddavid
