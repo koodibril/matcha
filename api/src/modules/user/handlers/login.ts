@@ -1,6 +1,6 @@
 import { getSession } from '../../../shared/neo4j/neo4j'
 import { getToken } from '../../../shared/jwt/getToken';
-import { info, internalError, conflict } from '../../../shared/utils';
+import { info, internalError, conflict, unauthorized } from '../../../shared/utils';
 import { checkPassword } from '../utils/checkPassword';
 import { updateUser } from '../utils/updateUser';
 import { getUser } from '../utils/getUser';
@@ -16,8 +16,9 @@ export const login = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUser(session, {username}, internalError(res));
-    const matchingPassword = userInfo[0].properties.Password;
-    if (!matchingPassword) return conflict(res, `Credentials for (${username}) are incorrect`);
+    const matchingPassword = userInfo[0]?.properties.Password ?? null;
+
+    if (!matchingPassword) return unauthorized(res, `Credentials for (${username}) are incorrect`);
     const passwordMatch = await checkPassword(password, matchingPassword);
     if (!passwordMatch) return conflict(res, `Credentials for (${username}) are incorrect`);
 

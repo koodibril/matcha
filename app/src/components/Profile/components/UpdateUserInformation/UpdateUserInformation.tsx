@@ -9,21 +9,39 @@ import { UserData } from '../../../Profile/components/UpdateUserInformation/Upda
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import MapHolderComponent from '../MapHolder/MapHolder';
 
+interface Infos {
+  Age: number;
+  Bio: string;
+  Distance: string;
+  Email: string
+  Gender: string;
+  Interests: string;
+  Latitude: number;
+  Location: string;
+  Longitude: number;
+  Name: string;
+  Online: boolean;
+  Pictures: string[];
+  Sexo: boolean;
+  Surname: string;
+  Username: string;
+  Valid: boolean;
+}
 
-const UpdateUserInformation: React.FC<{info: any}> = (props) => {
-  const [location, setLocation] = useState({city: 'Unknow', latitude: 0, longitude: 0});
-  const [selectedTags, setSelectedTags] = useState<any[]>([]);
+const UpdateUserInformation: React.FC<Partial<Infos>> = ({ info: { Age, Gender, Sexo, Bio, Interests, Username, Surname, Location, Latitude, Longitude } }) => {
+  const [location, setLocation] = useState({Location: 'Unknow', Latitude: 0, Longitude: 0});
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
-  const user = localStorage.getItem('user');
-
   const { updateProfileInfo } = useProfileActions(); 
   const { t } = useTranslation('profile');
 
+  const user = localStorage.getItem('user');
+
   const tagsData = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
 
-  if (props.info && props.info && props.info.Interests && selectedTags.length === 0  && !tagsLoaded) {
-    setSelectedTags(props.info.Interests);
-    setLocation({city: props.info.Location, latitude: props.info.Latitude, longitude: props.info.Longitude});
+  if (Interests && selectedTags.length === 0  && !tagsLoaded) {
+    setSelectedTags(Interests);
+    setLocation({  Location,  Latitude,  Longitude });
     setTagsLoaded(true);
   }
 
@@ -32,7 +50,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
     updateProfileInfo(usr, user, location);
   };
 
-  const handleChange = (tag: any, checked: any) => {
+  const handleChange = (tag: string, checked: any) => {
     if (selectedTags.length <= 5 || checked === false) {
       const nexSelectedTags = checked ? [...selectedTags, tag] : selectedTags.filter(t => t !== tag);
       setSelectedTags(nexSelectedTags);
@@ -63,36 +81,39 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
     });
   }
 
+  const fields = [
+    {
+      name: ['age'],
+      value: Age || ''
+    },
+    {
+      name: ['gender'],
+      value: Gender || ''
+    },
+    {
+      name: ['sexo'],
+      value: Sexo || ''
+    },
+    {
+      name: ['bio'],
+      value: Bio || ''
+    },
+    {
+      name: ['location'],
+      value: Location || location.Location
+    },
+  ]
+
   return (
     <Row>
-      { props.info ? (
+      {
       <Form
         style={{margin: "10px", maxWidth: "100%"}}
-        fields={[ props.info.Age ? {
-          name: ['age'],
-          value: props.info.Age
-        } : { name: ['age']},
-        props.info.Gender ? {
-          name: ['gender'],
-          value: props.info.Gender
-        } : { name: ['gender']},
-         props.info.Sexo ? {
-          name: ['sexo'],
-          value: props.info.Sexo
-        } : { name: ['sexo']},
-        props.info.Bio ? {
-          name: ['bio'],
-          value: props.info.Bio
-        } : { name: ['bio']},
-        props.info.Location ? {
-          name: ['location'],
-          value: location.city
-        } : {name :['location']}
-        ]}
+        fields={fields}
         name="update"
         onFinish={handleUpdate}>
 
-        <Form.Item>{props.info.Username}</Form.Item>
+        <Form.Item>{Username}</Form.Item>
         
         <Form.Item
           label={t('age')}
@@ -184,7 +205,8 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
               {t('update information')}
             </Button>
         </Form.Item>
-      </Form>) : null }
+      </Form>
+      }
     </Row>
   )
 }

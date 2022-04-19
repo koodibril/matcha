@@ -5,6 +5,7 @@ import detector from 'i18next-browser-languagedetector';
 
 const preload = (lng: string) => ({
   authentication: require(`./locales/${lng}/authentication.ts`).default,
+  profile: require(`./locales/${lng}/profile.ts`).default,
 });
 
 const resources = {
