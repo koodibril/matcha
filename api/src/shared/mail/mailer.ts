@@ -6,12 +6,16 @@ export const SMTP_SECRET = process.env.SMTP_SECRET || '';
 export const ACTIVATION_EMAIL = "ACTIVATION_EMAIL";
 export const CHANGE_PASSWORD_EMAIL = "CHANGE_PASSWORD_EMAIL";
 
+const SMTP_HOST = process.env.SMTP_HOST || '';
+const SMTP_PORT = process.env.SMTP_PORT || '';
+
 export const sendMail = (dest: string, link: string, username: string, type: string) => {
   let mailOptions;
+  const destination = 'edouard.jubert@gmail.com'
   const transporter = nodemailer.createTransport({
-    host: "ssl0.ovh.net",
-    port: 587,
-    secure: false,
+    host: SMTP_HOST,
+    port: SMTP_PORT,
+    secure: true,
     auth: {
       user: SMTP_USERNAME,
       pass: SMTP_SECRET
@@ -24,8 +28,8 @@ export const sendMail = (dest: string, link: string, username: string, type: str
   switch (type) {
     case ACTIVATION_EMAIL: {
       mailOptions = {
-        from: 'no-reply@koodibril.com',
-        to: 'florian.marie.doucet@gmail.com', //don't forget to change to dest ;)
+        from: SMTP_USERNAME,
+        to: destination,
         subject: 'Activate your account',
         text: 'Welcome to MATCHA ' + username + '! To activate your account, click on this link : http://localhost:8080/auth/activate/' + link
       };
