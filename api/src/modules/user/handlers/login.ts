@@ -16,6 +16,7 @@ export const login = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUser(session, {username}, internalError(res));
+    console.log(userInfo);
     const matchingPassword = userInfo[0].properties.Password;
     if (!matchingPassword) return conflict(res, `Credentials for (${username}) are incorrect`);
     const passwordMatch = await checkPassword(password, matchingPassword);

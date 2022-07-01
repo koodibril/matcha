@@ -60,6 +60,18 @@ const Chat: React.FC = () => {
       setModal(true);
     }
 
+    const isUrlValid = (testUrl: string) => {
+      let url;
+      
+      try {
+        url = new URL(testUrl);
+      } catch (_) {
+        return false;  
+      }
+    
+      return url.protocol === "http:" || url.protocol === "https:";
+    }
+
     const handleUserList = () => {
       const List = userList.userResult;
       return (List.map((element: any, index: number) => (
@@ -74,7 +86,7 @@ const Chat: React.FC = () => {
               <EllipsisOutlined key="ellipsis" onClick={() => {handleProfile(element)}}/>
               ]}>
               <Card.Meta
-                avatar={element.Online === 0 ? <Badge dot color='green'><Avatar src={'http://localhost:3001/' + element.Pictures[0]}/></Badge> : <Badge dot color='red'><Avatar src={'http://localhost:3001/' + element.Pictures[0]}/></Badge>}
+                avatar={element.Online === 0 ? <Badge dot color='green'><Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : 'http://localhost:3001/' + element.Pictures[0]}/></Badge> : <Badge dot color='red'><Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : 'http://localhost:3001/' + element.Pictures[0]}/></Badge>}
                 title={element.Username}
                 description={element.Bio}/>
           </Card>
