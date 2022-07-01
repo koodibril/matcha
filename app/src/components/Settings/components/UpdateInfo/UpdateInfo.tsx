@@ -21,8 +21,6 @@ const UpdateInfo: React.FC = () => {
     setLoading(false);
   };
 
-  console.log(info.payload);
-
   return (
     <Row>
         {info.payload ? 
