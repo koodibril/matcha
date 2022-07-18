@@ -54,11 +54,11 @@ const ChatHolder: React.FC<{chatRoom: any, user: any}> = (props) => {
           <Card style={{padding: 10, marginTop: 10, marginBottom: 10, maxWidth: "80%"}} actions={[<Row>{element.date}</Row>]}>
             <Card.Meta style={{marginBottom: 20}}
               avatar={element.username === info.payload.Username ?
-                  <Badge dot color='green'><Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : 'http://localhost:3001/' + info.payload.Pictures[0]}/></Badge>
+                  <Badge dot color='green'><Avatar src={isUrlValid(info.payload.Pictures[0]) ? info.payload.Pictures[0] : 'http://localhost:3001/' + info.payload.Pictures[0]}/></Badge>
               :
                 (props.user.Online === 0 ? 
-                  <Badge dot color='green'><Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : 'http://localhost:3001/' + props.user.Pictures[0]}/></Badge> : 
-                  <Badge dot color='red'><Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : 'http://localhost:3001/' + props.user.Pictures[0]}/></Badge>)}
+                  <Badge dot color='green'><Avatar src={isUrlValid(props.user.Pictures[0]) ? props.user.Pictures[0] : 'http://localhost:3001/' + props.user.Pictures[0]}/></Badge> : 
+                  <Badge dot color='red'><Avatar src={isUrlValid(props.user.Pictures[0]) ? props.user.Pictures[0] : 'http://localhost:3001/' + props.user.Pictures[0]}/></Badge>)}
               title={element.username}>
             </Card.Meta>
               <p>{element.text}</p>
@@ -71,7 +71,7 @@ const ChatHolder: React.FC<{chatRoom: any, user: any}> = (props) => {
     props.chatRoom && props.user ? (
     <>
       <Row style={{height: "550px", width: '100%', overflowY: 'scroll'}}>
-        { handleChatRoom() }
+        { info.payload ? handleChatRoom() : null }
         { handleUpdate('') }
         <Row ref={bottom}/>
       </Row>

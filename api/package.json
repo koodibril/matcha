@@ -27,6 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "neo4j-driver": "^4.1.2",
     "nodemailer": "^6.4.17",
+    "opencage-api-client": "^1.0.0",
     "socket.io": "^4.0.1",
     "ts-node": "^9.1.1"
   }
