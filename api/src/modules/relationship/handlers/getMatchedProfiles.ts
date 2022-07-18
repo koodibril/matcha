@@ -15,7 +15,6 @@ export const getMatchedProfiles = async (req: any, res: any) => {
     const userInfo = await getUser(session, { token }, internalError(res));
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     const results = await getMatchedRelationships(session, token, internalError(res));
-    console.log(results);
     let index = 0;
     const latitudeOne = userInfo[0].properties.Latitude;
     const longitudeOne = userInfo[0].properties.Longitude;

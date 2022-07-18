@@ -96,7 +96,6 @@ const MainMenu: React.FC = () => {
     }, [user, getProfileInfo, getNotifications]);
 
     const handleClick = (key: any) => {
-      console.log(key);
       if (user) {
         clearMessage();
           if (key.key === "logout") {

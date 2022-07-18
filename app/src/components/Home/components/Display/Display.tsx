@@ -73,7 +73,6 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
 
     const handleUserList = () => {
       const List = props.sortedList.length > 0 ? props.sortedList : props.userList.userResult;
-      console.log(List);
       if (List.length === 0)
         return ('no user correspond to your criteria');
       return (List.map((element: any, index: number) => (

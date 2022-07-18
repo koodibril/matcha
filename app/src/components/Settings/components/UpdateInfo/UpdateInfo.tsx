@@ -16,7 +16,6 @@ const UpdateInfo: React.FC = () => {
 
   const handleUpdate = (info: any) => {
     setLoading(true);
-    console.log(info);
     updateUserInfo(user, info);
     setLoading(false);
   };

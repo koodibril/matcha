@@ -57,7 +57,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
     navigator.geolocation.getCurrentPosition((position) => {
       setLocation({city: "Unknow", latitude: position.coords.latitude, longitude: position.coords.longitude});
     }, (error) => {
-      console.log(error);
       fetch('https://geolocation-db.com/json/').then(res => res.json().then(res => {
         setLocation(res);
       }));
@@ -97,7 +96,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         
         <Form.Item
           label={t('age')}
-          name='age'
           rules={[{
             required: true,
             message: t('age_missing')
@@ -109,7 +107,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
         <Form.Item
           label={t('gender')}
-          name='gender'
           rules={[{
             required: true,
             message: t('gender_missing')
@@ -124,7 +121,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
         <Form.Item
           label={t('sexual orientation')}
-          name='sexo'
           rules={[{
             required: true,
             message: t('sexual_orientation_missing')
@@ -140,7 +136,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
         <Form.Item
           label={t('bio')}
-          name='bio'
           rules={[{
             required: true,
             message: t('bio_missing')
@@ -152,7 +147,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         
         <Form.Item
           label={t('interests')}
-          name='interests'
           rules={[{
             validator: checkTags
           }]}>
@@ -169,7 +163,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
         <Form.Item
           label={t('city')}
-          name='location'
           rules={[{
             validator: checkLocation
           }]}>

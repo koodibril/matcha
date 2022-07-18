@@ -33,8 +33,6 @@ export const likeProfile = async (req: any, res: any) => {
       match = true;
     if (!relationship) {
       relationship = await createRelationship(session, { match, block, like}, token, username, internalError(res));
-      console.log('created relationship'); 
-      console.log(relationship);
       if (match) {
         addNotifications(token, username, NOTIFICATION_NEW_MATCH);
         addNotifications(token, '', NOTIFICATION_LIKE);

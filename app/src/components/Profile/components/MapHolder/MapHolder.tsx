@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useMemo, useState} from 'react';
 import GoogleMapReact from 'google-map-react';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import axios from 'axios';
@@ -16,7 +16,6 @@ const MapHolder: React.FC<{location: string, latitude: string, longitude: string
               SetDefaultCenter(response.data.results[0].geometry);
             });
       } else {
-        console.log(props.latitude, props.longitude)
         SetDefaultCenter({ lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) });
       }
     }, [props.latitude, props.longitude, props.location, SetDefaultCenter])
