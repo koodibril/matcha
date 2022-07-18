@@ -4,9 +4,10 @@ import { Relation } from './relation.d';
 
 export const createRelationship = async (session: Session, relationData: Relation, token: string, username: string, error: any) => {
     const result = await session.run(
-        "CREATE (n:`user`)-[r:`action`]-(m:`user`) " +
-        "WHERE n.token = \"" + token + "\" AND m.username = \"" + username + "\" " +
+        "MATCH (n:`user`), (m:`user`) " +
+        "WHERE n.Token = \"" + token + "\" AND m.Username = \"" + username + "\" " +
+        "CREATE (n)-[r:`action`]->(m) " +
         "SET " + generateParams(Object.keys(relationData), 'r', true) + " " +
-        "RETURN r").catch(e => error(e));
+        "RETURN r", relationData).catch(e => error(e));
     return result.records.map((p: any) => p.get(0));
 };

@@ -57,6 +57,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
     navigator.geolocation.getCurrentPosition((position) => {
       setLocation({city: "Unknow", latitude: position.coords.latitude, longitude: position.coords.longitude});
     }, (error) => {
+      console.log(error);
       fetch('https://geolocation-db.com/json/').then(res => res.json().then(res => {
         setLocation(res);
       }));
