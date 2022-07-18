@@ -12,14 +12,14 @@ export const signup = async (req: any, res: any) => {
     username,
     email,
     password,
-    name,
-    surname
+    firstname,
+    lastname
   } = req.body;
   const pictures = ['', '', '', '', ''];
   const active = false;
   const valid = false;
   const token = getToken({ username });
-  const userParams = { username, email, password, token, pictures, active, valid, name, surname };
+  const userParams = { username, email, password, token, pictures, active, valid, firstname, lastname };
   userParams.password = await hashPassword(password);
 
   try {

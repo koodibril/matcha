@@ -32,12 +32,12 @@ const UpdateInfo: React.FC = () => {
                 value: info.payload.Email
             },
             {
-                name: ['name'],
-                value: info.payload.Name
+                name: ['firstname'],
+                value: info.payload.Firstname
             },
             {
-                name: ['surname'],
-                value: info.payload.Surname
+                name: ['lastname'],
+                value: info.payload.Lastname
             },
             {
                 name: ['username'],
@@ -64,33 +64,33 @@ const UpdateInfo: React.FC = () => {
           </Row>
         </Form.Item>
         <Form.Item
-          label={t("Name")}
-          name="name"
+          label={t("Firstname")}
+          name="Firstname"
           rules={[
             {
               required: true,
-              message: t("name_missing"),
+              message: t("firstname_missing"),
             },
           ]}
         >
           <Row justify="start" align="middle" style={{width: "100%"}}>
-              <Form.Item name="name">
+              <Form.Item name="firstname">
                 <Input/>
               </Form.Item>
           </Row>
         </Form.Item>
         <Form.Item
-          label={t("Surname")}
-          name="surname"
+          label={t("Lastname")}
+          name="lastname"
           rules={[
             {
               required: true,
-              message: t("surname_missing"),
+              message: t("lastname_missing"),
             },
           ]}
         >
           <Row justify="start" align="middle" style={{width: "100%"}}>
-              <Form.Item name="surname">
+              <Form.Item name="lastname">
             <Input/>
 
               </Form.Item>

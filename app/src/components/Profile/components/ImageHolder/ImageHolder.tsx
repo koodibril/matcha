@@ -25,13 +25,25 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
 
     const handleCancel = () => setPreviewVisible(false);
 
+    const isUrlValid = (testUrl: string) => {
+      let url;
+      
+      try {
+        url = new URL(testUrl);
+      } catch (_) {
+        return false;  
+      }
+    
+      return url.protocol === "http:" || url.protocol === "https:";
+    }
+
     const updateList = (init: boolean) => {
       let pictures: string[];
       pictures = props.pictures;
       let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {
         if (picture !== '') {
-          const newPic = { uid: i, status: 'done', url: 'http://localhost:3001/' + picture };
+          const newPic = { uid: i, status: 'done', url: isUrlValid(picture) ? picture : 'http://localhost:3001/' + picture };
           newFileList.push(newPic);
         }
       });

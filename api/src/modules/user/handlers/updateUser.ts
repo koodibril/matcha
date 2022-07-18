@@ -10,10 +10,10 @@ export const updateUserInfo = async (req: any, res: any) => {
   const {
     username,
     email,
-    name,
-    surname
+    firstname,
+    lastname
   } = req.body.userData;
-  const userParams = { username, email, name, surname };
+  const userParams = { username, email, firstname, lastname };
 
   try {
     const userInfo = await updateUser(session, userParams, token, internalError(res));

@@ -30,7 +30,7 @@ export const getResearchResult = async (req: any, res: any) => {
       results[index].properties.relationship = relationship;
       results[index].properties.Distance = distance;
       let matched = 0;
-      if (interests.length !== 1 &&  interests[0] !== ['']) {
+      if (interests.length !== 1 &&  interests[0] !== '') {
         for (const interest of element.properties.Interests) {
           for (const match of interests) {
             if (interest === match)
@@ -38,7 +38,7 @@ export const getResearchResult = async (req: any, res: any) => {
           }
         }
       }
-      if ((distance > proximity && proximity != 24) || (matched === 0 && (interests.length !== 1 &&  interests[0] !== [''])))
+      if ((distance > proximity && proximity != 24) || (matched === 0 && (interests.length !== 1 &&  interests[0] !== '')))
         remove.push(index);
       index++;
     }

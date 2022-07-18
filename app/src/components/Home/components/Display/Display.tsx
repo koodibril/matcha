@@ -59,6 +59,18 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
       setTimeout(() => { getSearchResult(user) }, 100);
     }
 
+    const isUrlValid = (testUrl: string) => {
+      let url;
+      
+      try {
+        url = new URL(testUrl);
+      } catch (_) {
+        return false;  
+      }
+    
+      return url.protocol === "http:" || url.protocol === "https:";
+    }
+
     const handleUserList = () => {
       const List = props.sortedList.length > 0 ? props.sortedList : props.userList.userResult;
       console.log(List);
@@ -69,7 +81,7 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
           <Row key={index} style={{ margin: 20}}>
               <Card hoverable
                 style={{ width: 300, border: element.relationship[1].properties.Like ? 'solid red 2px' : '',}}
-                cover={<img alt={element.Username} src={'http://localhost:3001/' + element.Pictures[0]}/>}
+                cover={<img alt={element.Username} src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : 'http://localhost:3001/' + element.Pictures[0]}/>}
                 actions={[
                   element.relationship[0].properties.Like ? 
                   <HeartFilled onClick={() => handleLike(element)} key="like"/> :
@@ -79,7 +91,7 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
                   <EllipsisOutlined key="ellipsis" onClick={() => {handleProfile(element)}}/>
                   ]}>
                   <Card.Meta
-                    avatar={element.Online === 0 ? <Badge dot color='green'><Avatar src={'http://localhost:3001/' + element.Pictures[0]}/></Badge> : <Badge dot color='red'><Avatar src={'http://localhost:3001/' + element.Pictures[0]}/></Badge>}
+                    avatar={element.Online === 0 ? <Badge dot color='green'><Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : 'http://localhost:3001/' + element.Pictures[0]}/></Badge> : <Badge dot color='red'><Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : 'http://localhost:3001/' + element.Pictures[0]}/></Badge>}
                     title={element.Username}
                     description={element.Bio}/>
               </Card>
