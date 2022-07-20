@@ -11,7 +11,7 @@ const MapHolder: React.FC<{location: string, latitude: string, longitude: string
 
     useMemo(() => {
       if (parseFloat(props.latitude) === 0 && parseFloat(props.longitude) === 0) {
-        axios.get('https://api.opencagedata.com/geocode/v1/json?key=d13332d873e349199048bcc0a6b2c25d&q=' + props.location)
+        axios.get('https://api.opencagedata.com/geocode/v1/json?key=' + process.env.REACT_APP_OPENCAGE_API_KEY + '&q=' + props.location)
             .then(async (response: any) => {
               SetDefaultCenter(response.data.results[0].geometry);
             });
