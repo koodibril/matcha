@@ -1,7 +1,7 @@
 import { hashPassword } from '../../modules/user/utils/hashPassword';
 import { getSession } from '../../shared/neo4j/neo4j'
 import { getToken } from '../jwt/getToken';
-import { info, internalError } from "../utils";
+import { info, internalError, toUpper } from "../utils";
 import { createUser } from '../../modules/user/utils/createUser';
 import { updateUser } from '../../modules/user/utils/updateUser';
 const axios = require('axios');
@@ -35,10 +35,10 @@ export const zergRush = async (res: any) => {
                     const firstname = results.name.first;
                     const lastname = results.name.last;
                     const age = results.dob.age;
-                    const gender = results.gender;
+                    const gender = toUpper(results.gender);
                     pictures[0] = results.picture.medium;
                     const sexo = sexos[Math.round(Math.random() * (2 - 0) + 0)];
-                    const bio = bios[Math.round(Math.random() * (1 - 0) + 0)];
+                    const bio = bios[Math.round(Math.random() * (4 - 0) + 0)];
                     let nbOfInterests = Math.round(Math.random() * (5 - 0) + 0);
                     const interests = [''];
                     while (nbOfInterests > 0) {

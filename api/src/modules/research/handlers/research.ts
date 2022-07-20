@@ -15,8 +15,10 @@ export const getResearchResult = async (req: any, res: any) => {
     const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
     const popularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];
-    const interests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
-    let results = await searchUsers(session, {agegap, proximity, popularity, interests}, token, internalError(res));
+    const Lfinterests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
+    const interests = userInfo[0].properties.Interests;
+    const gender = userInfo[0].properties.Sexo === 'Bi' ? ['Male', 'Female', 'Bi'] : [userInfo[0].properties.Sexo];
+    let results = await searchUsers(session, {agegap, proximity, popularity, interests, gender, Lfinterests}, token, internalError(res));
     let index = 0;
     let remove = [];
     const latitudeOne = userInfo[0].properties.Latitude;
@@ -29,16 +31,7 @@ export const getResearchResult = async (req: any, res: any) => {
       const relationship = await getRelationships(session, token, username, internalError(res));
       results[index].properties.relationship = relationship;
       results[index].properties.Distance = distance;
-      let matched = 0;
-      if (interests.length !== 1 &&  interests[0] !== '') {
-        for (const interest of element.properties.Interests) {
-          for (const match of interests) {
-            if (interest === match)
-              matched = 1;
-          }
-        }
-      }
-      if ((distance > proximity && proximity != 24) || (matched === 0 && (interests.length !== 1 &&  interests[0] !== '')))
+      if ((distance > proximity && proximity != 24) || (interests.length !== 1 &&  interests[0] !== ''))
         remove.push(index);
       index++;
     }
