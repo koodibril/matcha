@@ -25,7 +25,7 @@ export const login = async (req: any, res: any) => {
     if (activated === false) return conflict(res, `You must activate your account, check your emails !`);
 
     const token = getToken({ username });
-    const updated = await updateUser(session, { username, token }, userInfo[0].properties.Token, internalError(res));
+    const updated = await updateUser(session, { token }, userInfo[0].properties.Token, internalError(res));
     if (!updated[0] || token !== updated[0].properties.Token) return conflict(res, `Error when generating new token for (${username})`);
 
     info(`User '${username}' logged in`);

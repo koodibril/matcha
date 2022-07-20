@@ -10,7 +10,13 @@ export const zergRush = async (res: any) => {
     const session = getSession();
 
     const sexos = ['Male', 'Female', 'Bi'];
-    const bios = ['jaime les poireaux', 'moi c les courges'];
+    const bios = [
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'A cras semper auctor neque vitae tempus quam pellentesque.',
+        'At varius vel pharetra vel turpis nunc eget lorem.',
+        'Nullam eget felis eget nunc.',
+        'Arcu risus quis varius quam.'
+        ];
     const interestss = ['Movies', 'Books', 'Music', 'Sports', 'Bio', 'Geek', 'Netflix', 'Nature', 'Video Games', 'Ski'];
     const pictures = ['', '', '', '', ''];
     const active = true;

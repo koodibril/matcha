@@ -22,7 +22,6 @@ export const addNotifications = async (token: string, username: string, notifica
     notifications.unshift(newNotification);
     userInfo = username ? await updateUser(session, {notifications}, userInfo[0].properties.Token, internalError) : await updateUser(session, {notifications}, token, internalError);
     const io = getSocketIo();
-    console.log(userInfo);
     io.to(userInfo[0].properties.Socket).emit('notification', null);
 
     info(`new notification added:` + notification);

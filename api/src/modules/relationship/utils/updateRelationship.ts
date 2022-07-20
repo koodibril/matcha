@@ -5,8 +5,8 @@ import { Relation } from './relation.d';
 export const updateRelationship = async (session: Session, relationData: Relation, token: string, username: string, error: any) => {
     const result = await session.run(
         "MATCH (n:`user`)-[r:`action`]-(m:`user`) " +
-        "WHERE n.Token = \"" + token + "\" AND m.Username = \"" + username + "\" " +
+        "WHERE n.Token = $token AND m.Username = $username " +
         "SET " + generateParams(Object.keys(relationData), 'r', true) + " " +
-        "RETURN r", relationData).catch(e => error(e));
+        "RETURN r", { token: token, username: username, ...relationData }).catch(e => error(e));
         return result.records.map((p: any) => p.get(0));
 };
