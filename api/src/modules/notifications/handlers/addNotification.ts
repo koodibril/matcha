@@ -22,6 +22,7 @@ export const addNotifications = async (token: string, username: string, notifica
     notifications.unshift(newNotification);
     userInfo = username ? await updateUser(session, {notifications}, userInfo[0].properties.Token, internalError) : await updateUser(session, {notifications}, token, internalError);
     const io = getSocketIo();
+    console.log(userInfo);
     io.to(userInfo[0].properties.Socket).emit('notification', null);
 
     info(`new notification added:` + notification);
@@ -46,12 +47,13 @@ export const addNotification = async (req: any, res: any) => {
 
     const newNotification = 'Viewed:false' + 'Id:' + userInfoT[0].identity + 'Date:' + Date.now() + 'Notification:' + notification;
     notifications.unshift(newNotification);
-    userInfo = username ? await updateUser(session, {notifications}, userInfo.Token, internalError) : await updateUser(session, {notifications}, token, internalError);
+    userInfo = username ? await updateUser(session, {notifications}, userInfo[0].properties.Token, internalError) : await updateUser(session, {notifications}, token, internalError);
 
+    const notif = userInfoT[0].properties.Notifications;
     info(`notifications collected`);
     return res
       .status(200)
-      .json({ notifications })
+      .json({ notif })
   } catch (e) {
     return internalError(res)(e);
   } finally {
