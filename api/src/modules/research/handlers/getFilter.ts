@@ -7,7 +7,7 @@ export const getFilter = async (req: any, res: any) => {
   const token = req.body.token;
 
   try {
-    const userInfo = await getUser(session, { token }, internalError(res));
+    const userInfo = await getUser(session, { token });
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     let agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     let proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;

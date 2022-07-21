@@ -16,15 +16,15 @@ export const updateChatRoomUser = async (req: any, res: any) => {
   const message = req.body.message;
 
   try {
-    let chatRoom = await getChatRoom(session, token, username, internalError(res));
+    let chatRoom = await getChatRoom(session, token, username);
     if (!chatRoom[0]) return conflict(res, "Chatroom doesn't exist");
-    const userOne = await getUser(session, {token}, internalError(res));
-    const userTwo = await getUser(session, {username}, internalError(res));
+    const userOne = await getUser(session, {token});
+    const userTwo = await getUser(session, {username});
     let messages = chatRoom[0].properties.Messages ? chatRoom[0].properties.Messages : [];
 
     const newMessage = "User:" + userOne[0].identity + "Date:" + Date.now() + "Message:" + message;
     messages.push(newMessage);
-    chatRoom = await updateChatRoom(session, {messages}, token, username, internalError(res));
+    chatRoom = await updateChatRoom(session, {messages}, token, username);
     addNotifications(token, username, NOTIFICATION_MESSAGE);
     const io = getSocketIo();
     io.to(userOne[0].properties.Socket).emit('newmessage', null);
@@ -34,7 +34,7 @@ export const updateChatRoomUser = async (req: any, res: any) => {
     let index = 0;
     for (const element of messages) {
       const id = parseInt(element.split('Date:')[0].split('User:')[1]);
-      const User = await getUserWithId(session, id, internalError(res));
+      const User = await getUserWithId(session, id);
       if (User[0])
         messages[index] = 'User:' + User[0].properties.Username + 'Date:' + element.split('Date:')[1];
       index++;

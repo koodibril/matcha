@@ -15,7 +15,12 @@ const NOTIFICATION_CLEAR_ENDPOINT = '/api/notifications/clear';
 const NOTIFICATION_ADD_ENDPOINT = '/api/notifications/add';
 
 const handleError = (dispatch: any, error: any) => {
-  const message = error.response ? error.response.data.message : (error.message.code ? error.message.code : error.message);
+  let message;
+  if (error.response) {
+    message = error.response.data.message.code ? error.response.data.message.code : error.response.data.message;
+  } else {
+    message = error.message;
+  }
     if (message === "Profile (null) doesn't exist") {
       dispatch({ type: "LOGOUT" });
       localStorage.removeItem("user");

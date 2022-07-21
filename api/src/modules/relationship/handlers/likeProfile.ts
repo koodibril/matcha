@@ -17,10 +17,10 @@ export const likeProfile = async (req: any, res: any) => {
     let match = false;
     const block = false;
     let like = true;
-    let relationships = await getRelationships(session, token, username, internalError(res));
+    let relationships = await getRelationships(session, token, username);
     let relationship;
     let likedback;
-    const userInfo = await getUser(session, { token }, internalError(res));
+    const userInfo = await getUser(session, { token });
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     for (const element of relationships) {
       if (element.start === userInfo[0].identity)
@@ -32,7 +32,7 @@ export const likeProfile = async (req: any, res: any) => {
     if (likedback && likedback.properties.Like === true)
       match = true;
     if (!relationship) {
-      relationship = await createRelationship(session, { match, block, like}, token, username, internalError(res));
+      relationship = await createRelationship(session, { match, block, like}, token, username);
       if (match) {
         addNotifications(token, username, NOTIFICATION_NEW_MATCH);
         addNotifications(token, '', NOTIFICATION_LIKE);
@@ -40,14 +40,14 @@ export const likeProfile = async (req: any, res: any) => {
       } else {
         addNotifications(token, username, NOTIFICATION_LIKE);
       }
-      relationship = await updateRelationship(session, { match, block, like}, token, username, internalError(res));
+      relationship = await updateRelationship(session, { match, block, like}, token, username);
     } else if (relationship.properties.Like === true){
         like = false;
         match = false;
-        relationship = await updateRelationship(session, { match, block, like}, token, username, internalError(res));
+        relationship = await updateRelationship(session, { match, block, like}, token, username);
         addNotifications(token, username, NOTIFICATION_LOST_MATCH);
     } else {
-      relationship = await updateRelationship(session, { match, block, like}, token, username, internalError(res));
+      relationship = await updateRelationship(session, { match, block, like}, token, username);
       if (match) {
         addNotifications(token, username, NOTIFICATION_NEW_MATCH);
         addNotifications(token, '', NOTIFICATION_LIKE);

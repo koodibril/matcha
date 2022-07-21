@@ -18,7 +18,12 @@ const UPDATE_USER_ENDPOINT = "/api/auth/update";
 const RECOVER_PASSWORD_ENDPOINT = "/api/auth/recovery";
 
 const handleError = (dispatch: any, error: any) => {
-  const message = error.response ? error.response.data.message : (error.message.code ? error.message.code : error.message);
+  let message;
+  if (error.response) {
+    message = error.response.data.message.code ? error.response.data.message.code : error.response.data.message;
+  } else {
+    message = error.message;
+  }
   dispatch({ type: 'LOGIN_FAILURE' });
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
 };

@@ -10,7 +10,8 @@ export const getResearchResult = async (req: any, res: any) => {
   const token = req.body.token;
 
   try {
-    const userInfo = await getUser(session, { token }, internalError(res));
+    const userInfo = await getUser(session, { token });
+    if (!userInfo) return;
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
@@ -18,7 +19,7 @@ export const getResearchResult = async (req: any, res: any) => {
     const Lfinterests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
     const interests = userInfo[0].properties.Interests;
     const gender = userInfo[0].properties.Sexo === 'Bi' ? ['Male', 'Female', 'Bi'] : [userInfo[0].properties.Sexo];
-    let results = await searchUsers(session, {agegap, proximity, popularity, interests, gender, Lfinterests}, token, internalError(res));
+    let results = await searchUsers(session, {agegap, proximity, popularity, interests, gender, Lfinterests}, token);
     let index = 0;
     let remove = [];
     const latitudeOne = userInfo[0].properties.Latitude;
@@ -28,7 +29,7 @@ export const getResearchResult = async (req: any, res: any) => {
       const latitudeTwo = element.properties.Latitude;
       const longitudeTwo = element.properties.Longitude;
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
-      const relationship = await getRelationships(session, token, username, internalError(res));
+      const relationship = await getRelationships(session, token, username);
       results[index].properties.relationship = relationship;
       results[index].properties.Distance = distance;
       if ((distance > proximity && proximity != 24) || (interests.length !== 1 &&  interests[0] !== ''))

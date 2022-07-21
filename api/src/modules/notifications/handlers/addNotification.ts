@@ -14,13 +14,13 @@ export const addNotifications = async (token: string, username: string, notifica
   const session = getSession();
 
   try {
-    const userInfoT = await getUser(session, { token }, internalError);
-    let userInfo = await getUser(session, { username }, internalError);
+    const userInfoT = await getUser(session, { token });
+    let userInfo = await getUser(session, { username });
     const notifications = userInfo[0].properties.Notifications ? userInfo[0].properties.Notifications : [];
 
     const newNotification = 'Viewed:false' + 'Id:' + userInfoT[0].identity + 'Date:' + Date.now() + 'Notification:' + notification;
     notifications.unshift(newNotification);
-    userInfo = username ? await updateUser(session, {notifications}, userInfo[0].properties.Token, internalError) : await updateUser(session, {notifications}, token, internalError);
+    userInfo = username ? await updateUser(session, {notifications}, userInfo[0].properties.Token) : await updateUser(session, {notifications}, token);
     const io = getSocketIo();
     io.to(userInfo[0].properties.Socket).emit('notification', null);
 
@@ -40,13 +40,13 @@ export const addNotification = async (req: any, res: any) => {
   const notification = req.body.notification;
 
   try {
-    const userInfoT = await getUser(session, { token }, internalError);
-    let userInfo = await getUser(session, { username }, internalError);
+    const userInfoT = await getUser(session, { token });
+    let userInfo = await getUser(session, { username });
     const notifications = userInfo[0].properties.Notifications ? userInfo[0].properties.Notifications : [];
 
     const newNotification = 'Viewed:false' + 'Id:' + userInfoT[0].identity + 'Date:' + Date.now() + 'Notification:' + notification;
     notifications.unshift(newNotification);
-    userInfo = username ? await updateUser(session, {notifications}, userInfo[0].properties.Token, internalError) : await updateUser(session, {notifications}, token, internalError);
+    userInfo = username ? await updateUser(session, {notifications}, userInfo[0].properties.Token) : await updateUser(session, {notifications}, token);
 
     const notif = userInfoT[0].properties.Notifications;
     info(`notifications collected`);

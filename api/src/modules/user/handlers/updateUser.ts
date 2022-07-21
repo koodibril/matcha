@@ -16,7 +16,7 @@ export const updateUserInfo = async (req: any, res: any) => {
   const userParams = { username, email, firstname, lastname };
 
   try {
-    const userInfo = await updateUser(session, userParams, token, internalError(res));
+    const userInfo = await updateUser(session, userParams, token);
 
     info(`User Updated !`);
     return res

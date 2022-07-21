@@ -1,7 +1,7 @@
 import { hashPassword } from '../../modules/user/utils/hashPassword';
 import { getSession } from '../../shared/neo4j/neo4j'
 import { getToken } from '../jwt/getToken';
-import { info, internalError, toUpper } from "../utils";
+import { info, toUpper } from "../utils";
 import { createUser } from '../../modules/user/utils/createUser';
 import { updateUser } from '../../modules/user/utils/updateUser';
 const axios = require('axios');
@@ -51,8 +51,8 @@ export const zergRush = async (res: any) => {
                     const latitude = 0;
                     const token = getToken({ username });
                     const popularity = Math.round(Math.random() * (10 - 0) + 0);
-                    await createUser(newSession, {username, password, firstname, lastname, email, active, valid, token, pictures}, internalError(res));
-                    await updateUser(newSession, {token, age, gender, sexo, bio, interests, location, latitude, longitude, valid, popularity}, token, internalError(res));
+                    await createUser(newSession, {username, password, firstname, lastname, email, active, valid, token, pictures});
+                    await updateUser(newSession, {token, age, gender, sexo, bio, interests, location, latitude, longitude, valid, popularity}, token);
                     info('Created a new user ' + username);
                 }
             })

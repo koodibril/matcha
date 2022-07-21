@@ -8,7 +8,7 @@ export const clearNotification = async (req: any, res: any) => {
 
   try {
     const notifications = <string[]>[];
-    await updateUser(session, {notifications}, token, internalError);
+    await updateUser(session, {notifications}, token);
 
     info(`notification viewed`);
     return res

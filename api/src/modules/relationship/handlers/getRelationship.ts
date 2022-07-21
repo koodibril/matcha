@@ -10,7 +10,7 @@ export const getRelationshipInfo = async (req: any, res: any) => {
   const username = req.body.user;
 
   try {
-    const relationship = await getRelationships(session, token, username, internalError(res));
+    const relationship = await getRelationships(session, token, username);
     if (!relationship[0]) return conflict(res, `Relationship with (${username}) doesn't exist`);
 
     info(`relationship collected`);

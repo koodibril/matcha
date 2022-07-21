@@ -12,9 +12,9 @@ export const getMatchedProfiles = async (req: any, res: any) => {
   const token = req.body.token;
 
   try {
-    const userInfo = await getUser(session, { token }, internalError(res));
+    const userInfo = await getUser(session, { token });
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
-    const results = await getMatchedRelationships(session, token, internalError(res));
+    const results = await getMatchedRelationships(session, token);
     let index = 0;
     const latitudeOne = userInfo[0].properties.Latitude;
     const longitudeOne = userInfo[0].properties.Longitude;
@@ -23,7 +23,7 @@ export const getMatchedProfiles = async (req: any, res: any) => {
       const latitudeTwo = element.properties.Latitude;
       const longitudeTwo = element.properties.Longitude;
       const distance = compareLocations(latitudeOne, longitudeOne, latitudeTwo, longitudeTwo);
-      const relationship = await getRelationships(session, token, username, internalError(res));
+      const relationship = await getRelationships(session, token, username);
       results[index].properties.relationship = relationship[0] && relationship[0].start === userInfo[0].identity ? relationship[0] : relationship[1];
       results[index].properties.Distance = distance;
       index++;

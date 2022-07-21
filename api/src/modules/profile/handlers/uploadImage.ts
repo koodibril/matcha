@@ -27,7 +27,7 @@ export const uploadImage = async (req: any, res: any) => {
       if (fieldname === 'token') {
         try {
           token = val;
-          userInfo = await getUser(session, { token }, internalError(res));
+          userInfo = await getUser(session, { token });
           let pictures = userInfo[0].properties.Pictures as string[];
           const userDir = './public/users/' + userInfo[0].identity;
           if (!fs.existsSync(userDir)) {
@@ -50,7 +50,7 @@ export const uploadImage = async (req: any, res: any) => {
               block = true;
             }
           });
-          await updateUser(session, { pictures }, token, internalError(res));
+          await updateUser(session, { pictures }, token);
         } catch (e) {
           return internalError(res)(e);
         } finally {

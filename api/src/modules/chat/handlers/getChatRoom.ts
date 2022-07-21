@@ -12,16 +12,16 @@ export const getChatRoomUser = async (req: any, res: any) => {
   const username = req.body.user;
 
   try {
-    let chatRoom = await getChatRoom(session, token, username, internalError(res));
+    let chatRoom = await getChatRoom(session, token, username);
     if (!chatRoom[0])
-      chatRoom = await createChatRoom(session, token, username, internalError(res));
+      chatRoom = await createChatRoom(session, token, username);
 
     const messages = chatRoom[0].properties.Messages;
     let index = 0;
     if (messages) {
         for (const element of messages) {
           const id = parseInt(element.split('Date:')[0].split('User:')[1]);
-          const User = await getUserWithId(session, id, internalError(res));
+          const User = await getUserWithId(session, id);
           if (User[0])
             messages[index] = 'User:' + User[0].properties.Username + 'Date:' + element.split('Date:')[1];
           index++;

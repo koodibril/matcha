@@ -20,7 +20,7 @@ export const updateProfile = async (req: any, res: any) => {
   const userParams = { age, gender, sexo, bio, interests, location, latitude, longitude, valid, popularity };
 
   try {
-    const userInfoU = await updateUser(session, userParams, token, internalError(res));
+    const userInfoU = await updateUser(session, userParams, token);
     const userInfo = userInfoU[0];
 
     info(`Your information have been updated`);

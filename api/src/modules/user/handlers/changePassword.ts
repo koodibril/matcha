@@ -13,13 +13,13 @@ export const changePassword = async (req: any, res: any) => {
   const password = await hashPassword(req.body.password);
 
   try {
-    const userInfo = await getUser(session, { token }, internalError(res));
+    const userInfo = await getUser(session, { token });
     if (!userInfo[0]) {
         return conflict(res, `Your token is invalid`);
     } else {
         const username = userInfo[0].properties.Username;
         token = getToken({ username });
-        const updated = await updateUser(session, { password, token }, userInfo.Token, internalError(res));
+        const updated = await updateUser(session, { password, token }, userInfo[0].Token);
         if (!updated[0] || token !== updated[0]) return conflict(res, `Error when generating new token for (${username})`);
     }
 

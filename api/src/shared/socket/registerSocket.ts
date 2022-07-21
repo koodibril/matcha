@@ -10,12 +10,12 @@ export const updateUserSocket = async (token: string, socket: string) => {
     let userInfo = [];
     let socketId = [];
     if (token && socket) {
-        userInfo = await getUser(session, { token }, internalError);
+        userInfo = await getUser(session, { token });
         const online = 0;
-        const update = await updateUser(session, { online }, token, internalError);
+        const update = await updateUser(session, { online }, token);
         info(`user ` + userInfo[0].properties.Username + ` is now online ! ` + update[0].properties.Online);
         if (userInfo[0].properties.Socket !== socket) {
-            socketId = await updateUser(session, {socket}, token, internalError);
+            socketId = await updateUser(session, {socket}, token);
             info(`socket updated for user ` + userInfo[0].properties.Username);
         }
     }

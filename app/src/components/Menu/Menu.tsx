@@ -82,7 +82,6 @@ const MainMenu: React.FC = () => {
     }
 
     if (message && message.message && !displayMessage) {
-      console.log(message);
       countDown(message.message, message.error);
     }
     

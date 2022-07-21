@@ -23,13 +23,13 @@ export const signup = async (req: any, res: any) => {
   userParams.password = await hashPassword(password);
 
   try {
-    const userMatch = await countSimilarUsers(session, {username}, internalError(res));
+    const userMatch = await countSimilarUsers(session, {username});
     if (userMatch[0] > 0) return conflict(res, `Username (${username}) already in use`);
 
-    // const emailMatch = await countSimilarUsers(session, {email}, internalError(res));
+    // const emailMatch = await countSimilarUsers(session, {email});
     // if (emailMatch[0] > 0) return conflict(res, `Email (${email}) already in use`);
 
-    await createUser(session, userParams, internalError(res));
+    await createUser(session, userParams);
     sendMail(email, token, username, ACTIVATION_EMAIL);
 
     info(`New user account, welcome to ${username}`);

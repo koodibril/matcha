@@ -15,12 +15,12 @@ export const blockProfile = async (req: any, res: any) => {
     const match = false;
     const block = true;
     const like = false;
-    let relationship = await getRelationships(session, token, username, internalError(res));
+    let relationship = await getRelationships(session, token, username);
     if (!relationship[0]) {
-      relationship = await createRelationship(session, { match, block, like}, token, username, internalError(res));
-      relationship = await updateRelationship(session, { match, block, like}, token, username, internalError(res));
+      relationship = await createRelationship(session, { match, block, like}, token, username);
+      relationship = await updateRelationship(session, { match, block, like}, token, username);
     } else if (relationship[0].properties.Block !== true){
-      relationship = await updateRelationship(session, { match, block, like}, token, username, internalError(res));
+      relationship = await updateRelationship(session, { match, block, like}, token, username);
     }
     relationship = relationship[0];
 

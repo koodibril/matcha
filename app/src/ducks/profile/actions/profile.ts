@@ -15,7 +15,12 @@ const PROFILE_PICTURE_REMOVE = "/api/profile/picture/remove";
 const PROFILE_UPDATE_ENDPOINT = "/api/profile/update";
 
 const handleError = (dispatch: any, error: any) => {
-  const message = error.response ? error.response.data.message : (error.message.code ? error.message.code : error.message);
+  let message;
+  if (error.response) {
+    message = error.response.data.message.code ? error.response.data.message.code : error.response.data.message;
+  } else {
+    message = error.message;
+  }
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
   if (message === "Profile (null) doesn't exist") {
     dispatch({ type: "LOGOUT" });

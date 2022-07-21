@@ -11,7 +11,7 @@ export const activateUser = async (req: any, res: any) => {
   let token = req.body.token;
 
   try {
-    const userInfo = await getUser(session, { token }, internalError(res));
+    const userInfo = await getUser(session, { token });
     if (!userInfo[0]) {
         return conflict(res, `Your token is invalid`);
     } else {
@@ -19,7 +19,7 @@ export const activateUser = async (req: any, res: any) => {
         const email = userInfo[0].properties.Email;
         const username = userInfo[0].properties.Username;
         token = getToken({ username });
-        const updated = await updateUser(session, { token, email, username, active }, req.body.token, internalError(res));
+        const updated = await updateUser(session, { token, email, username, active }, req.body.token);
         if (!updated[0] || token !== updated[0].properties.Token) return conflict(res, `Error when generating new token for (${username})`);
     }
 

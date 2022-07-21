@@ -8,9 +8,9 @@ export const disconnectSocket = async (socket: string) => {
 
   try {
       const online = Date.now();
-      const user = await getUser(session, { socket }, internalError);
+      const user = await getUser(session, { socket });
       const token = user[0].properties.Token;
-      const update = await updateUser(session, { online }, token, internalError);
+      const update = await updateUser(session, { online }, token);
       info(`socket ` + socket + ` destroyed for user ` + update[0].properties.Username + ` last connection on: ` + update[0].properties.Online);
 
     return (socket);
