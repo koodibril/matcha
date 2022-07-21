@@ -6,5 +6,5 @@ export const getUser = async (session: Session, userData: User, error: any) => {
     const result = await session.run(
         "MATCH (n: `user`{ " + generateParams(Object.keys(userData), '', false) + "}) " +
         "RETURN n", userData).catch(e => error(e));
-    return result.records.map((p: any) => p.get(0));
+    return result.records?.map((p: any) => p.get(0));
 };

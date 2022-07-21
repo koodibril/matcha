@@ -18,7 +18,7 @@ const UPDATE_USER_ENDPOINT = "/api/auth/update";
 const RECOVER_PASSWORD_ENDPOINT = "/api/auth/recovery";
 
 const handleError = (dispatch: any, error: any) => {
-  const message = (error.response.data.message || error.response.data.errno);
+  const message = error.response ? error.response.data.message : (error.message.code ? error.message.code : error.message);
   dispatch({ type: 'LOGIN_FAILURE' });
   dispatch({ type: 'ERROR_MESSAGE', payload: message});
 };
@@ -90,11 +90,11 @@ const logout = () => (dispatch: any) => {
   dispatch(pushState('/'));
 };
 
-const signup = ({ email, username, password, name, surname }: SignupData) => (
+const signup = ({ email, username, password, firstname, lastname }: SignupData) => (
   dispatch: any
 ) =>
   axios
-    .post(`${API_URL}${SIGNUP_ENDPOINT}`, { email, username, password, name, surname })
+    .post(`${API_URL}${SIGNUP_ENDPOINT}`, { email, username, password, firstname, lastname })
     .then(
       (res) => {
         userRegistrated(dispatch, res);

@@ -26,7 +26,7 @@ const setRelationship = (dispatch: any, res: any) => {
   }
 
 const handleError = (dispatch: any, error: any) => {
-    const message = (error.response.data.message || error.response.data.errno);
+  const message = error.response ? error.response.data.message : (error.message.code ? error.message.code : error.message);
     dispatch({ type: 'ERROR_MESSAGE', payload: message});
     dispatch({ type: 'LOADING_RELATIONSHIP_FAILURE'});
   } 

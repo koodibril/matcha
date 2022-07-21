@@ -37,7 +37,7 @@ const setFilter = (dispatch: any, res: any) => {
 }
 
 const handleError = (dispatch: any, error: any) => {
-    const message = (error.response.data.message || error.response.data.errno);
+  const message = error.response ? error.response.data.message : (error.message.code ? error.message.code : error.message);
     if (message === "Profile (null) doesn't exist") {
       dispatch({ type: "LOGOUT" });
       localStorage.removeItem("user");

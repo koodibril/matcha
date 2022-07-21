@@ -17,6 +17,7 @@ const MainMenu: React.FC = () => {
     const user = localStorage.getItem('user');
     const [previewVisible, setPreviewVisible] = useState(false);
     const [userIsValid, setUserIsValid] = useState(true);
+    const [displayMessage, setDisplayMessage] = useState(false);
 
     const message = useMessage();
     const { clearMessage } = useMessageActions();
@@ -30,6 +31,7 @@ const MainMenu: React.FC = () => {
     useToken();
 
     const countDown = (text: string, error: boolean) => {
+      setDisplayMessage(true);
       let secondsToGo = 3;
       let modal: any;
       if (error) {
@@ -50,6 +52,7 @@ const MainMenu: React.FC = () => {
         clearInterval(timer);
         clearMessage();
         modal.destroy();
+        setDisplayMessage(false);
       }, secondsToGo * 1000);
     }
 
@@ -78,7 +81,8 @@ const MainMenu: React.FC = () => {
       setUserIsValid(false);
     }
 
-    if (message && message.message) {
+    if (message && message.message && !displayMessage) {
+      console.log(message);
       countDown(message.message, message.error);
     }
     
