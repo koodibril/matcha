@@ -11,7 +11,6 @@ export const getResearchResult = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUser(session, { token });
-    if (!userInfo) return;
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;

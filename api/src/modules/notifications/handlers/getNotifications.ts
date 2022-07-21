@@ -11,7 +11,6 @@ export const getNotifications = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUser(session, {token});
-    if (!userInfo) return;
     if (!userInfo[0]) return conflict(res, "User doesn't exist1");
     const notifications = userInfo[0].properties.Notifications;
     if (notifications) {

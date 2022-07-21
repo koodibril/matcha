@@ -10,6 +10,6 @@ export const searchUsers = async (session: Session, filter: Filter, token: strin
         "AND n.Popularity >= $popularity[0] AND n.Popularity <= $popularity[1] " +
         "AND n.Age >= $agegap[0] AND n.Age <= $agegap[1] " +
         "AND n.Token <> $token " +
-        "RETURN n LIMIT 25", { token: token, ...filter });
+        "RETURN n ORDER BY n.Popularity DESC LIMIT 25", { token: token, ...filter });
     return result.records.map((p: any) => p.get(0));
 };
