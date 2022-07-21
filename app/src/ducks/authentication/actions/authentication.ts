@@ -91,8 +91,8 @@ const login = (username: string, password: string) => (dispatch: any) =>
 
 const logout = () => (dispatch: any) => {
   dispatch({ type: "LOGOUT" });
+  dispatch(pushState('/auth/login'));
   localStorage.removeItem("user");
-  dispatch(pushState('/'));
 };
 
 const signup = ({ email, username, password, firstname, lastname }: SignupData) => (
