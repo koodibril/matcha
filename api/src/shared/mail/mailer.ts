@@ -25,7 +25,7 @@ export const sendMail = (dest: string, link: string, username: string, type: str
     case ACTIVATION_EMAIL: {
       mailOptions = {
         from: 'no-reply@koodibril.com',
-        to: 'florian.marie.doucet@gmail.com', //don't forget to change to dest ;)
+        to: dest,
         subject: 'Activate your account',
         text: 'Welcome to MATCHA ' + username + '! To activate your account, click on this link : http://localhost:8080/auth/activate/' + link
       };
@@ -34,7 +34,7 @@ export const sendMail = (dest: string, link: string, username: string, type: str
     case CHANGE_PASSWORD_EMAIL: {
       mailOptions = {
         from: 'no-reply@koodibril.com',
-        to: 'florian.marie.doucet@gmail.com',
+        to: dest,
         subject: 'Change your password',
         text: 'Hello ' + username + '! To change your password, click on this link : http://localhost:8080/auth/password/' + link
       };

@@ -1,0 +1,42 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI-docker
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the docker branch
+  push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: self-hosted
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: build frontend
+        run: |
+          cd ~/build/matcha/app
+          npm install
+          npm run build
+      - name: move frontend
+        run: |
+          rm -rf ~/build/matcha/api/src/build
+          cp -R ~/build/matcha/app/build ~/build/matcha/api/src/build
+      - name: build backend
+        run: |
+          cd ~/build/matcha/api
+          npm install
+      - name: create docker image
+        run: |
+          docker build . -t matcha:latest
+      - name: Deploy
+        run: |
+          cd ~/websites/matcha
+          docker-compose up -d
