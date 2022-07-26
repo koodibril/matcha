@@ -29,8 +29,8 @@ jobs:
           CI: false # a enlever lorsqu'on aura plus d'erreur
         run: |
           cd ~/build/matcha/app
-          yarn install
-          yarn run build
+          npm install
+          npm run build
       - name: move frontend
         run: |
           rm -rf ~/build/matcha/api/src/build
@@ -38,7 +38,7 @@ jobs:
       - name: build backend
         run: |
           cd ~/build/matcha/api
-          yarn install
+          npm install
       - name: create docker image
         run: |
           docker build . -t matcha:latest
