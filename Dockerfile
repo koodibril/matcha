@@ -5,7 +5,7 @@ WORKDIR /home/node
 #Copy the api directory inside the working directory
 COPY ./api ./
 #Copy the api directory inside the working directory
-COPY ./app/build ./build
+COPY ./app/build ./dist/build
 #Expose the port 3000 used by the backend
 RUN npm install --only=production
 EXPOSE 3001
