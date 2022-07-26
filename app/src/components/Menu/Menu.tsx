@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import { Menu, Modal } from 'antd';
 import { HomeOutlined, MailOutlined, SettingOutlined, LogoutOutlined, UserOutlined, WechatOutlined, MailFilled } from '@ant-design/icons';
 import { useAuthentication } from '../../ducks/authentication/actions/authentication';
@@ -12,7 +12,6 @@ import useToken from 'src/hooks/useToken';
 
 const MainMenu: React.FC = () => {
     const [current, setCurrent] = useState(["1"]);
-    const [logged, setLogged] = useState("Login");
     const [notif, setNotif] = useState(0);
     const user = localStorage.getItem('user');
     const [previewVisible, setPreviewVisible] = useState(false);
@@ -56,10 +55,6 @@ const MainMenu: React.FC = () => {
       }, secondsToGo * 1000);
     }
 
-    if (user && logged === "Login") {
-      setLogged("Logout");
-    }
-
     if (notifications && notifications.notifications) {
       const notificationList = notifications.notifications;
       let nb = 0;
@@ -98,12 +93,19 @@ const MainMenu: React.FC = () => {
       });
     }, [user, getProfileInfo, getNotifications]);
 
+    const logged = useMemo(() => {
+      if (user) {
+        return "Logout";
+      } else {
+        return "Login";
+      }
+    }, [user])
+
     const handleClick = (key: any) => {
       if (user) {
         clearMessage();
           if (key.key === "logout") {
               socket.emit("logout", user);
-              setLogged("Login");
               setCurrent(['auth']);
               logout();
           }
@@ -111,6 +113,8 @@ const MainMenu: React.FC = () => {
               setCurrent(key.key);
               pushState('/' + key.key);
           }
+      } else if (key.key === 'logout') {
+        pushState('/auth/login');
       }
     };
 
