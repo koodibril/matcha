@@ -3,20 +3,20 @@ import GoogleMapReact from 'google-map-react';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import axios from 'axios';
  
-const MapHolder: React.FC<{location: string, latitude: string, longitude: string}> = (props) => {
-    const [defaultCenter, SetDefaultCenter] = useState({ lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) });
+const MapHolder: React.FC<{location: string, latitude: number, longitude: number}> = (props) => {
+    const [defaultCenter, SetDefaultCenter] = useState({ lat: props.latitude, lng: props.longitude });
     const AnyReactComponent = (lat:any, lng:any) => {
     return (<EnvironmentOutlined style={{ fontSize: '64px' }}/>);
     }
 
     useMemo(() => {
-      if (parseFloat(props.latitude) === 0 && parseFloat(props.longitude) === 0) {
+      if (props.latitude === 0 && props.longitude === 0) {
         axios.get('https://api.opencagedata.com/geocode/v1/json?key=' + process.env.REACT_APP_OPENCAGE_API_KEY + '&q=' + props.location)
             .then(async (response: any) => {
               SetDefaultCenter(response.data.results[0].geometry);
             });
       } else {
-        SetDefaultCenter({ lat: parseFloat(props.latitude), lng: parseFloat(props.longitude) });
+        SetDefaultCenter({ lat: props.latitude, lng: props.longitude });
       }
     }, [props.latitude, props.longitude, props.location, SetDefaultCenter])
 
