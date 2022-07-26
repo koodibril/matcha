@@ -6,7 +6,5 @@ WORKDIR /home/node
 COPY ./api ./
 #Expose the port 3000 used by the backend
 EXPOSE 3001
-RUN pwd
-RUN ls
 #Launch the node command externally from npm to prevent him swallowing logs
-CMD ["node", "src/server.ts"]
+CMD ["node", "dist/server.js"]

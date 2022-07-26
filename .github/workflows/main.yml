@@ -39,6 +39,7 @@ jobs:
         run: |
           cd ~/build/matcha/api
           npm install
+          npm run build
       - name: create docker image
         run: |
           docker build ~/build/matcha -t matcha:latest
