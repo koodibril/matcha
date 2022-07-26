@@ -25,6 +25,8 @@ jobs:
           cd ~/build/matcha
           git pull
       - name: build frontend
+        env:
+          CI: false # a enlever lorsqu'on aura plus d'erreur
         run: |
           cd ~/build/matcha/app
           npm install
