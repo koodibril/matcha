@@ -6,7 +6,7 @@ name: CI-docker
 on:
   # Triggers the workflow on push or pull request events but only for the docker branch
   push:
-    branches: [ main ]
+    branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -20,7 +20,13 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: update
+        run: |
+          cd ~/build/matcha
+          git pull
       - name: build frontend
+        env:
+          CI: false # a enlever lorsqu'on aura plus d'erreur
         run: |
           cd ~/build/matcha/app
           npm install
