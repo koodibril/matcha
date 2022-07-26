@@ -41,7 +41,7 @@ jobs:
           npm install
       - name: create docker image
         run: |
-          docker build . -t matcha:latest
+          docker build ~/build/matcha/Dockerfile -t matcha:latest
       - name: Deploy
         run: |
           cd ~/websites/matcha
