@@ -31,10 +31,6 @@ jobs:
           cd ~/build/matcha/app
           npm install
           npm run build
-      - name: move frontend
-        run: |
-          rm -rf ~/build/matcha/api/src/build
-          cp -R ~/build/matcha/app/build ~/build/matcha/api/src/build
       - name: build backend
         run: |
           cd ~/build/matcha/api
