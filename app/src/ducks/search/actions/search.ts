@@ -5,10 +5,7 @@ import { push as pushState } from "connected-react-router";
 import { RootState } from 'src/store/configure';
 import { CLEAR_SEARCH } from '../search'
 
-const PORT = 3001;
-const ADDRESS = 'localhost';
-const PROTOCOL = 'http';
-const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
+const API_URL = ``;
 
 const SEARCH_GET_ENDPOINT = '/api/search/do';
 const UPDATE_FILTER_ENDPOINT = '/api/search/update';

@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-const PORT = 3001;
-const ADDRESS = 'localhost';
-const PROTOCOL = 'http';
-const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
+const API_URL = ``;
 
 const SEED_ENDPOINT = '/api/zerg';
 

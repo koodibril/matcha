@@ -3,10 +3,7 @@ import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/configure';
 
-const PORT = 3001;
-const ADDRESS = 'localhost';
-const PROTOCOL = 'http';
-const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
+const API_URL = ``;
 
 const RELATIONSHIP_LIKE_ENDPOINT = '/api/relationship/like';
 const RELATIONSHIP_BLOCK_ENDPOINT = '/api/relationship/block';

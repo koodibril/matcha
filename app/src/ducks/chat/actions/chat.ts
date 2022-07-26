@@ -4,10 +4,7 @@ import { push as pushState } from "connected-react-router";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/configure';
 
-const PORT = 3001;
-const ADDRESS = 'localhost';
-const PROTOCOL = 'http';
-const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
+const API_URL = ``;
 
 const RELATIONSHIP_GET_MATCH_ENDPOINT = '/api/relationship/matched';
 const RELATIONSHIP_GET_CHATROOM_ENDPOINT = '/api/chat/get';

@@ -6,10 +6,7 @@ import axios from "axios";
 import { SignupData } from "src/components/Auth/components/Signup/Signup.d";
 import { socket } from "src/hooks/useSocket";
 
-const PORT = 3001;
-const ADDRESS = "localhost";
-const PROTOCOL = "http";
-const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
+const API_URL = ``;
 const LOGIN_ENDPOINT = "/api/auth/login";
 const SIGNUP_ENDPOINT = "/api/auth/signup";
 const ACTIVATE_ENDPOINT = "/api/auth/activate";

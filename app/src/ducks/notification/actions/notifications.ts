@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from 'src/store/configure';
 import { push as pushState } from "connected-react-router";
 
-const PORT = 3001;
-const ADDRESS = 'localhost';
-const PROTOCOL = 'http';
-const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
+const API_URL = ``;
 
 const NOTIFICATION_GET_ENDPOINT = '/api/notifications/get';
 const NOTIFICATION_UPDATE_ENDPOINT = '/api/notifications/update';

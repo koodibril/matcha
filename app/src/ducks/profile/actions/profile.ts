@@ -6,10 +6,7 @@ import { RootState } from "src/store/configure";
 
 import { UserData } from "../../../components/Profile/components/UpdateUserInformation/UpdateUserInformation.d";
 
-const PORT = 3001;
-const ADDRESS = "localhost";
-const PROTOCOL = "http";
-const API_URL = `${PROTOCOL}://${ADDRESS}:${PORT}`;
+const API_URL = ``;
 const PROFILE_INFO_ENDPOINT = "/api/profile/info";
 const PROFILE_PICTURE_REMOVE = "/api/profile/picture/remove";
 const PROFILE_UPDATE_ENDPOINT = "/api/profile/update";
