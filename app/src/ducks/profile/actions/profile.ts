@@ -6,7 +6,7 @@ import { RootState } from "src/store/configure";
 
 import { UserData } from "../../../components/Profile/components/UpdateUserInformation/UpdateUserInformation.d";
 
-const API_URL = ``;
+const API_URL = process.env.REACT_APP_API_URI;
 const PROFILE_INFO_ENDPOINT = "/api/profile/info";
 const PROFILE_PICTURE_REMOVE = "/api/profile/picture/remove";
 const PROFILE_UPDATE_ENDPOINT = "/api/profile/update";

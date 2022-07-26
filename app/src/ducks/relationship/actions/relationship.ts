@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'src/store/configure';
 
-const API_URL = ``;
+const API_URL = process.env.REACT_APP_API_URI;
 
 const RELATIONSHIP_LIKE_ENDPOINT = '/api/relationship/like';
 const RELATIONSHIP_BLOCK_ENDPOINT = '/api/relationship/block';

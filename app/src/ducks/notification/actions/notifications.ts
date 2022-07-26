@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from 'src/store/configure';
 import { push as pushState } from "connected-react-router";
 
-const API_URL = ``;
+const API_URL = process.env.REACT_APP_API_URI;
 
 const NOTIFICATION_GET_ENDPOINT = '/api/notifications/get';
 const NOTIFICATION_UPDATE_ENDPOINT = '/api/notifications/update';

@@ -6,7 +6,7 @@ import axios from "axios";
 import { SignupData } from "src/components/Auth/components/Signup/Signup.d";
 import { socket } from "src/hooks/useSocket";
 
-const API_URL = ``;
+const API_URL = process.env.REACT_APP_API_URI;
 const LOGIN_ENDPOINT = "/api/auth/login";
 const SIGNUP_ENDPOINT = "/api/auth/signup";
 const ACTIVATE_ENDPOINT = "/api/auth/activate";
