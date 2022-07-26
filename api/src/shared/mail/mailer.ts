@@ -6,7 +6,7 @@ export const SMTP_SECRET = process.env.SMTP_SECRET || '';
 export const ACTIVATION_EMAIL = "ACTIVATION_EMAIL";
 export const CHANGE_PASSWORD_EMAIL = "CHANGE_PASSWORD_EMAIL";
 
-export const sendMail = (dest: string, link: string, username: string, type: string) => {
+export const sendMail = (dest: string, link: string, username: string, type: string, req: any) => {
   let mailOptions;
   const transporter = nodemailer.createTransport({
     host: "ssl0.ovh.net",
@@ -27,7 +27,7 @@ export const sendMail = (dest: string, link: string, username: string, type: str
         from: 'no-reply@koodibril.com',
         to: dest,
         subject: 'Activate your account',
-        text: 'Welcome to MATCHA ' + username + '! To activate your account, click on this link : http://localhost:8080/auth/activate/' + link
+        text: 'Welcome to MATCHA ' + username + '! To activate your account, click on this link : ' + req.protocol + '://' + req.get('host') + '/auth/activate/' + link
       };
       break;
     }
@@ -36,7 +36,7 @@ export const sendMail = (dest: string, link: string, username: string, type: str
         from: 'no-reply@koodibril.com',
         to: dest,
         subject: 'Change your password',
-        text: 'Hello ' + username + '! To change your password, click on this link : http://localhost:8080/auth/password/' + link
+        text: 'Hello ' + username + '! To change your password, click on this link : ' + req.protocol + '://' + req.get('host') + '/auth/password/' + link
       };
       break;
     }

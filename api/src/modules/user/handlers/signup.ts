@@ -30,7 +30,7 @@ export const signup = async (req: any, res: any) => {
     // if (emailMatch[0] > 0) return conflict(res, `Email (${email}) already in use`);
 
     await createUser(session, userParams);
-    sendMail(email, token, username, ACTIVATION_EMAIL);
+    sendMail(email, token, username, ACTIVATION_EMAIL, req);
 
     info(`New user account, welcome to ${username}`);
     return res

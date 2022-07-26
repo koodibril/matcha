@@ -43,7 +43,7 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
       let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {
         if (picture !== '') {
-          const newPic = { uid: i, status: 'done', url: isUrlValid(picture) ? picture : 'http://localhost:3001/' + picture };
+          const newPic = { uid: i, status: 'done', url: isUrlValid(picture) ? picture : '/' + picture };
           newFileList.push(newPic);
         }
       });
@@ -112,7 +112,7 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
           <Upload
             data={user}
             accept="image/png, image/jpeg, .png, .jpeg"
-            action="http://localhost:3001/api/profile/picture/upload"
+            action="/api/profile/picture/upload"
             listType="picture-card"
             fileList={fileList}
             showUploadList={ reading ? readingList : uploadList }

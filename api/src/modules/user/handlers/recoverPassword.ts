@@ -14,7 +14,7 @@ export const recoverPassword = async (req: any, res: any) => {
     if (!userInfo[0])
         return conflict(res, `No user with this email`);
     
-    sendMail(email, userInfo[0].properties.Token, userInfo[0].properties.Username, CHANGE_PASSWORD_EMAIL);
+    sendMail(email, userInfo[0].properties.Token, userInfo[0].properties.Username, CHANGE_PASSWORD_EMAIL, req);
     
     info(`Email send !`);
     return res
