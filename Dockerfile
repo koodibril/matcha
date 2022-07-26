@@ -7,4 +7,4 @@ COPY ./api ./
 #Expose the port 3000 used by the backend
 EXPOSE 3001
 #Launch the node command externally from npm to prevent him swallowing logs
-CMD ["node", "index.js"]
+CMD ["node", "src/server.js"]
