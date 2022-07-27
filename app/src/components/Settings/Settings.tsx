@@ -9,8 +9,6 @@ import UpdateInfo from './components/UpdateInfo/UpdateInfo';
 const Settings: React.FC = () => {
     const user = localStorage.getItem('user');
     const { pushState } = useNavigation();
-  
-    if (!user) pushState('/auth');
 
     const filter = useFilter();
     const { getFilter } = useSearchActions();
@@ -18,8 +16,10 @@ const Settings: React.FC = () => {
     useEffect(() => {
       if (user) {
         getFilter(user);
+      } else {
+        pushState('/auth/login');
       }
-      }, [user, getFilter]);
+      }, [user, getFilter, pushState]);
     
   return (
         <Row justify="center" align="middle">

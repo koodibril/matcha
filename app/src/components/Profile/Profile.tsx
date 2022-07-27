@@ -16,8 +16,6 @@ const Profile: React.FC = () => {
   const info = useProfile();
   const { getProfileInfo } = useProfileActions();
   const { getRelationship } = useRelationshipActions();
-
-  if (!user) pushState('/auth');
   
   useEffect(() => {
     const path = window.location.pathname.split('/');
@@ -25,8 +23,12 @@ const Profile: React.FC = () => {
       setReading(true);
       getProfileInfo(user, path[2]);
       getRelationship(user, path[2]);
-    } else if (user) getProfileInfo(user, null);
-  }, [user, getProfileInfo, getRelationship]);
+    } else if (user) {
+      getProfileInfo(user, null);
+    } else {
+      pushState('/auth/login');
+    }
+  }, [user, getProfileInfo, getRelationship, pushState]);
 
   const updateInfo = (
     <Row justify="center" align="middle">

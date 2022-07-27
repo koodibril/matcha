@@ -10,14 +10,14 @@ const Notifications: React.FC = () => {
     const notifications = useNotifications();
     const { getNotifications, clearNotifications } = useNotificationsActions();
     const { pushState } = useNavigation();
-  
-    if (!user) pushState('/auth');
     
     useEffect(() => {
       if (user) {
         getNotifications(user);
+      } else {
+        pushState('/auth/login')
       }
-    }, [user, getNotifications]);
+    }, [user, getNotifications, pushState]);
 
     const handleClick = () => {
       clearNotifications(user);

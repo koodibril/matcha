@@ -17,15 +17,15 @@ const Home: React.FC = () => {
   const info = useProfile();
   const userList = useSearch();
   const tagsData = ['Age', 'Distance', 'Popularity', 'Tags'];
-
-  if (user == null) pushState('/auth');
   
   useEffect(() => {
     if (user) {
       getProfileInfo(user, null);
       getSearchResult(user);
+    } else {
+      pushState('/auth/login');
     }
-  }, [user, getSearchResult, getProfileInfo]);
+  }, [user, getSearchResult, getProfileInfo, pushState]);
 
   const handleChange = (tag: any, checked: any) => {
     if (tag !== selectedTags[0]) {

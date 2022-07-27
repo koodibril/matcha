@@ -23,15 +23,15 @@ const Chat: React.FC = () => {
     const { getMatchedProfiles, getChatRoom } = useChatActions();
     const { blockUser, likeUser } = useRelationshipActions();
     const { getProfileInfo } = useProfileActions();
-  
-    if (!user) pushState('/auth');
 
     useEffect(() => {
       if (user) {
         getMatchedProfiles(user);
         getProfileInfo(user, null);
+      } else {
+        pushState('/auth/login');
       }
-    }, [user, getMatchedProfiles, getProfileInfo]);
+    }, [user, getMatchedProfiles, getProfileInfo, pushState]);
 
     const loadChat = (element: any) => {
       setProfile(element);
