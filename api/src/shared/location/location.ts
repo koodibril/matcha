@@ -8,6 +8,7 @@ export const getLocation = async (req: any, res: any) => {
         latitude: body.geoplugin_latitude,
         longitude: body.geoplugin_longitude
       };
+      console.log(body);
       return res.status(200).json({location});
     });
 }
