@@ -9,6 +9,8 @@ import { UserData } from '../../../Profile/components/UpdateUserInformation/Upda
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import MapHolderComponent from '../MapHolder/MapHolder';
 import axios from 'axios';
+import { getLocation } from 'src/ducks/location/actions/location';
+import { useDispatch } from 'react-redux';
 
 
 const UpdateUserInformation: React.FC<{info: any}> = (props) => {
@@ -19,6 +21,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
   const [errorPicture, setErrorPicture] = useState(false);
   const user = localStorage.getItem('user');
   const info = useProfile();
+  const dispatch = useDispatch();
 
   const { updateProfileInfo } = useProfileActions(); 
   const { t } = useTranslation('profile');
@@ -81,6 +84,8 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
   }
 
   const handleLocation = async () => {
+    console.log('hey')
+    dispatch(getLocation());
     const loc = await axios.get('http://www.geoplugin.net/json.gp');
     setLocation({
       city: loc.data.geoplugin_regionName,
