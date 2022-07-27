@@ -24,7 +24,7 @@ const Profile: React.FC = () => {
       getProfileInfo(user, path[2]);
       getRelationship(user, path[2]);
     } else if (user) {
-      getProfileInfo(user, null);
+      // getProfileInfo(user, null);
     } else {
       pushState('/auth/login');
     }

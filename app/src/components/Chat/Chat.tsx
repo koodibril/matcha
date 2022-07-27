@@ -27,7 +27,6 @@ const Chat: React.FC = () => {
     useEffect(() => {
       if (user) {
         getMatchedProfiles(user);
-        getProfileInfo(user, null);
       } else {
         pushState('/auth/login');
       }

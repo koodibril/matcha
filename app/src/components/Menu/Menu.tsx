@@ -118,6 +118,39 @@ const MainMenu: React.FC = () => {
       }
     };
 
+    const menuItems = [
+      {
+        key: 'home',
+        icon: <HomeOutlined></HomeOutlined>,
+        label: 'Home'
+      },
+      {
+        key: 'profile',
+        icon: <UserOutlined></UserOutlined>,
+        label: 'Profile'
+      },
+      {
+        key: 'chat',
+        icon: <WechatOutlined></WechatOutlined>,
+        label: 'Chat'
+      },
+      {
+        key: 'notifications',
+        icon: notif === 0 ? <MailOutlined /> : <MailFilled />,
+        label: 'Notifications ' + (notif !== 0 ? '(' + notif + ')' : '')
+      },
+      {
+        key: 'settings',
+        icon: <SettingOutlined></SettingOutlined>,
+        label: 'Settings'
+      },
+      {
+        key: 'logout',
+        icon: <LogoutOutlined></LogoutOutlined>,
+        label: logged
+      },
+    ];
+
     return (
       <>
         <Menu
@@ -125,13 +158,8 @@ const MainMenu: React.FC = () => {
           selectedKeys={ current }
           mode="horizontal"
           style={{ display: 'flex', justifyContent: 'center' }}
+          items={menuItems}
         >
-          <Menu.Item key="home" icon={<HomeOutlined />}>Home</Menu.Item>
-          <Menu.Item key="profile" icon={<UserOutlined />}>Profile</Menu.Item>
-          <Menu.Item key="chat" icon={<WechatOutlined />}>Chat</Menu.Item>
-          <Menu.Item key="notifications" icon={notif === 0 ? <MailOutlined /> : <MailFilled />}>Notifications { notif !== 0 ? '(' + notif + ')' : '' }</Menu.Item>
-          <Menu.Item key="settings" icon={<SettingOutlined />}>Settings</Menu.Item>
-          <Menu.Item key="logout" icon={<LogoutOutlined />}> { logged } </Menu.Item>
         </Menu>
         
         <Modal 

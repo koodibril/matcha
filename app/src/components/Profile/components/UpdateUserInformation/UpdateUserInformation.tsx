@@ -8,12 +8,14 @@ import { useProfileActions } from '../../../../ducks/profile/actions/profile';
 import { UserData } from '../../../Profile/components/UpdateUserInformation/UpdateUserInformation.d';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import MapHolderComponent from '../MapHolder/MapHolder';
+import axios from 'axios';
 
 
 const UpdateUserInformation: React.FC<{info: any}> = (props) => {
   const [location, setLocation] = useState({city: 'Unknow', latitude: 0, longitude: 0});
   const [selectedTags, setSelectedTags] = useState<any[]>([]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
+  const [errorTag, setErrorTag] = useState(false);
   const user = localStorage.getItem('user');
 
   const { updateProfileInfo } = useProfileActions(); 
@@ -28,9 +30,23 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
   }
 
   const handleUpdate = (usr: UserData) => {
+    console.log('hey')
     usr.interests = selectedTags;
-    updateProfileInfo(usr, user, location);
+    if (selectedTags.length < 3) {
+      setErrorTag(true);
+    } else {
+      updateProfileInfo(usr, user, location);
+      setErrorTag(false);
+    }
   };
+
+  const checkTags = () => {
+    if (selectedTags.length < 3) {
+      setErrorTag(true);
+    } else {
+      setErrorTag(false);
+    }
+  }
 
   const handleChange = (tag: any, checked: any) => {
     if (selectedTags.length <= 5 || checked === false) {
@@ -39,13 +55,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
     }
   };
 
-  const checkTags = () => {
-    if (selectedTags.length < 3)
-      return Promise.reject('You must select at least 3 tags');
-    else
-      return Promise.resolve();
-  }
-
   const checkLocation = () => {
     if (location.city === 'Unknow')
       return Promise.reject('You must set your location');
@@ -53,13 +62,12 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
       return Promise.resolve();
   }
 
-  const handleLocation = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLocation({city: "Unknow", latitude: position.coords.latitude, longitude: position.coords.longitude});
-    }, (error) => {
-      fetch('https://geolocation-db.com/json/').then(res => res.json().then(res => {
-        setLocation(res);
-      }));
+  const handleLocation = async () => {
+    const loc = await axios.get('http://www.geoplugin.net/json.gp');
+    setLocation({
+      city: loc.data.geoplugin_regionName,
+      latitude: parseFloat(loc.data.geoplugin_latitude),
+      longitude: parseFloat(loc.data.geoplugin_longitude)
     });
   }
 
@@ -84,10 +92,10 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
           name: ['bio'],
           value: props.info.Bio
         } : { name: ['bio']},
-        props.info.Location ? {
+        {
           name: ['location'],
           value: location.city
-        } : {name :['location']}
+        }
         ]}
         name="update"
         onFinish={handleUpdate}>
@@ -95,23 +103,25 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         <Form.Item>{props.info.Username}</Form.Item>
         
         <Form.Item
-          label={t('age')}
-          rules={[{
-            required: true,
-            message: t('age_missing')
-          }]}>
-          <Form.Item name="age">
+          label={t('age')}>
+          <Form.Item
+            name="age"
+            rules={[{
+              required: true,
+              message: t('age_missing')
+            }]}>
             <InputNumber min={18} max={80}/>
           </Form.Item>
         </Form.Item>
 
         <Form.Item
-          label={t('gender')}
-          rules={[{
-            required: true,
-            message: t('gender_missing')
-          }]}>
-          <Form.Item name="gender">
+          label={t('gender')}>
+          <Form.Item 
+            name="gender"
+            rules={[{
+              required: true,
+              message: t('gender_missing')
+            }]}>
             <Select>
               <Select.Option value="Female">Female</Select.Option>
               <Select.Option value="Male">Male</Select.Option>
@@ -120,12 +130,12 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         </Form.Item>
 
         <Form.Item
-          label={t('sexual orientation')}
-          rules={[{
-            required: true,
-            message: t('sexual_orientation_missing')
-          }]}>
-            <Form.Item name="sexo">
+          label={t('sexual orientation')}>
+            <Form.Item name="sexo"
+              rules={[{
+              required: true,
+              message: t('sexual_orientation_missing')
+            }]}>
               <Select>
                 <Select.Option value="Female">Female</Select.Option>
                 <Select.Option value="Male">Male</Select.Option>
@@ -135,21 +145,19 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         </Form.Item>
 
         <Form.Item
-          label={t('bio')}
-          rules={[{
-            required: true,
-            message: t('bio_missing')
-          }]}>
-            <Form.Item name="bio">
+          label={t('bio')}>
+            <Form.Item 
+              name="bio"
+              rules={[{
+                required: true,
+                message: t('bio_missing')
+              }]}>
               <Input.TextArea maxLength={500}/>
             </Form.Item>
         </Form.Item>
         
         <Form.Item
-          label={t('interests')}
-          rules={[{
-            validator: checkTags
-          }]}>
+          label={t('interests')}>
             {tagsData.map(tag => (
               <CheckableTag
                 key={tag}
@@ -158,15 +166,17 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
               >
                 {tag}
               </CheckableTag>
-        ))}
+            ))}
+            {errorTag ? <div role="alert" className='ant-form-item-explain-error'>You need to select at least 3 interests</div>: null}
         </Form.Item>
 
         <Form.Item
-          label={t('city')}
-          rules={[{
-            validator: checkLocation
-          }]}>
-            <Form.Item name="location">
+          label={t('city')}>
+            <Form.Item
+            name="location"
+            rules={[{
+              validator: checkLocation
+            }]}>
               <Input disabled value={location.city}></Input>
             </Form.Item>
             <MapHolderComponent location={location.city} latitude={location.latitude} longitude={location.longitude}></MapHolderComponent>
@@ -174,7 +184,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         </Form.Item>
 
         <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" onClick={() => checkTags()}>
               {t('update information')}
             </Button>
         </Form.Item>
