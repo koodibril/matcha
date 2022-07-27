@@ -64,7 +64,7 @@ const UpdateInfo: React.FC = () => {
         </Form.Item>
         <Form.Item
           label={t("Firstname")}
-          name="Firstname"
+          name="firstname"
           rules={[
             {
               required: true,

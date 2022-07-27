@@ -20,6 +20,7 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
     const [reading, setReading] = useState(props.reading);
     const user = { "token": localStorage.getItem('user') as string };
     const userr = localStorage.getItem('user');
+    const API_URL = process.env.REACT_APP_API_URI;
 
     const { getProfileInfo, removeProfilePicture } = useProfileActions();
 
@@ -43,7 +44,7 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
       let newFileList: any[] = [];
       pictures.forEach((picture: any, i:number) => {
         if (picture !== '') {
-          const newPic = { uid: i, status: 'done', url: isUrlValid(picture) ? picture : '/' + picture };
+          const newPic = { uid: i, status: 'done', url: isUrlValid(picture) ? picture : API_URL + '/' + picture };
           newFileList.push(newPic);
         }
       });
@@ -112,7 +113,7 @@ const ImageHolder: React.FC<{ reading: boolean, pictures: string[] }> = (props) 
           <Upload
             data={user}
             accept="image/png, image/jpeg, .png, .jpeg"
-            action="/api/profile/picture/upload"
+            action={API_URL + "/api/profile/picture/upload"}
             listType="picture-card"
             fileList={fileList}
             showUploadList={ reading ? readingList : uploadList }

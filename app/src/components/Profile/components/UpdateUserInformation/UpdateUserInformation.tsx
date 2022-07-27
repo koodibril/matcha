@@ -4,7 +4,7 @@ import { Row, Form, Button, Input, Select, InputNumber } from 'antd';
 
 import { useTranslation } from 'react-i18next';
 
-import { useProfileActions } from '../../../../ducks/profile/actions/profile';
+import { useProfile, useProfileActions } from '../../../../ducks/profile/actions/profile';
 import { UserData } from '../../../Profile/components/UpdateUserInformation/UpdateUserInformation.d';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import MapHolderComponent from '../MapHolder/MapHolder';
@@ -16,7 +16,9 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
   const [selectedTags, setSelectedTags] = useState<any[]>([]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const [errorTag, setErrorTag] = useState(false);
+  const [errorPicture, setErrorPicture] = useState(false);
   const user = localStorage.getItem('user');
+  const info = useProfile();
 
   const { updateProfileInfo } = useProfileActions(); 
   const { t } = useTranslation('profile');
@@ -29,14 +31,30 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
     setTagsLoaded(true);
   }
 
+  const gotPicture = (pictures: string[]) => {
+    let empty = 0
+    pictures.forEach(el => {
+      if (el === '') {
+        empty++;
+      }
+    })
+    if (empty === 5) {
+      return false;
+    }
+    return true;
+  }
+
   const handleUpdate = (usr: UserData) => {
-    console.log('hey')
     usr.interests = selectedTags;
     if (selectedTags.length < 3) {
       setErrorTag(true);
+    }
+    if (!gotPicture(info.payload.Pictures)) {
+      setErrorPicture(true);
     } else {
       updateProfileInfo(usr, user, location);
       setErrorTag(false);
+      setErrorPicture(false);
     }
   };
 
@@ -73,6 +91,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
 
   return (
     <Row>
+    {errorPicture ? <div role="alert" className='ant-form-item-explain-error'>You need to add at least one picture</div>: null}
       { props.info ? (
       <Form
         style={{margin: "10px", maxWidth: "100%"}}

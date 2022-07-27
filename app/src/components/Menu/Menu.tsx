@@ -55,6 +55,19 @@ const MainMenu: React.FC = () => {
       }, secondsToGo * 1000);
     }
 
+    const gotPicture = (pictures: string[]) => {
+      let empty = 0
+      pictures.forEach(el => {
+        if (el === '') {
+          empty++;
+        }
+      })
+      if (empty === 5) {
+        return false;
+      }
+      return true;
+    }
+
     if (notifications && notifications.notifications) {
       const notificationList = notifications.notifications;
       let nb = 0;
@@ -66,12 +79,14 @@ const MainMenu: React.FC = () => {
         setNotif(nb);
     }
 
-    if (info.payload && info.payload.Valid === true && !userIsValid) {
+    if (info.payload && info.payload.Valid === true && gotPicture(info.payload.Pictures) && !userIsValid) {
       setPreviewVisible(false);
       setUserIsValid(true);
     }
     
-    if (info.payload && (info.payload.Valid === false || info.payload.Valid === undefined) && userIsValid && window.location.pathname.split('/')[1] !== 'profile') {
+    if (info.payload &&
+      (info.payload.Valid === false || info.payload.Valid === undefined || (info.payload.Valid === true && !gotPicture(info.payload.Pictures))) &&
+      userIsValid && window.location.pathname.split('/')[1] !== 'profile') {
       setPreviewVisible(true);
       setUserIsValid(false);
     }
