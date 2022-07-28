@@ -38,7 +38,11 @@ const ChangePassword: React.FC = () => {
       message: t("password_too_short"),
     },
     {
-      pattern: new RegExp("^.*[0-9]$"), // LES REGEX ICI C'EST DE LA GROSSE MERDE (regexp prend pas le \d pour les chiffres, mais pour un char d...)
+      include: ['r', 's'],
+      message: 'pas de r ni de s',
+    },
+    {
+      pattern:/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!#$%\-._=+<>])([a-zA-Z0-9!#$%\-._=+<>]+)$/, 
       message: t("password_contain"),
     },
   ];
@@ -53,7 +57,7 @@ const ChangePassword: React.FC = () => {
       message: t("password_too_short"),
     },
     {
-      pattern: new RegExp("^.*[0-9]$"), // LES REGEX ICI C'EST DE LA GROSSE MERDE (regexp prend pas le \d pour les chiffres, mais pour un char d...)
+      pattern:/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!#$%\-._=+<>])([a-zA-Z0-9!#$%\-._=+<>]+)$/, 
       message: t("password_contain"),
     }
   ];

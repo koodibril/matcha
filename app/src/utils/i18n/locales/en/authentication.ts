@@ -14,7 +14,7 @@ export default {
   "username_missing": "Please enter a valid username",
   "password_missing": "Please enter a valid password",
   "password_too_short": "Your password must be at least 8 charachters long",
-  "password_contain": "Your password must contain at least one number",
+  "password_contain": "Your password must contain at least one number, one letter and one special character",
   "firstname_missing": "Please enter a valid firstname",
   "lastname_missing": "Please enter a valid lastname",
   "go_to_recovery": "Forgot your password?"
