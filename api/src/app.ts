@@ -8,7 +8,6 @@ import profile from './modules/profile/profile';
 import relationship from './modules/relationship/relationship';
 import research from './modules/research/research';
 import { zergRush } from './shared/neo4j/seeder';
-import { getLocation } from './shared/location/location';
 
 const app = express();
 app.use(express.static('public'));
@@ -35,7 +34,6 @@ app.use('/api/notifications', notifications);
 app.use('/api/profile', profile);
 app.use('/api/relationship', relationship);
 app.use('/api/search', research);
-app.use('/api/location', getLocation);
 app.use('/api/zerg', zergRush);
 
 export default app;
