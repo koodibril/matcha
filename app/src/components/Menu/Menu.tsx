@@ -168,6 +168,7 @@ const MainMenu: React.FC = () => {
 
     return (
       <>
+      { user ?
         <Menu
           onClick={ handleClick }
           selectedKeys={ current }
@@ -181,7 +182,7 @@ const MainMenu: React.FC = () => {
         <Menu.Item key="notifications" icon={notif === 0 ? <MailOutlined /> : <MailFilled />}>Notifications { notif !== 0 ? '(' + notif + ')' : '' }</Menu.Item>
         <Menu.Item key="settings" icon={<SettingOutlined />}>Settings</Menu.Item>
         <Menu.Item key="logout" icon={<LogoutOutlined />}> { logged } </Menu.Item>
-        </Menu>
+        </Menu> : null }
         
         <Modal 
         closable={false}
