@@ -1,0 +1,25 @@
+version: '3'
+services:
+    matcha-app:
+      build: .
+      container_name: matcha
+      environment:
+        - NEO4J_ADDRESS=matcha-db
+        - NEO4J_PORT=7687
+        - NEO4J_LOGIN=neo4j
+        - NEO4J_PASSWORD=matcha
+        - JWT_EXPIRATION_TIME=1h
+        - JWT_SECRET_KEY=thisismysecret
+        - NODE_ENV=Prod
+        - SMTP_USERNAME=${SMTP_USERNAME}
+        - SMTP_SECRET=${SMTP_SECRET}
+      ports:
+        - 80:3001
+    matcha-db:
+      container_name: matcha_db
+      image: neo4j
+      environment:
+        - NEO4J_AUTH=neo4j/matcha
+      ports:
+        - 7474:7474
+        - 7687:7687

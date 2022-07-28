@@ -39,28 +39,10 @@ yarn workspace api install
 yarn workspace app install
 ```
 
-## Run the project (for rode)
-open 3 new terminal
-terminal 1
-```bash
-cd api
-npm install (uniquement si tu ne las pas encore fait)
-nodemon
+## Build the project
+Build and run the project in production
 ```
-terminal 2
-```
-cd app
-yarn install (uniquement si tu ne las pas encore fait)
-yarn start
-```
-terminal 3
-```
-cd api
-echo "NEO4J_LOGIN=neo4j" > .env
-echo "NEO4J_PASSWORD=matcha" >> .env
-echo "NEO4J_ADDRESS=0.0.0.0" >> .env
-echo "NEO4J_PORT=7687" >> .env
-docker-compose -f neo4j.yml up 
+docker-compose up
 ```
 
 ## Authors
