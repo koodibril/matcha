@@ -11,14 +11,14 @@ export const getNotifications = async (req: any, res: any) => {
 
   try {
     const userInfo = await getUser(session, {token});
-    if (!userInfo[0]) return conflict(res, "User doesn't exist1");
+    if (!userInfo[0]) return conflict(res, "User doesn't exist");
     const notifications = userInfo[0].properties.Notifications;
     if (notifications) {
       let index = 0;
       for (const element of notifications) {
         const id = parseInt(element.split("Id:")[1].split("Date:")[0]);
         const userInfoI = await getUserWithId(session, id);
-        if (!userInfoI[0]) return conflict(res, "User doesn't exist2");
+        if (!userInfoI[0]) return conflict(res, "User doesn't exist");
         const split = element.split("Id:" + id);
         notifications[index] = split[0] + "Id:" + userInfoI[0].properties.Username + split[1];
         index++;

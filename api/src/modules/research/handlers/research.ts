@@ -14,7 +14,9 @@ export const getResearchResult = async (req: any, res: any) => {
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     const agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     const proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 24;
-    const popularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 10];
+    const low = userInfo[0].properties.Popularity <= 200 ? 0 : ((Math.round(userInfo[0].properties.Popularity / 200) + 1) * 100);
+    const max = low + 200;
+    const popularity = userInfo[0].properties.LfPopularity ? userInfo[0].properties.LfPopularity : [low, max] as [number, number];
     const Lfinterests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
     const interests = userInfo[0].properties.Interests;
     const gender = userInfo[0].properties.Sexo === 'Bi' ? ['Male', 'Female', 'Bi'] : [userInfo[0].properties.Sexo];

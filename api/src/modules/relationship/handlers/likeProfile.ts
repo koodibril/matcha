@@ -5,6 +5,8 @@ import { getRelationships } from '../utils/getRelationship';
 import { getUser } from '../../user/utils/getUser';
 import { createRelationship } from '../utils/createRelationship';
 import { updateRelationship } from '../utils/updateRelationship';
+import { calculateElo } from '../../../shared/elo/elo';
+import { updateUser } from '../../user/utils/updateUser';
 
 
 
@@ -21,6 +23,7 @@ export const likeProfile = async (req: any, res: any) => {
     let relationship;
     let likedback;
     const userInfo = await getUser(session, { token });
+    const user2Info = await getUser(session, { username });
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     for (const element of relationships) {
       if (element.start === userInfo[0].identity)
@@ -40,7 +43,6 @@ export const likeProfile = async (req: any, res: any) => {
       } else {
         addNotifications(token, username, NOTIFICATION_LIKE);
       }
-      relationship = await updateRelationship(session, { match, block, like}, token, username);
     } else if (relationship.properties.Like === true){
         like = false;
         match = false;
@@ -56,6 +58,19 @@ export const likeProfile = async (req: any, res: any) => {
         addNotifications(token, username, NOTIFICATION_LIKE);
       }
     }
+
+    const elo1 = userInfo[0].properties.Popularity;
+    const elo2 = user2Info[0].properties.Popularity;
+    const rel1 = relationship[0].properties;
+    const rel2 = likedback ? likedback.properties : {Like: false};
+
+    const popularity = calculateElo(
+      elo1, 
+      elo2, 
+      rel1, 
+      rel2);
+    await updateUser(session, {popularity: popularity.elo1}, token);
+    await updateUser(session, {popularity: popularity.elo2}, user2Info[0].properties.Token);
 
     like ? info(`user ` + userInfo[0].properties.Username + ` liked ` + username) : 
     info(`user ` + userInfo[0].properties.Username + ` unliked ` + username);

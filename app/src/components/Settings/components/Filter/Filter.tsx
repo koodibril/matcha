@@ -69,7 +69,7 @@ const Filter: React.FC<{filter: any}> = (props) => {
                 >
                 <Slider
                     onChange={handlePopularity}
-                    max={10}
+                    max={2000}
                     min={0}
                     range
                     defaultValue={popularity}/>

@@ -50,7 +50,7 @@ export const zergRush = async (res: any) => {
                     const longitude = 0;
                     const latitude = 0;
                     const token = getToken({ username });
-                    const popularity = Math.round(Math.random() * (10 - 0) + 0);
+                    const popularity = Math.round(Math.random() * (2000 - 0) + 0);
                     await createUser(newSession, {username, password, firstname, lastname, email, active, valid, token, pictures});
                     await updateUser(newSession, {token, age, gender, sexo, bio, interests, location, latitude, longitude, valid, popularity}, token);
                     info('Created a new user ' + username);
