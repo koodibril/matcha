@@ -24,13 +24,13 @@ const Display: React.FC<{userList: any, sortedList: any}> = (props) => {
     
     const handleLike = (element: any) => {
       likeUser(user, element.Username);
-      setTimeout(() => { getSearchResult(user) }, 100);
+      setTimeout(() => { getSearchResult(user) }, 500);
     };
 
     const handleBlock = (element: any) => {
       setBlockConfirmation(false);
       blockUser(user, element.Username);
-      setTimeout(() => { getSearchResult(user) }, 100);
+      setTimeout(() => { getSearchResult(user) }, 500);
     };
 
     const showBlock = (element: any) => {
