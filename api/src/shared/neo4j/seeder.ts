@@ -40,7 +40,7 @@ export const zergRush = async (res: any) => {
                     const sexo = sexos[Math.round(Math.random() * (2 - 0) + 0)];
                     const bio = bios[Math.round(Math.random() * (4 - 0) + 0)];
                     let nbOfInterests = Math.round(Math.random() * (5 - 0) + 0);
-                    const interests = [''];
+                    const interests = [];
                     while (nbOfInterests > 0) {
                         interests.push(interestss[Math.round(Math.random() * (9 - 0) + 0)]);
                         nbOfInterests--;

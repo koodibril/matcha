@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Row, Form, Button, Input, Select, InputNumber } from 'antd';
+import { Row, Form, Button, Input, Select, InputNumber, Col } from 'antd';
 
 import { useTranslation } from 'react-i18next';
 
@@ -44,31 +44,31 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
     return true;
   }
 
-  const handleUpdate = (usr: UserData) => {
+  const handleUpdate = (newval: UserData, usr: UserData) => {
     usr.interests = selectedTags;
-    if (selectedTags.length < 3) {
-      setErrorTag(true);
-    }
     if (!gotPicture(info.payload.Pictures)) {
       setErrorPicture(true);
-    } else {
+    } else if (!errorTag) {
       updateProfileInfo(usr, user, location);
       setErrorTag(false);
       setErrorPicture(false);
     }
   };
 
-  const checkTags = () => {
-    if (selectedTags.length < 3) {
+  const checkTags = (tags: any) => {
+    if (tags.length < 3) {
       setErrorTag(true);
     } else {
       setErrorTag(false);
+      const usr = {age: info.payload.Age, gender: info.payload.Gender, sexo: info.payload.Sexo, bio: info.payload.Bio, interests: tags};
+      updateProfileInfo(usr, user, location);
     }
   }
 
   const handleChange = (tag: any, checked: any) => {
     if (selectedTags.length <= 5 || checked === false) {
       const nexSelectedTags = checked ? [...selectedTags, tag] : selectedTags.filter(t => t !== tag);
+      checkTags(nexSelectedTags);
       setSelectedTags(nexSelectedTags);
     }
   };
@@ -117,7 +117,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         }
         ]}
         name="update"
-        onFinish={handleUpdate}>
+        onValuesChange={handleUpdate}>
 
         <Form.Item>{props.info.Username}</Form.Item>
         
@@ -196,16 +196,16 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
             rules={[{
               validator: checkLocation
             }]}>
-              <Input disabled value={location.city}></Input>
+              <Row>
+                <Col>
+                  <Input disabled value={location.city}></Input>
+                </Col>
+                <Col>
+                  <Button onClick={handleLocation}>{t('update location')}</Button>
+                </Col>
+              </Row>
             </Form.Item>
             <MapHolderComponent location={location.city} latitude={location.latitude} longitude={location.longitude}></MapHolderComponent>
-            <Button onClick={handleLocation}>{t('update location')}</Button>
-        </Form.Item>
-
-        <Form.Item>
-            <Button type="primary" htmlType="submit" onClick={() => checkTags()}>
-              {t('update information')}
-            </Button>
         </Form.Item>
       </Form>) : null }
     </Row>
