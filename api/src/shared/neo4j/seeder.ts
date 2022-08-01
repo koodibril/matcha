@@ -47,8 +47,8 @@ export const zergRush = async (res: any) => {
                     }
                     const email = results.email;
                     const location = results.location.city;
-                    const longitude = 0;
-                    const latitude = 0;
+                    const longitude = parseFloat(results.location.coordinates.longitude);
+                    const latitude = parseFloat(results.location.coordinates.latitude);
                     const token = getToken({ username });
                     const popularity = Math.round(Math.random() * (2000 - 0) + 0);
                     await createUser(newSession, {username, password, firstname, lastname, email, active, valid, token, pictures});

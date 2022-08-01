@@ -4,5 +4,6 @@ export interface Filter {
     popularity: [number, number],
     interests: (string)[],
     Lfinterests: (string)[],
-    gender: (string)[]
+    gender: (string)[],
+    location: {latitude: number, longitude: number}
 }

@@ -60,7 +60,7 @@ const Filter: React.FC<{filter: any}> = (props) => {
                 >
                 <Slider
                     onChange={handleProximity}
-                    max={24}
+                    max={200}
                     min={0}
                     defaultValue={proximity}/>
             </Form.Item>
