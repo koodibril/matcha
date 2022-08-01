@@ -11,20 +11,18 @@ import { useNavigation } from 'src/ducks/navigation/navigation';
 const Profile: React.FC = () => {
   const [reading, setReading] = useState(false);
   const user = localStorage.getItem('user');
-  
+
   const { pushState } = useNavigation();
   const info = useProfile();
   const { getProfileInfo } = useProfileActions();
   const { getRelationship } = useRelationshipActions();
-  
+
   useEffect(() => {
     const path = window.location.pathname.split('/');
     if (path.length === 3 && path[1] === 'profile') {
       setReading(true);
       getProfileInfo(user, path[2]);
       getRelationship(user, path[2]);
-    } else if (user) {
-      // getProfileInfo(user, null);
     } else {
       pushState('/auth/login');
     }
@@ -32,22 +30,22 @@ const Profile: React.FC = () => {
 
   const updateInfo = (
     <Row justify="center" align="middle">
-        { info && info.payload ? <UpdateUserInformationComponent info={info.payload}></UpdateUserInformationComponent> : null}
+      {info && info.payload ? <UpdateUserInformationComponent info={info.payload}></UpdateUserInformationComponent> : null}
     </Row>);
 
   const readInfo = (
     <Row justify="center" align="middle">
-        { info && info.payload ? <UserInfoHolderComponent info={info.payload}></UserInfoHolderComponent> : null}
+      {info && info.payload ? <UserInfoHolderComponent info={info.payload}></UserInfoHolderComponent> : null}
     </Row>);
 
-  return ( info && info.payload ?
-    <> 
+  return (info && info.payload ?
+    <>
       <Row justify="center" align="middle">
-          <ImageHolderComponent pictures={info.payload.Pictures} reading={reading}></ImageHolderComponent>
+        <ImageHolderComponent pictures={info.payload.Pictures} reading={reading}></ImageHolderComponent>
       </Row>
-      { reading ? readInfo : updateInfo }
+      {reading ? readInfo : updateInfo}
     </>
-  : null)
+    : null)
 }
 
 export default Profile;
