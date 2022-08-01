@@ -15,11 +15,15 @@ export const updateProfile = async (req: any, res: any) => {
   const location = req.body.location.city;
   const latitude = req.body.location.latitude;
   const longitude = req.body.location.longitude;
-  const valid = true;
-  const popularity = 5;
-  const userParams = { age, gender, sexo, bio, interests, location, latitude, longitude, valid, popularity };
-
+  let valid = false;
+  
   try {
+    if (bio.trim().length < 3 || location === 'Unknow') {
+      valid = false;
+    } else {
+      valid = true;
+    }
+    const userParams = { age, gender, sexo, bio, interests, location, latitude, longitude, valid };
     const userInfoU = await updateUser(session, userParams, token);
     const userInfo = userInfoU[0];
 

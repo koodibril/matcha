@@ -105,19 +105,23 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         fields={[ props.info.Age ? {
           name: ['age'],
           value: props.info.Age
-        } : { name: ['age']},
+        } : { name: ['age'],
+          value: 18},
         props.info.Gender ? {
           name: ['gender'],
           value: props.info.Gender
-        } : { name: ['gender']},
+        } : { name: ['gender'],
+          value: 'Male'},
          props.info.Sexo ? {
           name: ['sexo'],
           value: props.info.Sexo
-        } : { name: ['sexo']},
+        } : { name: ['sexo'],
+          value: 'Bi'},
         props.info.Bio ? {
           name: ['bio'],
           value: props.info.Bio
-        } : { name: ['bio']},
+        } : { name: ['bio'],
+          value: ''},
         {
           name: ['location'],
           value: location.city
@@ -175,6 +179,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
             <Form.Item 
               name="bio"
               rules={[{
+                min: 3,
                 required: true,
                 message: t('bio_missing')
               }]}>

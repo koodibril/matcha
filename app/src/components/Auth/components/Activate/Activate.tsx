@@ -11,7 +11,8 @@ const Activate: React.FC = () => {
 
     if (path.length === 4) {
       activateUser(path[3]);
-    } else pushState("/auth");
+    }
+    pushState("/auth");
   }, [activateUser, pushState]);
 
   return <></>;

@@ -23,7 +23,7 @@ const Profile: React.FC = () => {
       setReading(true);
       getProfileInfo(user, path[2]);
       getRelationship(user, path[2]);
-    } else {
+    } else if (!user) {
       pushState('/auth/login');
     }
   }, [user, getProfileInfo, getRelationship, pushState]);
