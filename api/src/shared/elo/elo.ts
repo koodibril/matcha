@@ -17,8 +17,12 @@ export const calculateElo = (elo1: number, elo2: number, rel1: any, rel2: any) =
             score1 = 0.5;
             score2 = 0.5;
     }
-    const newElo1 = elo1 + K * (score1 - expected1);
-    const newElo2 = elo2 + K * (score2 - expected2);
-    const result = {elo1: Math.round(newElo1), elo2: Math.round(newElo2)};
+    const newElo1 = Math.round(elo1 + K * (score1 - expected1));
+    const newElo2 = Math.round(elo2 + K * (score2 - expected2));
+
+    const result = {
+        elo1: newElo1 < 0 ? 0 : (newElo1 > 2000 ? 2000 : newElo1),
+        elo2: newElo2 < 0 ? 0 : (newElo2 > 2000 ? 2000 : newElo2)
+    };
     return result;
 }
