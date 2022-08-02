@@ -3,6 +3,7 @@ import { info, internalError } from '../../../shared/utils';
 import { getSocketIo } from '../../../server';
 import { getUser } from '../../user/utils/getUser';
 import { updateUser } from '../../user/utils/updateUser';
+import { getRelationships } from '../../relationship/utils/getRelationship';
 
 export const NOTIFICATION_LIKE = 'A User liked you !';
 export const NOTIFICATION_VISIT = 'A User checked your profile !';
@@ -16,6 +17,15 @@ export const addNotifications = async (token: string, username: string, notifica
   try {
     const userInfoT = await getUser(session, { token });
     let userInfo = await getUser(session, { username });
+    if (notification === NOTIFICATION_VISIT) {
+      const rels = await getRelationships(session, token, username);
+      for (const rel of rels) {
+        if (rel.properties.Block === true) {
+          return (userInfo[0]);
+        }
+      }
+    }
+
     const notifications = userInfo[0].properties.Notifications ? userInfo[0].properties.Notifications : [];
 
     const newNotification = 'Viewed:false' + 'Id:' + userInfoT[0].identity + 'Date:' + Date.now() + 'Notification:' + notification;
@@ -24,7 +34,7 @@ export const addNotifications = async (token: string, username: string, notifica
     const io = getSocketIo();
     io.to(userInfo[0].properties.Socket).emit('notification', null);
 
-    info(`new notification added:` + notification);
+    info(`new notification added: ` + notification);
     return (userInfo[0]);
   } catch (e) {
     return internalError(e);
