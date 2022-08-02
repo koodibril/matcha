@@ -37,23 +37,26 @@ export const likeProfile = async (req: any, res: any) => {
     if (!relationship) {
       relationship = await createRelationship(session, { match, block, like}, token, username);
       if (match) {
-        await addNotifications(token, username, NOTIFICATION_NEW_MATCH);
-        await addNotifications(token, '', NOTIFICATION_NEW_MATCH);
+        await addNotifications(session, token, username, NOTIFICATION_NEW_MATCH);
+        await addNotifications(session, user2Info[0].properties.Token, userInfo[0].properties.Username, NOTIFICATION_NEW_MATCH);
       } else {
-        await addNotifications(token, username, NOTIFICATION_LIKE);
+        await addNotifications(session, token, username, NOTIFICATION_LIKE);
       }
     } else if (relationship.properties.Like === true){
         like = false;
         match = false;
         relationship = await updateRelationship(session, { match, block, like}, token, username);
-        await addNotifications(token, username, NOTIFICATION_LOST_MATCH);
+        like = true;
+        match = false;
+        await updateRelationship(session, { match, block, like}, user2Info[0].properties.Token, userInfo[0].properties.Username);
+        await addNotifications(session, token, username, NOTIFICATION_LOST_MATCH);
     } else {
       relationship = await updateRelationship(session, { match, block, like}, token, username);
       if (match) {
-        await addNotifications(token, username, NOTIFICATION_NEW_MATCH);
-        await addNotifications(token, '', NOTIFICATION_NEW_MATCH);
+        await addNotifications(session, token, username, NOTIFICATION_NEW_MATCH);
+        await addNotifications(session, user2Info[0].properties.Token, userInfo[0].properties.Username, NOTIFICATION_NEW_MATCH);
       } else {
-        await addNotifications(token, username, NOTIFICATION_LIKE);
+        await addNotifications(session, token, username, NOTIFICATION_LIKE);
       }
     }
 

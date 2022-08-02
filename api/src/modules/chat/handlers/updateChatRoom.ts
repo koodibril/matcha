@@ -25,7 +25,7 @@ export const updateChatRoomUser = async (req: any, res: any) => {
     const newMessage = "User:" + userOne[0].identity + "Date:" + Date.now() + "Message:" + message;
     messages.push(newMessage);
     chatRoom = await updateChatRoom(session, {messages}, token, username);
-    addNotifications(token, username, NOTIFICATION_MESSAGE);
+    await addNotifications(session, token, username, NOTIFICATION_MESSAGE);
     const io = getSocketIo();
     io.to(userOne[0].properties.Socket).emit('newmessage', null);
     io.to(userTwo[0].properties.Socket).emit('newmessage', null);

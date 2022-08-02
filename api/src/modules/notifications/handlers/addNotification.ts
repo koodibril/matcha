@@ -11,10 +11,8 @@ export const NOTIFICATION_MESSAGE = 'You have a new message !';
 export const NOTIFICATION_NEW_MATCH = 'You have a new match !';
 export const NOTIFICATION_LOST_MATCH = 'You lost a match';
 
-export const addNotifications = async (token: string, username: string, notification: string) => {
-  const session = getSession();
+export const addNotifications = async (session: any, token: string, username: string, notification: string) => {
 
-  try {
     const userInfoT = await getUser(session, { token });
     let userInfo = await getUser(session, { username });
     if (notification === NOTIFICATION_VISIT) {
@@ -36,11 +34,6 @@ export const addNotifications = async (token: string, username: string, notifica
 
     info(`new notification added: ` + notification);
     return (userInfo[0]);
-  } catch (e) {
-    return internalError(e);
-  } finally {
-    await session.close();
-  };
 }
 
 export const addNotification = async (req: any, res: any) => {
