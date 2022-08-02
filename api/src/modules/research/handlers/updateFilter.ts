@@ -12,7 +12,7 @@ export const updateFilter = async (req: any, res: any) => {
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     let agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     let proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 200;
-    let lfpopularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [0, 2000];
+    let lfpopularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [1100, 1300];
     let lfinterests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
     if (req.body.ageGap)
         agegap = req.body.ageGap;

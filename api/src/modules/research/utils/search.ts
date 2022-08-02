@@ -2,6 +2,7 @@ import { Session } from 'neo4j-driver';
 import { Filter } from './filter.d';
 
 export const searchUsers = async (session: Session, filter: Filter, token: string) => {
+    // console.log({ token: token, ...filter })
     const result = await session.run(
         "MATCH (n: `user`) " +
         "OPTIONAL MATCH (a: `user`{Token: $token})-[r: `action`]->(n)" + 
@@ -17,5 +18,6 @@ export const searchUsers = async (session: Session, filter: Filter, token: strin
         "AND (r.Block IS NULL OR r.Block = false) " +
         "SET n.Distance = Distance / 1000 " +
         "RETURN n ORDER BY n.Popularity DESC LIMIT 25", { token: token, ...filter });
+        // console.log(result);
     return result.records.map((p: any) => p.get(0));
 };
