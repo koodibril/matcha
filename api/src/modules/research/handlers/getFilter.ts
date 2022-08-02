@@ -11,7 +11,9 @@ export const getFilter = async (req: any, res: any) => {
     if (!userInfo[0]) return conflict(res, "Profile (null) doesn't exist");
     let agegap = userInfo[0].properties.Agegap ? userInfo[0].properties.Agegap : [18, 80];
     let proximity = userInfo[0].properties.Proximity ? userInfo[0].properties.Proximity : 200;
-    let lfpopularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [1100, 1300];
+    const low = userInfo[0].properties.Popularity <= 200 ? 0 : ((Math.round(userInfo[0].properties.Popularity / 100) - 1) * 100);
+    const max = low + 200;
+    let lfpopularity = userInfo[0].properties.Lfpopularity ? userInfo[0].properties.Lfpopularity : [low, max];
     let lfinterests = userInfo[0].properties.Lfinterests ? userInfo[0].properties.Lfinterests : [''];
     const filter = { agegap, proximity, lfpopularity, lfinterests};
 
