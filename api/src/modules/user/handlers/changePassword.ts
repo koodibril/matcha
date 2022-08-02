@@ -20,13 +20,13 @@ export const changePassword = async (req: any, res: any) => {
         const username = userInfo[0].properties.Username;
         token = getToken({ username });
         const updated = await updateUser(session, { password, token }, userInfo[0].properties.Token);
-        if (!updated[0] || token !== updated[0]) return conflict(res, `Error when generating new token for (${username})`);
+        if (!updated[0] || token !== updated[0].properties.Token) return conflict(res, `Error when generating new token for (${username})`);
     }
 
     info(`Password Updated !`);
     return res
       .status(200)
-      .json({ userInfo });
+      .json({ token });
   } catch (e) {
     return internalError(res)(e);
   } finally {

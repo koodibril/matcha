@@ -70,6 +70,8 @@ const userChanged = (dispatch: any, res: any) => {
 };
 
 const passswordChanged = (dispatch: any, res: any) => {
+  const token = res.data.token;
+  localStorage.setItem("user", token);
   dispatch({
     type: "SET_MESSAGE",
     payload: "Your password was updated",
