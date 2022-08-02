@@ -38,8 +38,6 @@ export const likeProfile = async (req: any, res: any) => {
       relationship = await createRelationship(session, { match, block, like}, token, username);
       if (match) {
         addNotifications(token, username, NOTIFICATION_NEW_MATCH);
-        addNotifications(token, '', NOTIFICATION_LIKE);
-        addNotifications(token, username, NOTIFICATION_LIKE);
       } else {
         addNotifications(token, username, NOTIFICATION_LIKE);
       }
@@ -52,8 +50,6 @@ export const likeProfile = async (req: any, res: any) => {
       relationship = await updateRelationship(session, { match, block, like}, token, username);
       if (match) {
         addNotifications(token, username, NOTIFICATION_NEW_MATCH);
-        addNotifications(token, '', NOTIFICATION_LIKE);
-        addNotifications(token, username, NOTIFICATION_LIKE);
       } else {
         addNotifications(token, username, NOTIFICATION_LIKE);
       }
