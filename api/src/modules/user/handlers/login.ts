@@ -22,7 +22,7 @@ export const login = async (req: any, res: any) => {
     const passwordMatch = await checkPassword(password, matchingPassword);
     if (!passwordMatch) return conflict(res, `Credentials for (${username}) are incorrect`);
 
-    const activated = userInfo[0].Active;
+    const activated = userInfo[0].properties.Active;
     if (activated === false) return conflict(res, `You must activate your account, check your emails !`);
 
     const token = getToken({ username });

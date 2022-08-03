@@ -18,7 +18,7 @@ export const updateProfile = async (req: any, res: any) => {
   let valid = false;
   
   try {
-    if (bio.trim().length < 3 || location === 'Unknow') {
+    if (bio?.trim().length < 3 || location === 'Unknow') {
       valid = false;
     } else {
       valid = true;

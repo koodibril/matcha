@@ -44,7 +44,8 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
     return true;
   }
 
-  const handleUpdate = (newval: UserData, usr: UserData) => {
+  const handleUpdate = (usr: UserData) => {
+    checkTags(selectedTags);
     usr.interests = selectedTags;
     if (!gotPicture(info.payload.Pictures)) {
       setErrorPicture(true);
@@ -60,8 +61,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
       setErrorTag(true);
     } else {
       setErrorTag(false);
-      const usr = {age: info.payload.Age, gender: info.payload.Gender, sexo: info.payload.Sexo, bio: info.payload.Bio, interests: tags};
-      updateProfileInfo(usr, user, location);
     }
   }
 
@@ -88,8 +87,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         longitude: position.coords.longitude
       };
       setLocation(nextloc);
-      const usr = {age: info.payload.Age, gender: info.payload.Gender, sexo: info.payload.Sexo, bio: info.payload.Bio, interests: selectedTags};
-      updateProfileInfo(usr, user, nextloc);
 
     }, async (error) => {
       const loc = await axios.get('http://www.geoplugin.net/json.gp');
@@ -99,8 +96,6 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         longitude: parseFloat(loc.data.geoplugin_longitude)
       };
       setLocation(nextloc);
-      const usr = {age: info.payload.Age, gender: info.payload.Gender, sexo: info.payload.Sexo, bio: info.payload.Bio, interests: selectedTags};
-      updateProfileInfo(usr, user, nextloc);
 
     })
   }
@@ -137,7 +132,7 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
         }
         ]}
         name="update"
-        onValuesChange={handleUpdate}>
+        onFinish={handleUpdate}>
 
         <Form.Item>{props.info.Username}</Form.Item>
         
@@ -227,6 +222,11 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
               </Row>
             </Form.Item>
             <MapHolderComponent location={location.city} latitude={location.latitude} longitude={location.longitude}></MapHolderComponent>
+        </Form.Item>
+        <Form.Item>
+            <Button type="primary" htmlType="submit">
+              {t('update information')}
+            </Button>
         </Form.Item>
       </Form>) : null }
     </Row>
