@@ -28,7 +28,7 @@ export const getResearchResult = async (req: any, res: any) => {
     for (const element of results) {
       const username = element.properties.Username;
       const relationship = await getRelationships(session, token, username);
-      if (relationship[0].start !== userInfo[0].identity) {
+      if (relationship && relationship.length === 2 && relationship[0].start !== userInfo[0].identity) {
         [relationship[0], relationship[1]] = [relationship[1], relationship[0]];
       }
       results[index].properties.relationship = relationship;

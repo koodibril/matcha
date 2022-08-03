@@ -14,7 +14,7 @@ services:
         - SMTP_USERNAME=${SMTP_USERNAME}
         - SMTP_SECRET=${SMTP_SECRET}
       ports:
-        - 80:3001
+        - 8080:3001
     matcha-db:
       container_name: matcha_db
       image: neo4j
