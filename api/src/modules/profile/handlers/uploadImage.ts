@@ -6,7 +6,7 @@ import { updateUser } from '../../user/utils/updateUser';
 
 const uploadDir = './public/users/tmp';
 if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true});
+  fs.mkdirSync(uploadDir, { recursive: true });
 }
 
 export const uploadImage = async (req: any, res: any) => {
@@ -23,7 +23,7 @@ export const uploadImage = async (req: any, res: any) => {
       file.pipe(fs.createWriteStream(uploadDir + '/' + filename));
       console.log('Uploading: ' + filename);
     });
-    busboy.on('field', async function (fieldname: any, val: any) {
+    busboy.on('field', async function(fieldname: any, val: any) {
       if (fieldname === 'token') {
         try {
           token = val;
@@ -31,7 +31,7 @@ export const uploadImage = async (req: any, res: any) => {
           let pictures = userInfo[0].properties.Pictures as string[];
           const userDir = './public/users/' + userInfo[0].identity;
           if (!fs.existsSync(userDir)) {
-              fs.mkdirSync(userDir);
+            fs.mkdirSync(userDir);
           }
           let i = 0;
           let newFileName = fileName;
@@ -39,12 +39,12 @@ export const uploadImage = async (req: any, res: any) => {
             newFileName = i + newFileName;
             i++
           }
-          fs.rename(uploadDir + '/' + fileName, userDir + '/' + newFileName, function (err) {
+          fs.rename(uploadDir + '/' + fileName, userDir + '/' + newFileName, function(err) {
             if (err)
               throw err;
           });
           let block = false;
-          pictures.forEach(function (picture, i) {
+          pictures.forEach(function(picture, i) {
             if (picture === '' && !block) {
               pictures[i] = 'users/' + userInfo[0].identity + '/' + newFileName;
               block = true;
@@ -62,8 +62,7 @@ export const uploadImage = async (req: any, res: any) => {
     });
     busboy.on('finish', function() {
       console.log('Upload complete');
-      res.writeHead(200, { 'Connection': 'close' });
-      res.end("That's all folks!");
+      res.status(200).send({ msg: 'Upload complete' });
     });
     return req.pipe(busboy);
   } catch (e) {
