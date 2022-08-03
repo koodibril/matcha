@@ -41,15 +41,15 @@ const Chat: React.FC = () => {
 
     const handleLike = (element: any) => {
       likeUser(user, element.Username);
-      cleanChatRoom();
       setTimeout(() => { getMatchedProfiles(user) }, 500);
+      cleanChatRoom();
     };
   
     const handleBlock = (element: any) => {
       setBlockConfirmation(false);
-      cleanChatRoom();
       blockUser(user, element.Username);
       setTimeout(() => { getMatchedProfiles(user) }, 500);
+      cleanChatRoom();
     };
   
     const showBlock = (element: any) => {
@@ -80,7 +80,6 @@ const Chat: React.FC = () => {
       return (List.map((element: any, index: number) => (
         <Row key={index} style={{ margin: 20}}>
           <Card hoverable
-            onClick={() => loadChat(element)}
             actions={[
               element.relationship.properties.Like ? 
               <HeartFilled onClick={() => handleLike(element)} key="like"/> :
@@ -88,16 +87,19 @@ const Chat: React.FC = () => {
               <StopOutlined onClick={() => showBlock(element)}key="block"/>, 
               <EllipsisOutlined key="ellipsis" onClick={() => {handleProfile(element)}}/>
               ]}>
-              <Card.Meta
-                avatar={element.Online === 0 ? 
-                <Badge dot color='green'>
-                  <Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : API_URL + '/' + element.Pictures[0]}/>
-                </Badge> : 
-                <Badge dot color='red'>
-                  <Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : API_URL + '/' + element.Pictures[0]}/>
-                </Badge>}
-                title={element.Username}
-                description={element.Bio}/>
+                <div
+            onClick={() => loadChat(element)}>
+                <Card.Meta
+                  avatar={element.Online === 0 ? 
+                  <Badge dot color='green'>
+                    <Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : API_URL + '/' + element.Pictures[0]}/>
+                  </Badge> : 
+                  <Badge dot color='red'>
+                    <Avatar src={isUrlValid(element.Pictures[0]) ? element.Pictures[0] : API_URL + '/' + element.Pictures[0]}/>
+                  </Badge>}
+                  title={element.Username}
+                  description={element.Bio}/>
+                </div>
           </Card>
         </Row>
       )));
