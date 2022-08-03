@@ -6,7 +6,7 @@ import axios from 'axios';
 const MapHolder: React.FC<{location: string, latitude: number, longitude: number}> = (props) => {
     const [defaultCenter, SetDefaultCenter] = useState({ lat: props.latitude, lng: props.longitude });
     const AnyReactComponent = (lat:any, lng:any) => {
-    return (<EnvironmentOutlined style={{ fontSize: '64px' }}/>);
+    return (<EnvironmentOutlined style={{ fontSize: '32px' }}/>);
     }
 
     useMemo(() => {

@@ -10,6 +10,14 @@ import research from './modules/research/research';
 import { zergRush } from './shared/neo4j/seeder';
 
 const app = express();
+
+const allowCrossDomain = (req: any, res: any, next: any) => {
+  res.header('Access-Control-Allow-Origin', "*")
+  res.header('Access-Control-Allow-Headers', "*");
+  next();
+};
+
+app.use(allowCrossDomain);
 app.use(express.static('public'));
 const env = process.env.NODE_ENV || 'development';
 if (env !== 'development') {
@@ -18,13 +26,6 @@ if (env !== 'development') {
 	  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 	});
 }
-const allowCrossDomain = (req: any, res: any, next: any) => {
-  res.header('Access-Control-Allow-Origin', "*")
-  res.header('Access-Control-Allow-Headers', "*");
-  next();
-};
-
-app.use(allowCrossDomain);
 
 app.use(express.json({ limit: '1mb' }));
 

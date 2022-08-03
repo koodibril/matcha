@@ -30,6 +30,10 @@ export const getResearchResult = async (req: any, res: any) => {
       const relationship = await getRelationships(session, token, username);
       if (relationship && relationship.length === 2 && relationship[0].start !== userInfo[0].identity) {
         [relationship[0], relationship[1]] = [relationship[1], relationship[0]];
+      } else if (relationship && relationship.length === 1 && relationship[0].start !== userInfo[0].identity) {
+        const fakeRelationship = {properties: {Like: false, Block: false, Match: false}};
+        relationship.push(fakeRelationship);
+        [relationship[0], relationship[1]] = [relationship[1], relationship[0]];
       }
       results[index].properties.relationship = relationship;
       index++;

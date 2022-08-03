@@ -81,19 +81,28 @@ const UpdateUserInformation: React.FC<{info: any}> = (props) => {
   }
 
   const handleLocation = async () => {
-    const loc = await axios.get('http://www.geoplugin.net/json.gp');
-    const nextloc = {
-      city: loc.data.geoplugin_regionName,
-      latitude: parseFloat(loc.data.geoplugin_latitude),
-      longitude: parseFloat(loc.data.geoplugin_longitude)
-    };
-    setLocation({
-      city: loc.data.geoplugin_regionName,
-      latitude: parseFloat(loc.data.geoplugin_latitude),
-      longitude: parseFloat(loc.data.geoplugin_longitude)
-    });
-    const usr = {age: info.payload.Age, gender: info.payload.Gender, sexo: info.payload.Sexo, bio: info.payload.Bio, interests: selectedTags};
-    updateProfileInfo(usr, user, nextloc);
+    navigator.geolocation.getCurrentPosition((position) => {
+      const nextloc = {
+        city: 'Custom',
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      };
+      setLocation(nextloc);
+      const usr = {age: info.payload.Age, gender: info.payload.Gender, sexo: info.payload.Sexo, bio: info.payload.Bio, interests: selectedTags};
+      updateProfileInfo(usr, user, nextloc);
+
+    }, async (error) => {
+      const loc = await axios.get('http://www.geoplugin.net/json.gp');
+      const nextloc = {
+        city: loc.data.geoplugin_regionName,
+        latitude: parseFloat(loc.data.geoplugin_latitude),
+        longitude: parseFloat(loc.data.geoplugin_longitude)
+      };
+      setLocation(nextloc);
+      const usr = {age: info.payload.Age, gender: info.payload.Gender, sexo: info.payload.Sexo, bio: info.payload.Bio, interests: selectedTags};
+      updateProfileInfo(usr, user, nextloc);
+
+    })
   }
 
   return (
