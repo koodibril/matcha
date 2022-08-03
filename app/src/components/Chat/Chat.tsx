@@ -21,12 +21,13 @@ const Chat: React.FC = () => {
     const userList = useChat();
     const chatRoom = useChatRoom();
     const { pushState } = useNavigation();
-    const { getMatchedProfiles, getChatRoom } = useChatActions();
+    const { getMatchedProfiles, getChatRoom, cleanChatRoom } = useChatActions();
     const { blockUser, likeUser } = useRelationshipActions();
     const { getProfileInfo } = useProfileActions();
 
     useEffect(() => {
       if (user) {
+        getProfileInfo(user, '');
         getMatchedProfiles(user);
       } else {
         pushState('/auth/login');
@@ -40,13 +41,15 @@ const Chat: React.FC = () => {
 
     const handleLike = (element: any) => {
       likeUser(user, element.Username);
-      setTimeout(() => { getMatchedProfiles(user) }, 100);
+      cleanChatRoom();
+      setTimeout(() => { getMatchedProfiles(user) }, 500);
     };
   
     const handleBlock = (element: any) => {
       setBlockConfirmation(false);
+      cleanChatRoom();
       blockUser(user, element.Username);
-      setTimeout(() => { getMatchedProfiles(user) }, 100);
+      setTimeout(() => { getMatchedProfiles(user) }, 500);
     };
   
     const showBlock = (element: any) => {

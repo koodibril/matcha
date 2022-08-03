@@ -63,6 +63,11 @@ const updateChatRoom = (token: string | null, user: string, message: string) => 
   .then((res) => { setChatRoom(dispatch, res) }, (error) => { handleError(dispatch, error) });
 
 
+  const cleanChatRoom = () => (dispatch: any) => {
+    dispatch({ type: "CLEAR_CHATROOM"});
+  }
+
+
 export const useChat = () =>
   useSelector((state: RootState) => state.chat);
 
@@ -78,6 +83,7 @@ export const useChatActions = () => {
       getChatRoom: (token: string | null, user: string) => dispatch(getChatRoom(token, user)),
       updateChatRoom: (token: string | null, user: string, message: string) =>
       dispatch(updateChatRoom(token, user, message)),
+      cleanChatRoom: () => dispatch(cleanChatRoom())
     }),
     [dispatch]
   );
